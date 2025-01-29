@@ -1,0 +1,35 @@
+.article-text {
+    min-height: 404px; 
+    height: auto; 
+}
+
+.swiper-button-next,
+.swiper-button-prev {
+    color: #F9F9F9; 
+  
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+    color: #2a9780; 
+}
+
+.article-swiper {
+    min-height: 72px; 
+    height: auto; 
+}
+
+
+.message-board,
+.message-input {
+    min-height: 80px; 
+    height: auto; 
+}
+
+
+
+.swiper-button-next::after,
+.swiper-button-prev::after {
+    font-size: 20px; 
+}
+

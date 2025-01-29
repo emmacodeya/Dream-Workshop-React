@@ -1,0 +1,34 @@
+.login {
+    margin-top: 180px;
+    margin-bottom: 160px;
+    width: 534px;
+    @include pad {
+      width: 100%;
+    }
+    @include mobile {
+      width: 100%;
+    }
+}
+
+.login-input {
+    width: 100%;
+    background-color: #333333b2;
+    color: $gray-100;
+    padding: 13px 24px;
+    border: 2px solid $gray-100;
+    border-radius: 0%;
+    &:focus {
+      background-color: #333333b2;
+      color: $gray-100;
+      border: 2px solid $primary-600;
+    }
+    &::placeholder {
+      color: $gray-400;
+    }
+  }
+
+  // .progress {
+  //   @include mobile {
+  //     width: 45%;
+  //   }
+  // }

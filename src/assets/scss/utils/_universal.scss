@@ -1,0 +1,15 @@
+//  文字太長會變成...
+.text-ellipsis {
+  white-space: nowrap; /* 強制文字在同一行 */
+  overflow: hidden; /* 隱藏超出範圍的文字 */
+  text-overflow: ellipsis; /* 超出的文字用省略號代替 */
+  width: 232px; /* 設定容器寬度，過長的文字會在此限制下截斷 */
+}
+
+.chat-text-ellipsis {
+  white-space: nowrap; /* 強制文字在同一行 */
+  overflow: hidden; /* 隱藏超出範圍的文字 */
+  text-overflow: ellipsis; /* 超出的文字用省略號代替 */
+  width: 178px; /* 設定容器寬度，過長的文字會在此限制下截斷 */
+}
+

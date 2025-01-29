@@ -1,0 +1,144 @@
+.admin {
+  font-family: "Inter", system-ui;
+  
+  &-logo {
+    width: 200px;
+    cursor: pointer;
+  }
+
+  &-nav {
+    &-link {
+      font-weight: 500;
+      border-left: 4px solid transparent;
+      cursor: pointer;
+      padding: 0 10px;
+      margin-bottom: 20px;
+
+      &:hover {
+        color: #43E1BF !important;
+      }
+
+      &.active {
+        color: #43E1BF !important;
+        border-left: 4px solid #43E1BF;
+        font-weight: 700;
+      }
+    }
+
+    &__logo {
+      width: 70px;
+    }
+  }
+
+  &-account {
+    th,
+    td {
+      padding: 8px 30px;
+      vertical-align: middle;
+    }
+    
+    tr:first-child th:first-child {
+      border-top-left-radius: 5px;
+    }
+    
+    tr:last-child td:first-child {
+      border-bottom-left-radius: 5px;
+    }
+    
+    tr:first-child th:last-child {
+      border-top-right-radius: 5px;
+    }
+    
+    tr:last-child td:last-child {
+      border-bottom-right-radius: 5px;
+    }
+  }
+
+  &-modal {
+    &-body {
+      p {
+        color: #000;
+      }
+    }
+  }
+
+  &-success {
+    color: #43E1BF;
+    font-weight: 700;
+  }
+
+  &-error {
+    color: #FB5A72;
+    font-weight: 700;
+  }
+
+  &-search {
+    width: 280px;
+  }
+
+  &-dropdown {
+    &__button {
+      width: 120px;
+    }
+
+    .dropdown-item {
+      color: #fff;
+
+      &:hover {
+        color: #43E1BF;
+      }
+    }
+  }
+
+  &__input {
+    width: 100%;
+
+    &:focus {
+      border: #43E1BF;
+      box-shadow: 0 0 5px 0 #43E1BF;
+    }
+  }
+
+  &__textarea {
+    &:focus {
+      border: #43E1BF;
+      box-shadow: 0 0 5px 0 #43E1BF;
+    }
+  }
+
+  &-activity {
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+
+    &__label {
+      display: block;
+    }
+
+    &__button {
+      width: 100px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &__icon {
+      font-size: 20px;
+    }
+  }
+
+  &-table {
+    table-layout: fixed;
+  }
+
+  &-text {
+    &-ellipsis {
+      width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
+  
+}

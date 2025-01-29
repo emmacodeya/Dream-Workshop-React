@@ -1,0 +1,325 @@
+// 123
+.bg1{
+    background-image:url(/assets/images/Map-item-1.png);
+    width: 224px;
+    height: 120px;
+}
+.bg2{
+    background-image:url(/assets/images/Map-item-2.png);
+    width: 224px;
+    height: 120px;
+}
+.bg3{
+    background-image:url(/assets/images/Map-item-3.png);
+    width: 224px;
+    height: 120px;
+}
+.bg4{
+    background-image:url(/assets/images/Map-item-4.png);
+    width: 224px;
+    height: 120px;
+}
+.bg5{
+    background-image:url(/assets/images/Map-item-5.png);
+    width: 224px;
+    height: 120px;
+}
+.bg6{
+    background-image:url(/assets/images/Map-item-6.png);
+    width: 224px;
+    height: 120px;
+}
+.bg7{
+    background-image:url(/assets/images/Map-item-7.png);
+    width: 224px;
+    height: 120px;
+}
+.bg8{
+    background-image:url(/assets/images/Map-item-8.png);
+    width: 224px;
+    height: 120px;
+}
+.bg9{
+    background-image:url(/assets/images/Map-item-9.png);
+    width: 224px;
+    height: 120px;
+}
+.bg10{
+    background-image:url(/assets/images/Map-item-10.png);
+    width: 224px;
+    height: 120px;
+}
+.bg11{
+    background-image:url(/assets/images/Map-item-11.png);
+    width: 224px;
+    height: 120px;
+}
+.bg12{
+    background-image:url(/assets/images/Map-item-12.png);
+    width: 224px;
+    height: 120px;
+}
+.bg13{
+    background-image:url(/assets/images/Map-item-13.png);
+    width: 224px;
+    height: 120px;
+}
+.bg14{
+    background-image:url(/assets/images/Map-item-14.png);
+    width: 224px;
+    height: 120px;
+}
+.bg15{
+    background-image:url(/assets/images/Map-item-15.png);
+    width: 224px;
+    height: 120px;
+}
+.bg16{
+    background-image:url(/assets/images/Map-item-16.png);
+    width: 224px;
+    height: 120px;
+}
+.bg17{
+    background-image:url(/assets/images/Map-item-17.png);
+    width: 224px;
+    height: 120px;
+}
+.bg18{
+    background-image:url(/assets/images/Map-item-18.png);
+    width: 224px;
+    height: 120px;
+}
+.bg19{
+    background-image:url(/assets/images/Map-item-19.png);
+    width: 224px;
+    height: 120px;
+}
+.bg20{
+    background-image:url(/assets/images/Map-item-20.png);
+    width: 224px;
+    height: 120px;
+}
+
+.project-title {
+    margin: 28px 28px 16px 28px;;
+    @include mobile {
+        margin-top: 20px;
+      }
+}
+
+
+
+
+
+.solid{
+    margin-left: 28px;
+    margin-right: 28px;
+}
+
+///////////////////////////////////////
+
+.front-page-banner {
+    background-image: url("/assets/images/banner.jpg");
+    background-blend-mode: saturation;
+    background-repeat: none;
+    background-size: cover;
+    height: 100vh;
+    @include mobile {
+      padding-inline: 12px;
+    }
+  }
+  
+  .banner-title {
+    color: $gray-100;
+    font-weight: bold;
+    font-size: 64px;
+    line-height: 76.8px;
+    letter-spacing: 5%;
+    span {
+      color: $primary-600;
+    }
+    @include mobile {
+      font-size: 32px;
+      line-height: 38.4px;
+      letter-spacing: 16%;
+    }
+  }
+  .banner-content {
+    width: 606px;
+  }
+  
+  //  banner-input
+  .banner-search {
+    @include mobile {
+      flex-direction: column;
+    }
+  }
+  .banner-input {
+    width: 41.25%;
+    background-color: #333333b2;
+    color: $gray-100;
+    padding: 13px 24px;
+    border: 2px solid $gray-100;
+    border-radius: 0%;
+    &:focus {
+      background-color: #333333b2;
+      color: $gray-100;
+      border: 2px solid $primary-600;
+    }
+    &::placeholder {
+      color: $gray-100;
+    }
+  }
+  
+  .search-dropdown {
+    width: 33.66%;
+  }
+  
+  .dropdown-btn {
+    background-color: $gray-800;
+    color: $gray-100;
+    padding: 13px 24px;
+    border: 2px solid $gray-100;
+    border-radius: 0px;
+    width: 100%;
+    &:hover {
+      background-color: $gray-800;
+      color: $gray-100;
+      border: 2px solid $primary-600;
+    }
+    &:focus {
+      background-color: #333333b2;
+      color: $gray-100;
+      border: 2px solid $primary-600;
+    }
+  }
+  
+  .dropdown-menu {
+    background-color: $gray-800;
+    border-radius: 0px;
+    width: 100%;
+    .dropdown-hover:hover {
+      outline: 2px dashed #43e1bf;
+    }
+    .dropdown-item {
+      padding: 13px 24px;
+      &:hover {
+        background-color: $gray-800;
+        color: $gray-100;
+      }
+    }
+  }
+  
+  .search-btn {
+    width: 120px;
+    padding: 13px 24px;
+  }
+  
+  .n-icon::after {
+    display: none;
+  }
+  
+  .bg-halo {
+    // background-image: url('/assets/images/bg-halo.png');
+    background-color: $gray-1000;
+    background-image: url("/assets/images/bg-halo.png");
+    background-size: cover, contain;
+    /* 第一個背景圖片覆蓋整個元素，第二個根據內容顯示 */
+    background-position: center; /* 第一個在中央，第二個在右下角 */
+    background-repeat: no-repeat, no-repeat; /* 都不重複顯示 */
+  }
+  
+  .features {
+    padding-inline: 125px;
+    @include mobile {
+      padding-inline: 12px;
+    }
+  }
+  
+  .feature-title {
+    @include mobile {
+      font-size: 28px;
+    }
+  }
+  
+  .feature-icon {
+    border-radius: 80px;
+    width: 80px;
+    height: 80px;
+    background-color: $gray-800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+  }
+  
+  .feature-content {
+    font-size: 20px;
+    line-height: 30px;
+    color: $gray-200;
+  }
+  
+  .swiper-slide {
+    height: 100%;
+  }
+  
+  .popular-card {
+    background-color: $gray-800;
+  }
+  
+  .businessSwiper {
+    max-width: 1168px;
+  }
+  
+  .business-swiper {
+    width: 280px;
+  }
+  .popular-card-body {
+    padding: 32px 24px 20px;
+    max-height: 304px;
+  }
+  
+  .popular-card-title {
+    font-weight: bold;
+    line-height: 36px;
+    letter-spacing: 11%;
+  }
+  
+  .favorite {
+    position: absolute;
+    top: 21px;
+    right: 20px;
+  }
+  
+  .swiper-button-next,
+  .swiper-button-prev {
+    @include mobile {
+      display: none;
+    }
+  }
+  
+  .field-slogan {
+    @include mobile {
+      font-size: $h5-font-size;
+    }
+  }
+  
+  .industry-card {
+    height: 120px;
+    padding: 12px;
+    font-weight: bolder;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    h5 {
+      color: $gray-100;
+      line-height: 30px;
+      font-weight: bold;
+      letter-spacing: 6%;
+    }
+    @include mobile {
+      width: 100%;
+      height: 100px;
+    }
+  }
+  
