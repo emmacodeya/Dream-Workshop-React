@@ -1,6 +1,7 @@
 @import 'bootstrap/scss/functions';
+@import "./mixin";
 @import './variables';
 @import 'bootstrap/scss/bootstrap';
 
 
-@import "./scss/base/base";
+@import "./base/base";
