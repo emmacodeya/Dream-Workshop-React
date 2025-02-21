@@ -26,9 +26,9 @@ const Footer = () => {
           <div className="col-lg-9 d-flex">
             <ul className="footer-navbar me-5">
               <li className="fs-5 fw-bold text-gray-400 mb-3"><Link to="/about-us">關於我們</Link></li>
-              <li><Link className="fw-bold text-primary-600 mb-2" to="/about-us">網站理念</Link></li>
-              <li><Link className="fw-bold text-primary-600 mb-2" to="/about-us">常見問題</Link></li>
-              <li><Link className="fw-bold text-primary-600" to="/privacy-policy">隱私權政策</Link></li>
+              <li><Link className="fw-bold text-primary-600 mb-2" to="/about-us" onClick={() => window.scrollTo(0, 0)}>網站理念</Link></li>
+              <li><Link className="fw-bold text-primary-600 mb-2" to="/about-us" onClick={() => window.scrollTo(0, 0)}>常見問題</Link></li>
+              <li><Link className="fw-bold text-primary-600" to="/privacy-policy" onClick={() => window.scrollTo(0, 0)}>隱私權政策</Link></li>
             </ul>
             <ul className="footer-navbar me-5">
               <li className="fs-5 fw-bold text-gray-400 mb-3"><Link to="/pay-plan">付費方案</Link></li>
