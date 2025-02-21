@@ -1,10 +1,26 @@
 import { Routes, Route, useLocation, Link } from "react-router-dom";
 import MemberSidebar from "../../components/MemberSidebar";
 import MemberInfo from "./MemberInfo";
-// import MemberIdentity from "./MemberIdentity";
-// import MemberChangePassword from "./MemberChangePassword";
-// import MemberPoints from "./MemberPoints";
-// import MemberSettings from "./MemberSettings";
+import MemberIdentity from "./MemberIdentity";
+import MemberChangePassword from "./MemberChangePassword";
+import MemberPoints from "./MemberPoints";
+import MemberSettings from "./MemberSettings";
+import MemberNewProjects from "./MemberNewProjects";
+import MemberCreatedProjects from "./MemberCreatedProjects";
+import MemberNewInvestor from "./MemberNewInvestor";
+import MemberEvaluateProjects from "./MemberEvaluateProjects";
+import MemberEvaluateInvestor from "./MemberEvaluateInvestor";
+import MemberCollectProjects from "./MemberCollectProjects";
+import MemberCollectInvestor from "./MemberCollectInvestor";
+import MemberApplyActivity from "./MemberApplyActivity";
+import MemberActivityRecord from "./MemberActivityRecord";
+import MemberSiteNews from "./MemberSiteNews";
+import MemberPostArticle from "./MemberPostArticle";
+import MemberPostList from "./MemberPostList";
+import MemberArticleMessage from "./MemberArticleMessage";
+import './MemberHome.scss';
+
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./MemberHome.scss";
 
@@ -67,10 +83,24 @@ const MemberHome = () => {
           <main className="col-lg-9">
             <Routes>
               <Route path="/" element={<MemberInfo />} />
-              {/* <Route path="identity" element={<MemberIdentity />} />
+              <Route path="identity" element={<MemberIdentity />} />
               <Route path="change-password" element={<MemberChangePassword />} />
               <Route path="points" element={<MemberPoints />} />
-              <Route path="settings" element={<MemberSettings />} /> */}
+              <Route path="settings" element={<MemberSettings />} />
+              <Route path="new-projects" element={<MemberNewProjects />} />
+              <Route path="created-projects" element={<MemberCreatedProjects />} />
+              <Route path="new-investor" element={<MemberNewInvestor />} />
+              <Route path="evaluate-projects" element={<MemberEvaluateProjects />} />
+              <Route path="evaluate-investor" element={<MemberEvaluateInvestor />} />
+              <Route path="collect-projects" element={<MemberCollectProjects />} />
+              <Route path="collect-investor" element={<MemberCollectInvestor />} />
+              <Route path="apply-activity" element={<MemberApplyActivity />} />
+              <Route path="activity-record" element={<MemberActivityRecord />} />
+              <Route path="site-news" element={<MemberSiteNews />} />
+              <Route path="post-article" element={<MemberPostArticle />} />
+              <Route path="post-list" element={<MemberPostList />} />
+              <Route path="article-message" element={<MemberArticleMessage />} />
+              
             </Routes>
           </main>
         </div>
