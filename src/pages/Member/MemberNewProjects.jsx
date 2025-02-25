@@ -1,33 +1,8 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 
 const MemberNewProjects = () => {
-  // 管理表單輸入狀態
-  const [formData, setFormData] = useState({
-    projectName: "",
-    contactPerson: "",
-    contactPhone: "",
-    website: "",
-    address: "",
-    businessStatus: "",
-    companyNumber: "",
-    industry: "",
-    scale: "",
-    capital: "",
-    fundraising: "",
-    introduction: "",
-    team: "",
-    advantages: "",
-    disadvantages: "",
-    opportunities: "",
-    threats: "",
-    marketSize: "",
-    product: "",
-    competitiveProducts: "",
-    businessModel: "",
-    founderInfo: "",
-  });
-
-  // 管理圖片上傳預覽
+  // 圖片上傳預覽
   const [images, setImages] = useState({
     companyLogo: "/assets/images/頭像1.png",
     companyImage: "/assets/images/頭像1.png",
@@ -35,14 +10,14 @@ const MemberNewProjects = () => {
     referenceImage: "/assets/images/頭像1.png",
   });
 
-  // Ref 用來清空表單
-  const formRef = useRef(null);
-
-  // 處理表單變更
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  // 使用 react-hook-form 處理表單
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset
+  } = useForm();
 
   // 處理圖片上傳與預覽
   const handleFileChange = (e, key) => {
@@ -58,41 +33,124 @@ const MemberNewProjects = () => {
 
   // 清除表單
   const handleClear = () => {
-    if (formRef.current) {
-      formRef.current.reset();
-    }
-    setFormData({
-      projectName: "",
-      contactPerson: "",
-      contactPhone: "",
-      website: "",
-      address: "",
-      businessStatus: "",  
-      companyNumber: "",
-      industry: "",  
-      scale: "",  
-      capital: "",
-      fundraising: "",
-      introduction: "",
-      team: "",
-      advantages: "",
-      disadvantages: "",
-      opportunities: "",
-      threats: "",
-      marketSize: "",
-      product: "",
-      competitiveProducts: "",
-      businessModel: "",
-      founderInfo: "",
-    });
-  
-    //  重置圖片預覽
+    reset(); // 清除表單
     setImages({
       companyLogo: "/assets/images/頭像1.png",
       companyImage: "/assets/images/頭像1.png",
       financialStatus: "/assets/images/頭像1.png",
       referenceImage: "/assets/images/頭像1.png",
     });
+  };
+
+  const onSubmit = async (data) => {
+    try {
+      // 新增projects
+      const projectResponse = await fetch("http://localhost:3000/projects", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: data.projectName,
+          contactPerson: data.contactPerson,
+          contactPhone: data.contactPhone,
+          website: data.website,
+          address: data.address,
+          companyNumber: data.companyNumber,
+          status: data.businessStatus,
+          industry: data.industry,
+          description: data.introduction,
+          size: data.scale,
+          capital: data.capital,
+          funding: data.fundraising,
+          companyLogo: images.companyLogo,
+          companyImage: images.companyImage, 
+          liked: false
+        })
+      });
+  
+      const projectData = await projectResponse.json();
+      const projectId = projectData.id; 
+  
+      console.log("專案新增成功，ID:", projectId);
+  
+      // swot
+      await fetch(`http://localhost:3000/swot`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId, // 讓 ID 不會覆蓋舊資料
+          strengths: data.strengths ? [data.strengths] : [],
+          weaknesses: data.weaknesses ? [data.weaknesses] : [],
+          opportunities: data.opportunities ? [data.opportunities] : [],
+          threats: data.threats ? [data.threats] : []
+        })
+      });
+
+      //marketSize
+      await fetch(`http://localhost:3000/marketSize`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          content: data.marketSize
+        })
+      });
+  
+      // teams
+      await fetch(`http://localhost:3000/teams`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          teamDescription: data.team
+        })
+      });
+  
+      // models
+      await fetch(`http://localhost:3000/models`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          business_model: data.businessModel
+        })
+      });
+  
+      // products
+      await fetch("http://localhost:3000/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          productDescription: data.product 
+        })
+      });
+      
+      //projectCompete
+      await fetch(`http://localhost:3000/projectCompete`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          teamDescription: data.projectCompete 
+        })
+      });
+      
+      //founderInfo
+      await fetch(`http://localhost:3000/founderInfo`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          projectId: projectId,
+          entrepreneurDescription: data.founderInfo
+        })
+      });
+
+      alert("專案新增成功！");
+      handleClear(); // 清除表單與圖片
+    } catch (error) {
+      console.error("錯誤:", error);
+      alert("發生錯誤，請稍後再試！");
+    }
   };
   
 
@@ -147,249 +205,254 @@ const MemberNewProjects = () => {
       </div>
 
       {/* 表單區 */}
-      <form className="row g-3 ms-md-2 ms-0" onSubmit={(e) => e.preventDefault()}>
-  <div className="col-xl-6 pt-md-0 pt-3">
-    <label htmlFor="projectName" className="form-label text-white fs-5">
-      項目名稱/公司行號
-      <br />
-      <span className="fs-6 text-gray-400">若公司尚未設立，請填入完整的項目名稱</span>
-    </label>
-    <input
-      type="text"
-      className="form-control inputField"
-      id="projectName"
-      name="projectName"
-      value={formData.projectName}
-      onChange={handleChange}
-    />
-  </div>
+      <form className="row g-3 ms-md-2 ms-0" onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-xl-6 pt-md-0 pt-3">
+        <label htmlFor="projectName" className="form-label text-white fs-5">
+          項目名稱/公司行號
+          <br />
+          <span className="fs-6 text-gray-400">若公司尚未設立，請填入完整的項目名稱</span>
+        </label>
+        <input
+                {...register("projectName", { required: "請填寫項目名稱" })}
+                className={`form-control inputField ${errors.projectName ? "is-invalid" : ""}`}
+              />
+              {errors.projectName && <p className="text-danger">{errors.projectName.message}</p>}
+      </div>
 
-  <div className="col-xl-3">
-    <label htmlFor="contactPerson" className="form-label text-white fs-5">聯絡人</label>
-    <input
-      type="text"
-      className="form-control inputField"
-      id="contactPerson"
-      name="contactPerson"
-      value={formData.contactPerson}
-      onChange={handleChange}
-    />
-  </div>
+      <div className="col-xl-3">
+        <label htmlFor="contactPerson" className="form-label text-white fs-5">聯絡人</label>
+        <input
+          {...register("contactPerson", { required: "請填寫聯絡人" })}
+          className={`form-control inputField ${errors.contactPerson ? "is-invalid" : ""}`}
+        />
+        {errors.contactPerson && <p className="text-danger">{errors.contactPerson.message}</p>}
+      </div>
 
-  <div className="col-xl-3">
+      <div className="col-xl-3">
     <label htmlFor="contactPhone" className="form-label text-white fs-5">聯絡電話</label>
     <input
-      type="tel"
-      className="form-control inputField"
-      id="contactPhone"
-      name="contactPhone"
-      value={formData.contactPhone}
-      onChange={handleChange}
-    />
-  </div>
+            {...register("contactPhone", {
+              required: "請填寫聯絡電話",
+              pattern: {
+                value: /^(0[2-8]\d{7}|09\d{8})$/,
+                message: "電話格式錯誤"
+              }
+            })}
+            className={`form-control inputField ${errors.contactPhone ? "is-invalid" : ""}`}
+          />
+          {errors.contactPhone && <p className="text-danger">{errors.contactPhone.message}</p>}
+        </div>
 
   <div className="col-xl-6">
     <label htmlFor="website" className="form-label text-white fs-5">
       公司網址 <span className="fs-6 text-gray-400 ps-1">填寫公司官網網址</span>
     </label>
     <input
-      type="email"
-      className="form-control inputField"
-      id="website"
-      name="website"
-      value={formData.website}
-      onChange={handleChange}
-    />
-  </div>
+            {...register("website", { required: "請填寫公司網址" })}
+            className={`form-control inputField ${errors.website ? "is-invalid" : ""}`}
+          />
+          {errors.website && <p className="text-danger">{errors.website.message}</p>}
+        </div>
 
   <div className="col-xl-6">
     <label htmlFor="address" className="form-label text-white fs-5">
       公司地址 <span className="fs-6 text-gray-400 ps-1">填寫公司主要營運地址</span>
     </label>
     <input
-      type="text"
-      className="form-control inputField"
-      id="address"
-      name="address"
-      value={formData.address}
-      onChange={handleChange}
-    />
-  </div>
+            {...register("address", { required: "請填寫公司地址" })}
+            className={`form-control inputField ${errors.address ? "is-invalid" : ""}`}
+          />
+          {errors.address && <p className="text-danger">{errors.address.message}</p>}
+        </div>
 
-  <div className="col-xl-4">
-    <label htmlFor="businessStatus" className="form-label text-white fs-5">
-      公司成立狀態 <span className="fs-6 text-gray-400 ps-1">如為已設立公司,需再填寫公司統一編號。</span>
-    </label>
-    <select
-  id="businessStatus"
-  name="businessStatus" 
-  className="fs-6 p-1"
-  value={formData.businessStatus}
-  onChange={handleChange}
->
-  <option value="">請選擇狀態</option>
-  <option value="notestablished">未成立</option>
-  <option value="established">已成立</option>
-</select>
-  </div>
+        <div className="col-xl-4">
+  <label htmlFor="businessStatus" className="form-label text-white fs-5">
+    公司成立狀態 <span className="fs-6 text-gray-400 ps-1">如為已設立公司,需再填寫公司統一編號。</span>
+  </label>
+  <select
+    id="businessStatus"
+    {...register("businessStatus", { required: "請選擇公司成立狀態" })} 
+    className={`form-select ${errors.businessStatus ? "is-invalid" : ""}`}
+  >
+    <option value="">請選擇狀態</option>
+    <option value="notestablished">未成立</option>
+    <option value="established">已成立</option>
+  </select>
+  {errors.businessStatus && <p className="text-danger">{errors.businessStatus.message}</p>}
+</div>
 
-  <div className="col-xl-6 pt-xl-6">
-    <label htmlFor="companyNumber" className="form-label text-white fs-5">
-      統一編號 <span className="fs-6 text-gray-400 ps-1">我們將會審核此統編,請正確填寫</span>
-    </label>
-    <input
-      type="number"
-      className="form-control inputField"
-      id="companyNumber"
-      name="companyNumber"
-      value={formData.companyNumber}
-      onChange={handleChange}
-    />
-  </div>
-
-  <div className="col-xl-4">
-    <label htmlFor="industry" className="form-label text-white fs-5">產業分類</label>
-    <select
-  id="industry"
-  name="industry" 
-  className="fs-6 p-1"
-  value={formData.industry}
-  onChange={handleChange}
->
-  <option value="">請選擇產業</option>
-  <option value="wholesale-retail">批發/零售</option>
-  <option value="biotechnology">生物科技</option>
-  <option value="internet">網際網路相關</option>
-  <option value="education">文教相關</option>
-  <option value="media">大眾傳播相關</option>
-  <option value="travel">旅遊/休閒/運動</option>
-  <option value="services">一般服務</option>
-  <option value="electronics">電子資訊/軟體/半導體相關</option>
-  <option value="manufacturing">一般製造</option>
-  <option value="logistics">物流/倉儲</option>
-  <option value="politics">政治宗教及社福相關</option>
-  <option value="finance">金融投顧/保險</option>
-  <option value="consulting">法律/會計/顧問/研發</option>
-  <option value="design">設計相關</option>
-  <option value="realestate">建築營造/不動產相關</option>
-  <option value="healthcare">醫療保健/環境衛生</option>
-  <option value="mining">礦石及土石採取</option>
-  <option value="accommodation">住宿相關</option>
-  <option value="food">餐飲</option>
-</select>
-  </div>
-
-  <div className="col-xl-3">
-    <label htmlFor="scale" className="form-label text-white fs-5">人數規模</label>
-    <select
-      id="scale"
-      name="scale"
-      className="fs-6 p-1"
-      value={formData.scale}
-      onChange={handleChange}
-    >
-      <option value="">請選擇規模</option>
-      <option value="one">10 人以下</option>
-      <option value="two">11-50 人</option>
-      <option value="three">51-100 人</option>
-      <option value="four">101-200 人</option>
-      <option value="five">201-500 人</option>
-      <option value="six">501-1000 人</option>
-      <option value="seven">1001-5000 人</option>
-      <option value="eight">5001-10,000 人</option>
-      <option value="nine">10,001 人以上</option>
-    </select>
-  </div>
-
-  <div className="col-xl-2">
-    <label htmlFor="capital" className="form-label text-white fs-5">資本額</label>
-    <input
-      type="text"
-      className="form-control inputField"
-      id="capital"
-      name="capital"
-      value={formData.capital}
-      onChange={handleChange}
-    />
-  </div>
-
-  <div className="col-xl-2">
-    <label htmlFor="fundraising" className="form-label text-white fs-5">募資金額</label>
-    <input
-      type="text"
-      className="form-control inputField"
-      id="fundraising"
-      name="fundraising"
-      value={formData.fundraising}
-      onChange={handleChange}
-    />
-  </div>
+<div className="col-xl-6 pt-xl-6">
+  <label htmlFor="companyNumber" className="form-label text-white fs-5">
+    統一編號 <span className="fs-6 text-gray-400 ps-1">我們將會審核此統編,請正確填寫</span>
+  </label>
+  <input
+    type="text"
+    {...register("companyNumber", {
+      validate: (value) => {
+        if (watch("businessStatus") === "established" && (!value || value.length !== 8)) {
+          return "公司成立時，統一編號需為 8 位數字";
+        }
+        return true;
+      }
+    })}
+    className={`form-control inputField ${errors.companyNumber ? "is-invalid" : ""}`}
+    id="companyNumber"
+  />
+  {errors.companyNumber && <p className="text-danger">{errors.companyNumber.message}</p>}
+</div>
 
 
+<div className="col-xl-4">
+  <label htmlFor="industry" className="form-label text-white fs-5">產業分類</label>
+  <select
+    id="industry"
+    {...register("industry", { required: "請選擇產業分類" })} // 綁定 react-hook-form
+    className={`form-select ${errors.industry ? "is-invalid" : ""}`}
+  >
+    <option value="">請選擇產業</option>
+    <option value="wholesale-retail">批發/零售</option>
+    <option value="biotechnology">生物科技</option>
+    <option value="internet">網際網路相關</option>
+    <option value="education">文教相關</option>
+    <option value="media">大眾傳播相關</option>
+    <option value="travel">旅遊/休閒/運動</option>
+    <option value="services">一般服務</option>
+    <option value="electronics">電子資訊/軟體/半導體相關</option>
+    <option value="manufacturing">一般製造</option>
+    <option value="logistics">物流/倉儲</option>
+    <option value="politics">政治宗教及社福相關</option>
+    <option value="finance">金融投顧/保險</option>
+    <option value="consulting">法律/會計/顧問/研發</option>
+    <option value="design">設計相關</option>
+    <option value="realestate">建築營造/不動產相關</option>
+    <option value="healthcare">醫療保健/環境衛生</option>
+    <option value="mining">礦石及土石採取</option>
+    <option value="accommodation">住宿相關</option>
+    <option value="food">餐飲</option>
+  </select>
+  {errors.industry && <p className="text-danger">{errors.industry.message}</p>}
+</div>
 
-        {/* 文字框區 */}
-        {["introduction", "team", "advantages", "disadvantages", "opportunities", "threats", "marketSize", "product", "competitiveProducts", "businessModel", "founderInfo"].map(
-          (key) => (
-            <div key={key} className="col-md-8">
-              <label htmlFor={key} className="form-label text-white fs-5">
-                {key === "introduction"
-                  ? "項目簡介"
-                  : key === "team"
-                  ? "團隊說明"
-                  : key === "advantages"
-                  ? "優勢"
-                  : key === "disadvantages"
-                  ? "劣勢"
-                  : key === "opportunities"
-                  ? "機會"
-                  : key === "threats"
-                  ? "威脅"
-                  : key === "marketSize"
-                  ? "市場規模"
-                  : key === "product"
-                  ? "產品"
-                  : key === "competitiveProducts"
-                  ? "競爭產品"
-                  : key === "businessModel"
-                  ? "商業模式"
-                  : "創業者資訊"}
-              </label>
-              <textarea
-                id={key}
-                rows="5"
-                className="w-100 bg-transparent inputField text-white"
-                name={key}
-                value={formData[key]}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-          )
-        )}
-      </form>
+
+<div className="col-xl-3">
+  <label htmlFor="scale" className="form-label text-white fs-5">人數規模</label>
+  <select
+    id="scale"
+    {...register("scale", { required: "請選擇人數規模" })} // 綁定 react-hook-form
+    className={`form-select ${errors.scale ? "is-invalid" : ""}`}
+  >
+    <option value="">請選擇規模</option>
+    <option value="one">10 人以下</option>
+    <option value="two">11-50 人</option>
+    <option value="three">51-100 人</option>
+    <option value="four">101-200 人</option>
+    <option value="five">201-500 人</option>
+    <option value="six">501-1000 人</option>
+    <option value="seven">1001-5000 人</option>
+    <option value="eight">5001-10,000 人</option>
+    <option value="nine">10,001 人以上</option>
+  </select>
+  {errors.scale && <p className="text-danger">{errors.scale.message}</p>}
+</div>
+
+
+<div className="col-xl-2">
+  <label htmlFor="capital" className="form-label text-white fs-5">資本額</label>
+  <input
+    type="text"
+    {...register("capital", {
+      required: "請填寫資本額",
+      pattern: {
+        value: /^[0-9]+$/, 
+        message: "資本額只能輸入數字"
+      },
+      min: {
+        value: 1,
+        message: "資本額不能為 0 或負數"
+      }
+    })}
+    className={`form-control inputField ${errors.capital ? "is-invalid" : ""}`}
+    id="capital"
+  />
+  {errors.capital && <p className="text-danger">{errors.capital.message}</p>}
+</div>
+
+<div className="col-xl-2">
+  <label htmlFor="fundraising" className="form-label text-white fs-5">募資金額</label>
+  <input
+    type="text"
+    {...register("fundraising", {
+      required: "請填寫募資金額",
+      pattern: {
+        value: /^[0-9]+$/, 
+        message: "募資金額只能輸入數字"
+      },
+      min: {
+        value: 1,
+        message: "募資金額不能為 0 或負數"
+      }
+    })}
+    className={`form-control inputField ${errors.fundraising ? "is-invalid" : ""}`}
+    id="fundraising"
+  />
+  {errors.fundraising && <p className="text-danger">{errors.fundraising.message}</p>}
+</div>
+
+
+
+
+       {/* 文字框區 */}
+{["introduction", "team", "strengths", "weaknesses", "opportunities", "threats", "marketSize", "product", "projectCompete", "businessModel", "founderInfo"].map(
+  (key) => (
+    <div key={key} className="col-md-8">
+      <label htmlFor={key} className="form-label text-white fs-5">
+        {key === "introduction"
+          ? "項目簡介"
+          : key === "team"
+          ? "團隊說明"
+          : key === "strengths"
+          ? "優勢"
+          : key === "weaknesses"
+          ? "劣勢"
+          : key === "opportunities"
+          ? "機會"
+          : key === "threats"
+          ? "威脅"
+          : key === "marketSize"
+          ? "市場規模"
+          : key === "product"
+          ? "產品"
+          : key === "projectCompete"
+          ? "競爭產品"
+          : key === "businessModel"
+          ? "商業模式"
+          : "創業者資訊"}
+      </label>
+      <textarea
+        id={key}
+        {...register(key, { required: "此欄位為必填" })} // 綁定 react-hook-form
+        rows="5"
+        className={`w-100 bg-transparent inputField text-white ${errors[key] ? "is-invalid" : ""}`}
+      ></textarea>
+      {errors[key] && <p className="text-danger">{errors[key].message}</p>}
+    </div>
+  )
+)}
+
 
       {/* 按鈕區 */}
       <div className="d-flex justify-content-around pt-8">
-        <button type="button" className="btn btn-lg btn-outline-danger fw-bold" onClick={handleClear}>
-          <i className="bi bi-x-circle"></i> 清除
-        </button>
-        <button className="btn btn-lg btn-outline-primary-600 fw-bold" data-bs-toggle="modal" data-bs-target="#newprojects-modal">
-          <i className="bi bi-save"></i> 儲存變更
-        </button>
-      </div>
-
-      {/* Modal - 儲存成功 */}
-      <div className="modal fade" id="newprojects-modal" tabIndex="-1" aria-hidden="true">
-        <div className="modal-dialog modal-dialog-centered">
-          <div className="modal-content bg-gray-1000">
-            <div className="modal-body text-center text-primary-600 fs-3 fw-bold">儲存成功</div>
-            <button type="button" className="btn btn-lg btn-primary-600 fw-bolder px-9" data-bs-dismiss="modal">
-              確認
-            </button>
-          </div>
+          <button type="button" className="btn btn-lg btn-outline-danger fw-bold" onClick={handleClear}>
+            <i className="bi bi-x-circle"></i> 清除
+          </button>
+          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold">
+            <i className="bi bi-save"></i> 儲存變更
+          </button>
         </div>
-      </div>
+      </form>
     </div>
   );
 };
+
 
 export default MemberNewProjects;

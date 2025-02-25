@@ -14,30 +14,30 @@ import ProjectTeam from "./ProjectTeam";
 
 
 // 模擬專案數據
-const projectData = [
-  {
-    id: "1",
-    name: "林媽媽中式餐館",
-    status: "未設立",
-    industry: "餐飲",
-    size: "10人以下",
-    capital: "30,000,000",
-    funding: "50,000,000",
-    startDate: "2024/7/25",
-    image: "/assets/images/mamacook.png",
-  },
-  {
-    id: "2",
-    name: "創新科技有限公司",
-    status: "已設立",
-    industry: "科技",
-    size: "50人以上",
-    capital: "100,000,000",
-    funding: "200,000,000",
-    startDate: "2023/5/12",
-    image: "/assets/images/techcompany.png",
-  },
-];
+// const projectData = [
+//   {
+//     id: "1",
+//     name: "林媽媽中式餐館",
+//     status: "未設立",
+//     industry: "餐飲",
+//     size: "10人以下",
+//     capital: "30,000,000",
+//     funding: "50,000,000",
+//     startDate: "2024/7/25",
+//     image: "/assets/images/mamacook.png",
+//   },
+//   {
+//     id: "2",
+//     name: "創新科技有限公司",
+//     status: "已設立",
+//     industry: "科技",
+//     size: "50人以上",
+//     capital: "100,000,000",
+//     funding: "200,000,000",
+//     startDate: "2023/5/12",
+//     image: "/assets/images/techcompany.png",
+//   },
+// ];
 
 const ProjectInformation = () => {
   const { id } = useParams(); // 獲取 URL 參數
@@ -45,12 +45,12 @@ const ProjectInformation = () => {
   const [activeSection, setActiveSection] = useState("introduction");
 
   useEffect(() => {
-    // 查找對應的專案
-    const foundProject = projectData.find((p) => p.id === id);
-    setProject(foundProject);
+    fetch(`http://localhost:3000/projects/${id}`) // 向 JSON Server 請求資料
+      .then((response) => response.json())
+      .then((data) => setProject(data))
+      .catch((error) => console.error("Error fetching project data:", error));
   }, [id]);
 
-  // 若未找到專案，顯示錯誤訊息
   if (!project) {
     return <h2 className="text-center text-white">找不到該專案</h2>;
   }
