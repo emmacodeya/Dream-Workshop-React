@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import InvestorSidebar from "../../components/InvestorSidebar";
 import InvestorAutobiography from "./InvestorAutobiography";
@@ -8,36 +8,39 @@ import InvestorPhoto from "./InvestorPhoto";
 import InvestorEvaluate from "./InvestorEvaluate";
 
 // **模擬投資人資料**
-const investorsData = [
-  {
-    id: "1",
-    name: "謝阿金",
-    industry: "餐飲，一般服務，批發／零售",
-    capital: "40,000,000",
-    fundingStart: "2024/7/25",
-    image: "/assets/images/海綿寶寶.png",
-  },
-  {
-    id: "2",
-    name: "王大華",
-    industry: "科技、軟體開發",
-    capital: "100,000,000",
-    fundingStart: "2024/8/15",
-    image: "/assets/images/海綿寶寶.png",
-  },
-];
+// const investorsData = [
+//   {
+//     id: "1",
+//     name: "謝阿金",
+//     industry: "餐飲，一般服務，批發／零售",
+//     capital: "40,000,000",
+//     fundingStart: "2024/7/25",
+//     image: "/assets/images/海綿寶寶.png",
+//   },
+//   {
+//     id: "2",
+//     name: "王大華",
+//     industry: "科技、軟體開發",
+//     capital: "100,000,000",
+//     fundingStart: "2024/8/15",
+//     image: "/assets/images/海綿寶寶.png",
+//   },
+// ];
 
 const InvestorInformation = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
+  const [investor, setInvestor] = useState(null);
   const [activeSection, setActiveSection] = useState("autobiography");
 
-  const investor = investorsData.find((inv) => inv.id === id);
+  useEffect(() => {
+    fetch(`http://localhost:3000/investors/${id}`) // 向 JSON Server 請求投資人資料
+      .then((response) => response.json())
+      .then((data) => setInvestor(data))
+      .catch((error) => console.error("Error fetching investor data:", error));
+  }, [id]);
+
   if (!investor) {
-    return (
-      <div className="text-center text-white">
-        <h2>找不到該投資人</h2>
-      </div>
-    );
+    return <h2 className="text-center text-white">找不到該投資人</h2>;
   }
 
   return (

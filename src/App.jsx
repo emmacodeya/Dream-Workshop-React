@@ -13,6 +13,7 @@ import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Activity from "./pages/Activity";
 import ActivityCasper from "./pages/ActivityCasper";
+import ArticleContent from "./pages/ArticleContent";
 
 
 
@@ -32,11 +33,13 @@ function App() {
         <Route path="/investor/:id" element={<InvestorInformation />} />
         <Route path="/project/:id" element={<ProjectInformation />} />
         <Route path="/discuss" element={<Discuss />} />
+        <Route path="/article/:id" element={<ArticleContent />} />
         <Route path="/post-article" element={<PostArticle />} />
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/activity" element={<Activity />} />
         <Route path="/activity-casper" element={<ActivityCasper />} />
+        <Route path="/article-content" element={<ArticleContent />} />
       </Routes>
       <Footer />
     </Router>
