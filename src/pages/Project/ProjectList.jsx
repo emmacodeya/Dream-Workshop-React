@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -39,76 +39,73 @@ const sortOptions = [
   ];
 
   //Swiper輪播項目
-const projects = [
-  {
-    id: 1,
-    name: "綠能創新股份有限公司",
-    category: "環保科技｜智慧設備",
-    description: "專注於開發可持續能源解決方案,致力於減少碳足跡並推動清潔能源的使用",
-    funding: "NT$ 40,000,000",
-    logo: "/assets/images/logo/green-logo.png",
-    liked: true,
-  },
-  {
-    id: 2,
-    name: "林媽媽中式餐館",
-    category: "餐飲",
-    description: "我們中式餐館注重精緻的中國美食，結合中華傳統與創新，提供優質的用餐體驗",
-    funding: "NT$ 800,000",
-    logo: "/assets/images/logo/higger-logo.png",
-    liked: false,
-  },
-  {
-    id: 3,
-    name: "迅捷物流股份有限公司",
-    category: "物流運輸",
-    description: "提供高效物流與供應鏈管理服務，確保貨物快速安全抵達目的地",
-    funding: "NT$ 20,000,000",
-    logo: "/assets/images/logo/checkmate-logo.png",
-    liked: false,
-  },
-  {
-    id: 4,
-    name: "尚品生活股份有限公司",
-    category: "電子商務",
-    description: "提供消費者多樣化的高品質產品，打造更加便捷愉快的購物體驗",
-    funding: "NT$ 1,500,000",
-    logo: "/assets/images/logo/legally-logo.png",
-    liked: false,
-  },
-  {
-    id: 5,
-    name: "林媽媽中式餐館",
-    category: "餐飲",
-    description: "我們中式餐館注重精緻的中國美食，結合中華傳統與創新，提供優質的用餐體驗",
-    funding: "NT$ 800,000",
-    logo: "/assets/images/logo/higger-logo.png",
-    liked: false,
-  }
+// const projects = [
+//   {
+//     id: 1,
+//     name: "綠能創新股份有限公司",
+//     category: "環保科技｜智慧設備",
+//     description: "專注於開發可持續能源解決方案,致力於減少碳足跡並推動清潔能源的使用",
+//     funding: "NT$ 40,000,000",
+//     logo: "/assets/images/logo/green-logo.png",
+//     liked: true,
+//   },
+//   {
+//     id: 2,
+//     name: "林媽媽中式餐館",
+//     category: "餐飲",
+//     description: "我們中式餐館注重精緻的中國美食，結合中華傳統與創新，提供優質的用餐體驗",
+//     funding: "NT$ 800,000",
+//     logo: "/assets/images/logo/higger-logo.png",
+//     liked: false,
+//   },
+//   {
+//     id: 3,
+//     name: "迅捷物流股份有限公司",
+//     category: "物流運輸",
+//     description: "提供高效物流與供應鏈管理服務，確保貨物快速安全抵達目的地",
+//     funding: "NT$ 20,000,000",
+//     logo: "/assets/images/logo/checkmate-logo.png",
+//     liked: false,
+//   },
+//   {
+//     id: 4,
+//     name: "尚品生活股份有限公司",
+//     category: "電子商務",
+//     description: "提供消費者多樣化的高品質產品，打造更加便捷愉快的購物體驗",
+//     funding: "NT$ 1,500,000",
+//     logo: "/assets/images/logo/legally-logo.png",
+//     liked: false,
+//   },
+//   {
+//     id: 5,
+//     name: "林媽媽中式餐館",
+//     category: "餐飲",
+//     description: "我們中式餐館注重精緻的中國美食，結合中華傳統與創新，提供優質的用餐體驗",
+//     funding: "NT$ 800,000",
+//     logo: "/assets/images/logo/higger-logo.png",
+//     liked: false,
+//   }
 
-];
-//預設篩選是餐飲 / 一般服務
+// ];
+
+
 const ProjectList = () => {
-  const [selectedIndustry, setSelectedIndustry] = useState("餐飲 / 一般服務");
+  const [selectedIndustry, setSelectedIndustry] = useState("不限產業");
   const [sortOrder, setSortOrder] = useState("default");
+  const [projects, setProjects] = useState([]); // 用於 Swiper 顯示的熱門專案
+  const [filteredProjects, setFilteredProjects] = useState([]); // 用於篩選後的專案列表
 
+  useEffect(() => {
+    // 向 JSON Server 取得專案資料
+    fetch("http://localhost:3000/projects")
+      .then((response) => response.json())
+      .then((data) => {
+        setProjects(data); // 設置 Swiper 顯示的專案
+        setFilteredProjects(data); // 預設顯示所有專案
+      })
+      .catch((error) => console.error("Error fetching projects:", error));
+  }, []);
 
-//預設篩選後的列表
-
-const [filteredProjects, setFilteredProjects] = useState([
-    {
-      id: 1,
-      name: "林媽媽中式餐館",
-      industry: "餐飲",
-      companyStatus: "未設立",
-      scale: "10人以下",
-      capital: "3,000,000",
-      funding: "50,000,000",
-      image: "/assets/images/mamacook.png",
-      liked: false, // 預設未收藏
-    }
-  ]);
-  
   // 切換收藏狀態
   const toggleLike = (id) => {
     setFilteredProjects((prevProjects) =>
@@ -135,7 +132,7 @@ const [filteredProjects, setFilteredProjects] = useState([
                     <a href="#">
                     <img className="favorite" src={project.liked ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"} alt="heart" />
                     </a>
-                    <img className="company-logo mb-3" src={project.logo} alt={project.name} />
+                    <img className="company-logo mb-3 w-50" src={project.image} alt={project.name} />
                     <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
                     <h5 className="fs-5 me-2 text-gray-200">{project.category}</h5>
                     <p>{project.description}</p>
@@ -216,7 +213,7 @@ const [filteredProjects, setFilteredProjects] = useState([
                 <div className="d-flex pb-2">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">公司成立狀態</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.companyStatus}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{project.status}</li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">產業分類</li>
@@ -224,7 +221,7 @@ const [filteredProjects, setFilteredProjects] = useState([
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">規模</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.scale}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{project.size}</li>
                     </ul>
                 </div>
                 <div className="d-flex">
