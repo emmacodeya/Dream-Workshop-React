@@ -1,37 +1,66 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css"; 
+import "react-quill/dist/quill.snow.css";
 
 const PostArticle = () => {
-  // 表單狀態
   const [title, setTitle] = useState("");
-  const [content, setContent] = useState(""); 
+  const [content, setContent] = useState("");
   const [agree, setAgree] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
-  // 處理標題輸入變更
-  const handleTitleChange = (e) => setTitle(e.target.value);
+  // 取得會員帳號與頭像
+  const useraccount = localStorage.getItem("useraccount") || "";
+  const authorAvatar = localStorage.getItem("avatar") || "";
 
-  // 處理勾選討論區規則
-  const handleAgreeChange = () => setAgree(!agree);
+  // 檢查登入狀態
+  useEffect(() => {
+    if (!useraccount) {
+      alert("請先登入才能發表文章！");
+      navigate("/login"); // 未來導向登入頁面
+    }
+  }, [useraccount, navigate]);
 
-  // 發表文章按鈕
-  const handleOpenModal = () => {
+  const handlePostArticle = async () => {
+    if (!title.trim() || !content.trim()) {
+      alert("標題與內容不得為空！");
+      return;
+    }
+
     if (!agree) {
       alert("請先同意討論區規則與條款");
       return;
     }
-    setShowModal(true);
+
+    const currentTime = new Date().toISOString();
+
+    try {
+      const response = await axios.post("http://localhost:3000/articles", {
+        title,
+        content,
+        author: useraccount,
+        authorAvatar,
+        comments: [], // 初始化為空陣列
+        createdAt: currentTime,
+        updatedAt: currentTime
+      });
+
+      if (response.status === 201) {
+        setShowModal(true);
+      } else {
+        alert("發表失敗，請稍後再試！");
+      }
+    } catch (error) {
+      console.error("文章發表失敗:", error);
+      alert("發生錯誤，請稍後再試！");
+    }
   };
 
-  // 關閉 Modal
   const handleCloseModal = () => {
     setShowModal(false);
-  };
-
-  // 取消按鈕
-  const handleCancel = () => {
     setTitle("");
     setContent("");
     setAgree(false);
@@ -41,7 +70,6 @@ const PostArticle = () => {
     <div className="container mt-5">
       <h2 className="text-center py-8 fw-bolder text-primary-600">發表文章</h2>
 
-      {/* 標題輸入框 */}
       <div className="row my-8">
         <label htmlFor="articleTitle" className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">
           標題
@@ -52,52 +80,51 @@ const PostArticle = () => {
             className="form-control form-control-lg bg-gray-800 bg-opacity-50 text-white"
             id="articleTitle"
             value={title}
-            onChange={handleTitleChange}
+            onChange={(e) => setTitle(e.target.value)}
           />
         </div>
       </div>
 
-      {/* 內容輸入框 (ReactQuill) */}
       <div className="row my-8">
-        <label className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">
-          內容
-        </label>
+        <label className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">內容</label>
         <div className="col-sm-10">
-          <ReactQuill theme="snow" value={content} onChange={setContent} />
+          <ReactQuill 
+            theme="snow" 
+            value={content} 
+            onChange={setContent}
+            style={{ height: "500px" }} // 設定更高的輸入框
+          />
         </div>
       </div>
 
-      {/* 討論區規則 */}
       <div className="d-flex justify-content-center">
-        <div className="form-check">
+        <div className="form-check pt-5">
           <input
             className="form-check-input bg-gray-1000"
             type="checkbox"
             id="flexCheckDefault"
             checked={agree}
-            onChange={handleAgreeChange}
+            onChange={() => setAgree(!agree)}
           />
-          <label className="form-check-label text-white" htmlFor="flexCheckDefault">
+          <label className="form-check-label text-white " htmlFor="flexCheckDefault">
             我已閱讀過並同意遵守討論區規則、本站服務條款與個人資料保護法。
           </label>
         </div>
       </div>
 
-      {/* 按鈕區 */}
       <div className="d-flex justify-content-center mt-8">
         <div className="me-5">
-          <button className="btn btn-lg btn-outline-primary-600" onClick={handleOpenModal}>
+          <button className="btn btn-lg btn-outline-primary-600" onClick={handlePostArticle}>
             <i className="bi bi-save"></i> 發表文章
           </button>
         </div>
         <div>
-          <button type="button" className="btn btn-lg btn-outline-danger" onClick={handleCancel}>
+          <button type="button" className="btn btn-lg btn-outline-danger" onClick={handleCloseModal}>
             <i className="bi bi-x-circle"></i> 取消
           </button>
         </div>
       </div>
 
-      {/* Modal - 發表文章成功 */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton className="border-0 bg-gray-1000"></Modal.Header>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">

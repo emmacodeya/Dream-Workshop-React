@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
 
 const MemberNewInvestor = ({ useraccount }) => {
+  const [industryOptions, setIndustryOptions] = useState([]);
   const [investor, setInvestor] = useState(null);
   const [images, setImages] = useState({
     avatar: "",
@@ -10,7 +11,7 @@ const MemberNewInvestor = ({ useraccount }) => {
     referencePhoto1: "",
     referencePhoto2: "",
   });
-  const [industryOptions, setIndustryOptions] = useState([]);
+  
 
   const {
     register,
