@@ -26,6 +26,8 @@ import "./MemberHome.scss";
 
 const MemberHome = () => {
   const location = useLocation();
+  const useraccount = localStorage.getItem("useraccount") || "";
+
 
   const pageTitles = {
     "/member": "個人資料",
@@ -88,8 +90,8 @@ const MemberHome = () => {
               <Route path="points" element={<MemberPoints />} />
               <Route path="settings" element={<MemberSettings />} />
               <Route path="new-projects" element={<MemberNewProjects />} />
-              <Route path="created-projects" element={<MemberCreatedProjects />} />
-              <Route path="new-investor" element={<MemberNewInvestor />} />
+              <Route path="created-projects" element={<MemberCreatedProjects useraccount={useraccount} />} />
+              <Route path="new-investor" element={<MemberNewInvestor useraccount={useraccount} />} />
               <Route path="evaluate-projects" element={<MemberEvaluateProjects />} />
               <Route path="evaluate-investor" element={<MemberEvaluateInvestor />} />
               <Route path="collect-projects" element={<MemberCollectProjects />} />

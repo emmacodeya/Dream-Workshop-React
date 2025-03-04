@@ -1,52 +1,86 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
+
+const API_URL = "http://localhost:3000";
 
 const MemberPostList = () => {
-  // 文章列表
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      title: "是否該放棄年薪7百萬的工作轉去創業?",
-      date: "2023/7/2 22:04",
-      link: "article-content.html",
-      editLink: "editarticle.html",
-    },
-    {
-      id: 2,
-      title: "創業需要具備哪些核心能力？",
-      date: "2023/8/10 15:30",
-      link: "article-content.html",
-      editLink: "editarticle.html",
-    },
-    {
-      id: 3,
-      title: "如何找到適合的創業夥伴？",
-      date: "2023/9/1 10:00",
-      link: "article-content.html",
-      editLink: "editarticle.html",
-    },
-  ]);
-
-  // 控制 Modal 開關 & 選擇刪除的文章
-  const [showModal, setShowModal] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [editPost, setEditPost] = useState(null);
   const [deleteId, setDeleteId] = useState(null);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const useraccount = localStorage.getItem("useraccount") || "";
 
-  // 開啟 Modal
-  const handleOpenModal = (id) => {
-    setDeleteId(id);
-    setShowModal(true);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/articles`);
+        const userPosts = res.data.filter(article => article.author === useraccount);
+        setPosts(userPosts);
+      } catch (error) {
+        console.error("無法獲取文章列表:", error);
+      }
+    };
+
+    fetchArticles();
+  }, [useraccount]);
+
+  const handleOpenEditModal = async (postId) => {
+    try {
+      const res = await axios.get(`${API_URL}/articles/${postId}`);
+      setEditPost(res.data);
+      setTitle(res.data.title);
+      setContent(res.data.content);
+      setShowEditModal(true);
+    } catch (error) {
+      console.error("無法獲取文章內容:", error);
+    }
   };
 
-  // 關閉 Modal
-  const handleCloseModal = () => {
-    setShowModal(false);
+  const handleCloseEditModal = () => {
+    setShowEditModal(false);
+    setEditPost(null);
+  };
+
+  const handleSaveEdit = async () => {
+    if (!editPost) return;
+
+    try {
+      await axios.patch(`${API_URL}/articles/${editPost.id}`, {
+        title,
+        content,
+        updatedAt: new Date().toISOString(),
+      });
+      setPosts(posts.map(post => post.id === editPost.id ? { ...post, title, content } : post));
+      setShowEditModal(false);
+    } catch (error) {
+      console.error("更新文章失敗:", error);
+    }
+  };
+
+  const handleOpenDeleteModal = (postId) => {
+    setDeleteId(postId);
+    setShowDeleteModal(true);
+  };
+
+  const handleCloseDeleteModal = () => {
+    setShowDeleteModal(false);
     setDeleteId(null);
   };
 
-  // 確認刪除文章
-  const handleDelete = () => {
-    setPosts(posts.filter((post) => post.id !== deleteId));
-    setShowModal(false);
+  const handleDelete = async () => {
+    try {
+      await axios.delete(`${API_URL}/articles/${deleteId}`);
+      setPosts(posts.filter(post => post.id !== deleteId));
+      setShowDeleteModal(false);
+    } catch (error) {
+      console.error("刪除失敗:", error);
+    }
   };
 
   return (
@@ -62,19 +96,19 @@ const MemberPostList = () => {
           </tr>
         </thead>
         <tbody className="text-center table table-sm table-gray-800">
-          {posts.map((post) => (
+        {posts.map((post) => (
             <tr key={post.id} className="tbody-text-hover align-middle">
               <th scope="row">
-                <a href={post.link}>{post.title}</a>
+                <a href={`/article/${post.id}`}>{post.title}</a>
               </th>
-              <td>{post.date}</td>
+              <td>{new Date(post.createdAt).toLocaleString()}</td>
               <td>
-                <a href={post.editLink}>
+                <a href="#" onClick={() => handleOpenEditModal(post.id)}>
                   <i className="bi bi-pencil-square fs-3 text-primary-600 pe-2"></i>
                 </a>
               </td>
               <td>
-                <a href="#" onClick={() => handleOpenModal(post.id)}>
+                <a href="#" onClick={() => handleOpenDeleteModal(post.id)}>
                   <i className="bi bi-trash3 fs-3 text-danger"></i>
                 </a>
               </td>
@@ -83,14 +117,36 @@ const MemberPostList = () => {
         </tbody>
       </table>
 
+      {/* 編輯文章 Modal */}
+      <Modal show={showEditModal} onHide={handleCloseEditModal} centered size="lg">
+        <Modal.Header closeButton className="border-0 bg-gray-1000">
+          <Modal.Title className="text-primary-600">編輯文章</Modal.Title>
+        </Modal.Header>
+        <Modal.Body className="bg-gray-1000 text-white">
+          <label className="form-label">標題</label>
+          <input
+            type="text"
+            className="form-control bg-gray-800 text-white"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+          <label className="form-label mt-3">內容</label>
+          <ReactQuill theme="snow" value={content} onChange={setContent}  />
+        </Modal.Body>
+        <Modal.Footer className="border-0">
+          <Button variant="secondary" onClick={handleCloseEditModal}>取消</Button>
+          <Button variant="primary" onClick={handleSaveEdit}>儲存變更</Button>
+        </Modal.Footer>
+      </Modal>
+
       {/* 刪除確認 Modal */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
         <Modal.Header closeButton className="border-0 bg-gray-1000"></Modal.Header>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
           是否確認刪除?
         </Modal.Body>
         <Modal.Footer className="border-0 text-center">
-          <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseModal}>
+          <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseDeleteModal}>
             取消
           </Button>
           <Button variant="primary" className="btn-lg btn-primary-600 fw-bolder ms-9 px-9" onClick={handleDelete}>

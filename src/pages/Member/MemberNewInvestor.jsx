@@ -1,24 +1,57 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import PropTypes from "prop-types";
 
-const MemberNewInvestor = () => {
-  // 圖片上傳預覽
+const MemberNewInvestor = ({ useraccount }) => {
+  const [industryOptions, setIndustryOptions] = useState([]);
+  const [investor, setInvestor] = useState(null);
   const [images, setImages] = useState({
-    avatar: "/assets/images/頭像1.png",
-    financialProof: "/assets/images/頭像1.png",
-    referencePhoto1: "/assets/images/頭像1.png",
-    referencePhoto2: "/assets/images/頭像1.png",
+    avatar: "",
+    financialProof: "",
+    referencePhoto1: "",
+    referencePhoto2: "",
   });
+  
 
-  // react-hook-form
   const {
     register,
     handleSubmit,
+    setValue,
+    getValues,
+    watch,
     formState: { errors },
     reset
   } = useForm({ mode: "onChange" });
 
-  // 處理圖片上傳與預覽
+  useEffect(() => {
+    if (!useraccount) return;
+
+    fetch(`http://localhost:3000/investors?useraccount=${useraccount}`)
+      .then(res => res.json())
+      .then(data => {
+        if (data.length > 0) {
+          setInvestor(data[0]);
+          Object.keys(data[0]).forEach(key => setValue(key, data[0][key]));
+          setImages({
+            avatar: data[0].avatar || "",
+            financialProof: data[0].financialProof || "",
+            referencePhoto1: data[0].referencePhotos?.[0] || "",
+            referencePhoto2: data[0].referencePhotos?.[1] || "",
+          });
+          const industryArray = Array.isArray(data[0].industry) ? data[0].industry : data[0].industry ? [data[0].industry] : [];
+          setValue("industry", industryArray);
+        }
+      })
+      .catch(error => console.error("錯誤:", error));
+  }, [useraccount, setValue]);
+
+  useEffect(() => {
+    fetch("http://localhost:3000/industryOptions")
+      .then(res => res.json())
+      .then(data => setIndustryOptions(data))
+      .catch(error => console.error("獲取產業選項錯誤:", error));
+  }, []);
+
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
     if (file) {
@@ -30,53 +63,60 @@ const MemberNewInvestor = () => {
     }
   };
 
-  // 清除表單
+  const industryValue = watch("industry") || [];
+
   const handleClear = () => {
     reset();
     setImages({
-      avatar: "/assets/images/頭像1.png",
-      financialProof: "/assets/images/頭像1.png",
-      referencePhoto1: "/assets/images/頭像1.png",
-      referencePhoto2: "/assets/images/頭像1.png",
+      avatar: "",
+      financialProof: "",
+      referencePhoto1: "",
+      referencePhoto2: "",
     });
   };
 
-  // 提交表單
   const onSubmit = async (data) => {
+    const method = investor?.id ? "PUT" : "POST";
+    const url = investor?.id ? `http://localhost:3000/investors/${investor.id}` : "http://localhost:3000/investors";
+
+    const selectedIndustries = getValues("industry") || [];
+    const payload = {
+      useraccount: investor ? investor.useraccount : useraccount,  
+      name: data.name,
+      mobile: data.mobile,
+      email: data.email,
+      capital: data.capital,
+      industry: Array.isArray(selectedIndustries) ? selectedIndustries : [],
+      introduction: data.introduction,
+      experience: data.experience,
+      resources: data.resources,
+      avatar: images.avatar,
+      financialProof: images.financialProof,
+      referencePhotos: [images.referencePhoto1, images.referencePhoto2]
+    };
+
     try {
-      const response = await fetch("http://localhost:3000/investors", {
-        method: "POST",
+      const response = await fetch(url, {
+        method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          phone: data.phone,
-          email: data.email,
-          capital: data.capital,
-          industry: data.industry,
-          introduction: data.introduction,
-          experience: data.experience,
-          resources: data.resources,
-          avatar: images.avatar,
-          financialProof: images.financialProof,
-          referencePhotos: [images.referencePhoto1, images.referencePhoto2]
-        })
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
-        alert("投資人資料新增成功！");
-        handleClear();
+        alert(investor ? "投資人資料更新成功！" : "投資人資料新增成功！");
+        setInvestor(payload);
       } else {
-        alert("新增失敗，請再試一次！");
+        alert("操作失敗，請再試一次！");
       }
     } catch (error) {
       console.error("錯誤:", error);
       alert("發生錯誤，請稍後再試！");
     }
   };
-
+  
   return (
     <div className="container mt-5">
-      <h3 className="text-gray-400 py-8 fw-bolder">基本資料</h3>
+      <h3 className="text-gray-400 py-8 fw-bolder">{investor ? "修改投資人資料" : "新增投資人"}</h3>
 
       <form className="row g-3 ms-md-2" onSubmit={handleSubmit(onSubmit)}>
         {/* 頭像上傳 */}
@@ -89,7 +129,7 @@ const MemberNewInvestor = () => {
                 height: "250px",
                 border: "2px solid #ccc",
                 cursor: "pointer",
-                backgroundImage: `url(${images.avatar})`,
+                backgroundImage: images.avatar ? `url(${images.avatar})` : "none",
                 backgroundSize: "contain",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
@@ -102,9 +142,9 @@ const MemberNewInvestor = () => {
         </div>
 
         {/* 基本資料表單 */}
-        {["name", "phone", "email", "capital"].map((field, index) => (
+        {["name", "mobile", "email", "capital"].map((field, index) => (
           <div key={index} className="col-md-6">
-            <label htmlFor={field} className="form-label text-white fs-5">{field === "name" ? "姓名" : field === "phone" ? "聯絡電話" : field === "email" ? "電子郵箱" : "資本額"}</label>
+            <label htmlFor={field} className="form-label text-white fs-5">{field === "name" ? "姓名" : field === "mobile" ? "聯絡電話" : field === "email" ? "電子郵箱" : "資本額"}</label>
             <input {...register(field, { required: "此欄位為必填" })} className={`form-control text-center inputField ${errors[field] ? "is-invalid" : ""}`} />
             {errors[field] && <p className="text-danger">{errors[field].message}</p>}
           </div>
@@ -113,28 +153,29 @@ const MemberNewInvestor = () => {
          {/* 偏好領域 */}
         <div className="col-12 pt-md-0 pt-3">
             <label htmlFor="industry" className="form-label text-white fs-5">偏好領域</label>
-            <select {...register("industry", { required: "請選擇偏好領域" })} className="fs-6 p-1">
-              <option value="">請選擇</option>
-              <option value="wholesale-retail">批發/零售</option>
-              <option value="biotechnology">生物科技</option>
-              <option value="internet">網際網路相關</option>
-              <option value="education">文教相關</option>
-              <option value="media">大眾傳播相關</option>
-              <option value="travel">旅遊/休閒/運動</option>
-              <option value="services">一般服務</option>
-              <option value="electronics">電子資訊/軟體/半導體相關</option>
-              <option value="manufacturing">一般製造</option>
-              <option value="logistics">物流/倉儲</option>
-              <option value="politics">政治宗教及社福相關</option>
-              <option value="finance">金融投顧/保險</option>
-              <option value="consulting">法律/會計/顧問/研發</option>
-              <option value="design">設計相關</option>
-              <option value="realestate">建築營造/不動產相關</option>
-              <option value="healthcare">醫療保健/環境衛生</option>
-              <option value="mining">礦石及土石採取</option>
-              <option value="accommodation">住宿相關</option>
-              <option value="food">餐飲</option>
-            </select>
+            <div className="d-flex flex-wrap">
+            {industryOptions.map((option) => (
+              <div key={option.value} className="form-check me-3">
+                <input
+                  type="checkbox"
+                  id={`industry-${option.value}`}
+                  className="form-check-input"
+                  {...register("industry")}
+                  value={option.value}
+                  checked={industryValue?.includes(option.value) || false}
+                  onChange={(e) => {
+                    const selectedIndustries = e.target.checked
+                      ? [...industryValue, option.value]
+                      : industryValue.filter((val) => val !== option.value);
+                    setValue("industry", selectedIndustries);
+                  }}
+                />
+                <label htmlFor={`industry-${option.value}`} className="form-check-label text-white">
+                  {option.label}
+                </label>
+              </div>
+            ))}
+          </div>
           </div>
 
         {/* 文字框區 */}
@@ -174,4 +215,9 @@ const MemberNewInvestor = () => {
   );
 };
 
+
+
+MemberNewInvestor.propTypes = {
+  useraccount: PropTypes.string, 
+};
 export default MemberNewInvestor;
