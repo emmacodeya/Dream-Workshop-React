@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
+const API_URL = "http://localhost:3000";
 
 const MemberNewProjects = () => {
-  // 圖片上傳預覽
+  const [industryOptions, setIndustryOptions] = useState([]);
   const [images, setImages] = useState({
-    companyLogo: "/assets/images/頭像1.png",
-    companyImage: "/assets/images/頭像1.png",
-    financialStatus: "/assets/images/頭像1.png",
-    referenceImage: "/assets/images/頭像1.png",
+    companyLogo: "",
+    companyImage: "",
+    financialStatus: "",
+    referenceImage: "",
   });
 
-  // 使用 react-hook-form 處理表單
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    reset
-  } = useForm();
+  const { register, handleSubmit, formState: { errors }, watch, reset } = useForm();
+
+  // 取得產業分類選項
+  useEffect(() => {
+    const fetchIndustries = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/industryOptions`);
+        setIndustryOptions(response.data);
+      } catch (error) {
+        console.error("獲取產業分類失敗", error);
+      }
+    };
+    fetchIndustries();
+  }, []);
+
 
   // 處理圖片上傳與預覽
   const handleFileChange = (e, key) => {
@@ -34,122 +43,62 @@ const MemberNewProjects = () => {
 
   // 清除表單
   const handleClear = () => {
-    reset(); // 清除表單
+    reset(); 
     setImages({
-      companyLogo: "/assets/images/頭像1.png",
-      companyImage: "/assets/images/頭像1.png",
-      financialStatus: "/assets/images/頭像1.png",
-      referenceImage: "/assets/images/頭像1.png",
+      companyLogo: "",
+      companyImage: "",
+      financialStatus: "",
+      referenceImage: "",
     });
   };
 
   const onSubmit = async (data) => {
     try {
-      // 新增projects
-      const projectResponse = await fetch("http://localhost:3000/projects", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.projectName,
-          contactPerson: data.contactPerson,
-          contactPhone: data.contactPhone,
-          website: data.website,
-          address: data.address,
-          companyNumber: data.companyNumber,
-          status: data.businessStatus,
-          industry: data.industry,
-          description: data.introduction,
-          size: data.scale,
-          capital: data.capital,
-          funding: data.fundraising,
-          companyLogo: images.companyLogo,
-          companyImage: images.companyImage, 
-          liked: false
-        })
+      // 1. 先建立專案
+      const projectResponse = await axios.post(`${API_URL}/projects`, {
+        name: data.projectName,
+        contactPerson: data.contactPerson,
+        contactPhone: data.contactPhone,
+        website: data.website,
+        address: data.address,
+        companyNumber: data.companyNumber,
+        status: data.businessStatus,
+        industry: data.industry,
+        description: data.introduction,
+        size: data.scale,
+        capital: data.capital,
+        funding: data.fundraising,
+        companyLogo: images.companyLogo,
+        companyImage: images.companyImage,
+        liked: false
       });
-  
-      const projectData = await projectResponse.json();
-      const projectId = projectData.id; 
-  
+
+      const projectId = projectResponse.data.id;
       console.log("專案新增成功，ID:", projectId);
-  
-      // swot
-      await fetch(`http://localhost:3000/swot`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId, // 讓 ID 不會覆蓋舊資料
+
+      // 2. 同步新增相關資料
+      const requests = [
+        axios.post(`${API_URL}/swot`, {
+          projectId,
           strengths: data.strengths ? [data.strengths] : [],
           weaknesses: data.weaknesses ? [data.weaknesses] : [],
           opportunities: data.opportunities ? [data.opportunities] : [],
           threats: data.threats ? [data.threats] : []
-        })
-      });
+        }),
+        axios.post(`${API_URL}/marketSize`, { projectId, content: data.marketSize }),
+        axios.post(`${API_URL}/teams`, { projectId, teamDescription: data.team }),
+        axios.post(`${API_URL}/models`, { projectId, business_model: data.businessModel }),
+        axios.post(`${API_URL}/products`, { projectId, productDescription: data.product }),
+        axios.post(`${API_URL}/projectCompete`, { projectId, competeDescription: data.projectCompete }),
+        axios.post(`${API_URL}/founderInfo`, { projectId, entrepreneurDescription: data.founderInfo })
+      ];
 
-      //marketSize
-      await fetch(`http://localhost:3000/marketSize`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          content: data.marketSize
-        })
-      });
-  
-      // teams
-      await fetch(`http://localhost:3000/teams`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          teamDescription: data.team
-        })
-      });
-  
-      // models
-      await fetch(`http://localhost:3000/models`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          business_model: data.businessModel
-        })
-      });
-  
-      // products
-      await fetch("http://localhost:3000/products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          productDescription: data.product 
-        })
-      });
-      
-      //projectCompete
-      await fetch(`http://localhost:3000/projectCompete`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          teamDescription: data.projectCompete 
-        })
-      });
-      
-      //founderInfo
-      await fetch(`http://localhost:3000/founderInfo`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          projectId: projectId,
-          entrepreneurDescription: data.founderInfo
-        })
-      });
+      await Promise.all(requests);
 
       alert("專案新增成功！");
-      handleClear(); // 清除表單與圖片
+      handleClear();
     } catch (error) {
-      console.error("錯誤:", error);
+      console.error("發生錯誤:", error);
       alert("發生錯誤，請稍後再試！");
     }
   };
@@ -271,15 +220,14 @@ const MemberNewProjects = () => {
     公司成立狀態 <span className="fs-6 text-gray-400 ps-1">如為已設立公司,需再填寫公司統一編號。</span>
   </label>
   <select
-    id="businessStatus"
-    {...register("businessStatus", { required: "請選擇公司成立狀態" })} 
-    className={`form-select ${errors.businessStatus ? "is-invalid" : ""}`}
-  >
-    <option value="">請選擇狀態</option>
-    <option value="notestablished">未成立</option>
-    <option value="established">已成立</option>
-  </select>
-  {errors.businessStatus && <p className="text-danger">{errors.businessStatus.message}</p>}
+            {...register("businessStatus", { required: "請選擇公司成立狀態" })}
+            className={`form-select ${errors.businessStatus ? "is-invalid" : ""}`}
+          >
+            <option value="">請選擇狀態</option>
+            <option value="notestablished">未成立</option>
+            <option value="established">已成立</option>
+          </select>
+          {errors.businessStatus && <p className="text-danger">{errors.businessStatus.message}</p>}
 </div>
 
 <div className="col-xl-6 pt-xl-6">
@@ -306,32 +254,15 @@ const MemberNewProjects = () => {
 <div className="col-xl-4">
   <label htmlFor="industry" className="form-label text-white fs-5">產業分類</label>
   <select
-    id="industry"
-    {...register("industry", { required: "請選擇產業分類" })} // 綁定 react-hook-form
-    className={`form-select ${errors.industry ? "is-invalid" : ""}`}
-  >
-    <option value="">請選擇產業</option>
-    <option value="wholesale-retail">批發/零售</option>
-    <option value="biotechnology">生物科技</option>
-    <option value="internet">網際網路相關</option>
-    <option value="education">文教相關</option>
-    <option value="media">大眾傳播相關</option>
-    <option value="travel">旅遊/休閒/運動</option>
-    <option value="services">一般服務</option>
-    <option value="electronics">電子資訊/軟體/半導體相關</option>
-    <option value="manufacturing">一般製造</option>
-    <option value="logistics">物流/倉儲</option>
-    <option value="politics">政治宗教及社福相關</option>
-    <option value="finance">金融投顧/保險</option>
-    <option value="consulting">法律/會計/顧問/研發</option>
-    <option value="design">設計相關</option>
-    <option value="realestate">建築營造/不動產相關</option>
-    <option value="healthcare">醫療保健/環境衛生</option>
-    <option value="mining">礦石及土石採取</option>
-    <option value="accommodation">住宿相關</option>
-    <option value="food">餐飲</option>
-  </select>
-  {errors.industry && <p className="text-danger">{errors.industry.message}</p>}
+            {...register("industry", { required: "請選擇產業分類" })}
+            className={`form-select ${errors.industry ? "is-invalid" : ""}`}
+          >
+            <option value="">請選擇產業</option>
+            {industryOptions.map((option) => (
+              <option key={option.value} value={option.value}>{option.label}</option>
+            ))}
+          </select>
+          {errors.industry && <p className="text-danger">{errors.industry.message}</p>}
 </div>
 
 

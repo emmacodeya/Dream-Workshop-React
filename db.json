@@ -1,95 +1,59 @@
 {
   "projects": [
     {
-      "id": "1",
+      "useraccount": "happy1234",
       "name": "林媽媽中式餐館",
       "contactPerson": "林小姐",
       "contactPhone": "0912345678",
       "website": "https://www.example.com",
       "address": "台北市大安區忠孝東路四段123號",
-      "companyNumber": "",
-      "status": "未設立",
-      "industry": "餐飲",
-      "description": "我們中式餐館注重精緻的中國美食，結合中華傳統與創新，提供優質的用餐體驗",
-      "size": "10人以下",
-      "capital": "NT$ 30,000,000",
-      "funding": "NT$ 50,000,000",
-      "startDate": "2024/7/25",
-      "companyLogo": "/assets/images/mamacook.png",
-      "companyImage": "/assets/images/mamacook.png",
-      "liked": false
-    },
-    {
-      "id": "843c",
-      "name": "迅捷物流股份有限公司",
-      "contactPerson": "林先生",
-      "contactPhone": "0911258785",
-      "website": "無",
-      "address": "新北市",
-      "companyNumber": "",
-      "status": "notestablished",
-      "industry": "logistics",
-      "description": "公司致力於提供高效的物流與供應鏈管理服務，確保貨物能夠快速且安全地抵達目的地。我們運用最新的技術與智能管理系統，提升配送效率，降低運輸成本，為企業和消費者提供最優質的物流解決方案。",
-      "size": "one",
-      "capital": "1500000",
-      "funding": "1000000",
-      "companyLogo": "data:image/png;base64,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",
-      "companyImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAAA8CAYAAACAc5NXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAaVSURBVHgB7Zn7UVs7EMYFIQmvmTgV2Kkg7gCoAKgAqABuBZAKLlRgUgGmApsKgApwKsB3hvfL9/ucXUYICWND7tw/vt+M8Dl6rFZ7VlpJhCCEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCGEEEKI1zIWRuT6+nppbGxs8/7+fvnDhw8NZO1++vTpp5f3er3Kzc3NIR4rTHhvTk5OLrPs8vKyxjaov5DKZTvIXhkfH1/Cc82yj/DcRtpHn0soq+K5i/wa3tveL3XCzyJSB/nsN6DsL+Q38N61Nk8NgHrIP/j8+XMzzoeO8+hnHuVz1MPaH6Fon3Vdput8e3u7Mzs7e4T8LeR/cf1Qdw2yVqkz6z48PBxMTU21cza9urpapz5MsN1PysvUaUL2diqDNkUfmxx7KEC56J+2+eV2KtWj3cJ/DYy3i9Sj49CoaTnyql4Hhmh5Pj8W8k7S+jQK85nOzs7qJqNyd3e3SBksN0f92/pdSftlnpU1vMycdI/5+PB0EDpklc/MZ5tEj1XX2WWwb+v3MHpv4f3UdY36OmVd9hHlbZperZwtbew9plhexuanORnWx+P4bGw914MyaRO+sz7GthGXexvaIv5WwzIeRoQDgCd/x2O3VAfKreFnDmkrDMBmWH8gmEULPju5CkxMTOyzH8xKzq4uVsVjK+v4KuGg7MD0eyyz3/4zZB1zhjJ9/PjxgCtf3J6Ghh5cfbaxoi64DPbNlYxyo3c+d+OVBGPewM82Z7itBP3+MSY+s808J1Q6fqzYj6tLbmUyG3HF5Go9n04kHyPHxH4xCX+ZHbp8p0zocOSrNCNGXO72QNoPb2Bkh8KHm4OCXRjuG17b8O7FuJxLP35W6Bww1tEgeWbQGuvzY6XlGPhWGII0vCXOFdfbdye08nX8HOWWfOS14WzNUp8MuZA3hzD3Iy1jyIPsLT5jrIuZ5jWkXdOpmpOPditw2L5e+F3PVNkOL8DvwJAb5+XshHpb4f8EnYlhi6tOrjwNedFyfxpegYeknOFdVhrGPOSkesYyXC73R+EVsJ6Pw0LgYWnMDC0WUvphMl5hrN+G918KeQzPJqtVCp1JfY5lM1eWsxO/S2q3YZkI70y8MuVWmgI1/rFN72vo8A8+EPcB3TAEXEWgm3/MFV81iG+ch9CDdG1fx4+8jNDSyVWyOv8g5DbRJycUP9wOy3zlwW/fkRB2qMcTHSxM9vOgP2VsM6+0wXe4LXipnAcOOrLpwagzzNifMXLIyzGiM8UM5Rzh92nuWRrQ5ruFny+lCigfRo+6rxxwhM1SJfRXm5mZOUU45Im0y1Ms8/2gwT2Obw38hBpDp8ME6u9vXEYhdL4K7A99jHXawyfTkGN/xrutUG90pg7/0OhDtOEHbPrG17HNfbFNvL+BznWGPJdhG9QQXVe8hg4373bN0Lq4uNiYnp7O7mW8H/S7zT2hnazohP362MvR0bL9cyOO8TIkdZBqlreK9CPdFwazQ3gBHD4q7Attm37tArm0x8hOSkZeoWwf1LDEGfrMmexIWuHgeHoqybI2/Xub3PVDhlp4B+KTGEHfx/ZYD0PC0MMwxMNF7mPGTgI7+QekQ8zHhwKSrlAWktqYDN94d8dfyOCdXqWwOc/2OwjI5mFkJ7yBkR0K3j2HgdPwHaQ69yLpyoTBfMUMbHHmvhRiDM7SgQaKOT8//1oqSw2ZCyM+s/1uxpyijcel3NF+EFhBuPp17aI35bF/u/5oh9/XKW23m/+mk4rhDjbcjfNs70T9V8MbyNipy30m0kgr1Zv2UNy8MoSU9i2YRVuu8CDPt/IO0gbDRtJPxU5kTwyNvp85KYxfKejql5zVTNmqP2O16IdE3kWlK42d5IqnILtvWuOq404a9f1Er6if3Yyoetwnbcg7okw9TsLaKM4fXljl+d+B3AT8o9gx/MSPwTlD26036+0i5O15PmO13zin2NH5xG62G3aTfcgjN8sZOvluR+LD2JicWaYPy074rwzrjzfcp5Yfy225rEQHOk7Db7xZn3V5g+xOZjIeZfrm2vJ7fitOHSKd9mInja8P7Bi/5235HI31JHZQt1M81rjcjv/P7JArN/kNH6N/z7TNH8dnq6fc3ie+T0nvVgZtGulAbJPKjd/5nL7n6tq/FoozrnSRSB35b59c+zgvbp/kV5KydG9UC2WdKkmqZsqrpX5KZaW8XN9BCCGEEEIIIYQQQgghhBBCCCGEEEIIIYQQQgghhBBCCCFEyr/luIpyDOC7VwAAAABJRU5ErkJggg==",
-      "liked": false
-    },
-    {
-      "id": "c90d",
-      "name": "測試",
-      "contactPerson": "測試",
-      "contactPhone": "0918256465",
-      "website": "測試",
-      "address": "測試",
-      "companyNumber": "",
+      "companyNumber": "12345678",
       "status": "notestablished",
       "industry": "food",
-      "description": "測試",
-      "size": "nine",
-      "capital": "1500000",
-      "funding": "1000000",
-      "companyLogo": "/assets/images/頭像1.png",
-      "companyImage": "/assets/images/頭像1.png",
-      "liked": false
+      "description": "測試簡介",
+      "size": "five",
+      "capital": "90000000",
+      "funding": "50000000",
+      "companyLogo": "/assets/images/mamacook.png",
+      "companyImage": "data:image/png;base64,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",
+      "id": "1"
     },
     {
-      "id": "72a7",
-      "name": "測試2",
-      "contactPerson": "測試2",
-      "contactPhone": "0911852630",
-      "website": "測試2",
-      "address": "測試2",
+      "id": "df12",
+      "useraccount": "happy1234",
+      "name": "美麗寵物美容",
+      "contactPerson": "林小姐",
+      "contactPhone": "0912345678",
+      "website": "測試網址",
+      "address": "測試地址",
       "companyNumber": "",
       "status": "notestablished",
-      "industry": "wholesale-retail",
-      "description": "測試2",
+      "industry": "manufacturing",
+      "description": "測試項目",
       "size": "one",
-      "capital": "1500000",
-      "funding": "1000000",
-      "companyLogo": "/assets/images/頭像1.png",
-      "companyImage": "/assets/images/頭像1.png",
+      "capital": "1000000",
+      "funding": "123",
+      "companyLogo": "data:image/png;base64,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",
+      "companyImage": "",
       "liked": false
     },
     {
-      "id": "2b6d",
-      "name": "測試3",
-      "contactPerson": "測試3",
-      "contactPhone": "0987456123",
-      "website": "測試3",
-      "address": "測試3",
-      "companyNumber": "12345678",
-      "status": "established",
-      "industry": "internet",
-      "description": "測試3",
-      "size": "one",
-      "capital": "1500000",
-      "funding": "1000000",
-      "companyLogo": "/assets/images/頭像1.png",
-      "companyImage": "/assets/images/頭像1.png",
-      "liked": false
+      "useraccount": "happy1234",
+      "name": "測試公司",
+      "contactPerson": "美麗小姐",
+      "contactPhone": "0918256603",
+      "website": "https://www.example.com",
+      "address": "台北市大安區忠孝東路四段123號",
+      "companyNumber": "",
+      "status": "notestablished",
+      "industry": "healthcare",
+      "description": "這是簡介",
+      "size": "two",
+      "capital": "1000000",
+      "funding": "2000000",
+      "companyLogo": "data:image/png;base64,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",
+      "companyImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAAA8CAYAAACAc5NXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAb/SURBVHgB7ZuLcds4EIbXj7xmMnO6CoJUYKWCkyuIroI4FTiuwEoFcSqwroLYFUSpIHIFpiuwPZOX8/L9v73QrXkESb0sMdlvBsPXCgTAxWKxgEQcx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3Ecx3HmztevX58hvWX6/PlzT2YA87q4uLhEOkaeQeZMLD+TODNjXSbg8vIy4NDh+erqaiZTAgXqIM+OXoaVlZWnOL6WOWLe58yQVXGcGbIUCvXgwYMBrNIeTjNYjgHSoTiNZKIhbx7cvXt3B4cdcRqND3nOTJm5hcJw1fry5UsXQ9gfvMbx5OfPn0MMa5nMGM4GMSloI/9WvIfrRzmxEE9oBVGes7I8tfxt/o55Ie8TnGcclmWKcuLQiW2Cdxzdv39/WFWWPB8+fGivra21c3U8Qr0G4+ZliXVGvi3U92yauk4Epva7OsVn2uc9NpqZ+v8v4dkrFrwkz5EseJSS44xQ33Oaelcq2Xzt/XgPjfqiJN9jftCS8u8b2V3eo/w0bWLqvMX3V9RvvyzcYsvx7du3vzTfwm/GsJBMyCwsVKaW4q2GEwrBsxeoCD/IpkwIKtvDYRd52dtnmlqa4r0DfW8wsudVeUuacOfOnfeo62adHmzaJKkw2iYMmWymLEyNckW28L6Oli+rEq7zzSZhJj4UCvZKrj9mj5WCCQ5oqCcwn89xL4tyjP1Mqv3spWIalrNCvufevXt/Ij3mEe97rLNFlqWDdIKhZTOm1Eej1ZNrReXQscV8mVgXXPetLIacOh+XbRIDpj22RWwT/J7uwDDK4Z20YttSo86gr+3LOq8UtHFA/vtSv3xBLzO57oAHOssOcpvkhrw3ZdFt9lBrrlOR6aohz+aBoWm7rHw6dF3Jfvr06UXV+9TsJxUlV99LVcC8zH7dNlH5vpE/LbJkuWEuWT6+JzdUP83L2KGNqxta7/dx+Fso+Qb+/v370zJ59QFGjZfIM6lQqHjb+jJSr4zHFR/rhv9RI7/TMoXOKdRl1fKRdrTTlN9CpR2nzixTWae1CkVFotLX8d/GZeohjyZyfX29NBCJ4ebAXLbKnO7EO4I5H9b82SC+7+PHj6FMEOa/L9UcGPlQIduv8mN0+LXt0s6VyVqOgVSAIfCfeM5htEyWioShcmeamWGKqRUKhcpqyExVcBsWmCQv+BwbZc/RITKpZiRTo2dnUgPbOQryDEVyKbRdYtu0KiYDe/MI45BGBDbRW0dKNIaZtkqYyRKCupyb82Cfocyja1v/CqzcHymhMfIbm6VZeimDgVE0wtU5GprT7FYNSzUy+/AXzqXBMLwAv2erhlyQBdMIhaJ5RoMOdMtJCzMTzniS634auwl6mT18+LCu37WstHOxt0q4QiELoBEKRaBQOwws8pw9FkrTpS/AZYwog0bcgCXr2r1OuNeThoM6sDNl0gAao1C0MlCiv3HKIGqQ6414e0g35ExPPsN5z85+lo24tlcEym6H9P4y18PSqN0GXLjER+BU285o8nB460H2CcIVc931mQJlrDVxsHIFEwc7EQnSEBpjoew6HpcfMPy9432d9Y12Nshy0K4jpBOMeJnZZwwVROtLORxeSgNojIXSfeZXIDJ/Yu7Tap0skTLF9bnSNUtG0q2vh04yyOVxaM47Rcs9y0hjFMrGn7iwyaUDXW7osrFv458ydeGCMicMKaXithazeEyyaHEjnNnSGY/XkH9TQ0m5+L6PdlnYP3kaM+TBJ3qJRo1rbkGunfIuL2KMCsrFAy1WptHlQzizB3LL0KGmr4cjF4B7en7lE+kw17HyqZnojx8/nptdAa2Yn1z7iUP9bYyKM8+gLsGeLIjGKBR6bB89cLC2trbNsEGJaEvXspi4KJ1BGTfntdSQAhZnh/u/WBZb3oJ4Ug9LQ4UzOJaZ+5tyW02Cpm4iP85u38mCmEihuC3WmONaQUMuIpvL83Gfc0sK3rmrDciP0KffxIVm+FRB8wg6I6IydfWncY/Q5jjvyzNunTWS/4Q7LaAQ23LTUedHH6JcvfxQl0c7wmPmgzyfITGf/CyS72KsasDwQmIVYRiVT7c1/77Y7S91N+jl9wiVbd+dBRcFW4AtHJao/OPutCjC5jWPLSjT0AinnMNcPE8ND3m0Zx+Y323IApnlbNTmtTKHLSjT0AiFsvt7xuyRLfO7pWr4X5WmhA2yeAJH923N3ZA9+c+Pot9wJM7cacQsDwryGqb9lZ4zhnMMX2qoC6a0PDwGPqfTimc8t5asd9uzvN+VRigU1uT2YHG4vLIlqjgmNHCD/F+suEC8qDW935EVaRDxH7hw0jcwhLXtrkYDLRbXwQaYkh/eltPKKDXKdTWDg4U8+gX2YDmO4ziO4ziO4ziO4ziO4ziO4ziO4zhOMf8CqgRa/RMvmNsAAAAASUVORK5CYII=",
+      "id": "2ce4"
     }
   ],
   "investors": [
@@ -100,11 +64,11 @@
       "email": "happy5678@gmail.com",
       "capital": "40000000",
       "industry": [
-        "wholesale-retail",
+        "wholesaleretail",
         "services",
         "food"
       ],
-      "introduction": "經歷：\n我在一個貧困的家庭中長大。\n年輕時參加過海軍,因此他的全名經常被縮寫為「謝船長」。\n在海軍服役期間,學到了許多關於紀律和金錢的重要教訓。\n退役後,開辦了蟹堡王餐廳。\n蟹堡王以其招牌菜「蟹堡」而聞名,\n而這個漢堡的秘方是嚴格保守的秘密。\n餐廳迅速成為比奇堡(Bikini Bottom)最受歡迎的餐飲場所之一。\n經營風格非常嚴格且注重成本控制。\n座右銘是「省錢就是賺錢」。儘管如此,我對餐廳的成功和顧客的滿意度也有高度的重視。\n在這希望能夠找到同為餐飲相關領域的夥伴，我可以運用手邊相關資源，攜手夥伴共同開創新事業",
+      "introduction": "我在一個貧困的家庭中長大。\n年輕時參加過海軍,因此他的全名經常被縮寫為「謝船長」。\n在海軍服役期間,學到了許多關於紀律和金錢的重要教訓。\n退役後,開辦了蟹堡王餐廳。\n蟹堡王以其招牌菜「蟹堡」而聞名,\n而這個漢堡的秘方是嚴格保守的秘密。\n餐廳迅速成為比奇堡(Bikini Bottom)最受歡迎的餐飲場所之一。\n經營風格非常嚴格且注重成本控制。\n座右銘是「省錢就是賺錢」。儘管如此,我對餐廳的成功和顧客的滿意度也有高度的重視。\n在這希望能夠找到同為餐飲相關領域的夥伴，我可以運用手邊相關資源，攜手夥伴共同開創新事業",
       "experience": "投資經歷內容...",
       "resources": "具體相關資源...",
       "avatar": "/assets/images/海綿寶寶.png",
@@ -119,210 +83,137 @@
   "swot": [
     {
       "projectId": "1",
+      "strengths": "測試優勢",
+      "weaknesses": "測試劣勢",
+      "opportunities": "測試機會",
+      "threats": "測試威脅",
+      "id": "21fc"
+    },
+    {
+      "id": "932b",
+      "projectId": "df12",
       "strengths": [
-        "提供多樣性的菜系，滿足各類顧客的需求。"
+        "測試優勢"
       ],
       "weaknesses": [
-        "市場競爭激烈，需要有效的市場定位和品牌建設。"
+        "測試劣勢"
       ],
       "opportunities": [
-        "市場上對高品質食物和文化體驗的需求增加，有擴展和增長的良好機會。"
+        "測試機會"
       ],
       "threats": [
-        "市場競爭激烈，需要有效的市場策略來突出競爭優勢。"
+        "測試威脅"
       ]
     },
     {
-      "projectId": "843c",
-      "strengths": [
-        "快速配送：建立高效的物流網絡，確保即時送達。\n科技應用：使用AI、IoT與大數據分析優化配送效率。\n倉儲與供應鏈管理：提供整合式供應鏈解決方案，提高企業競爭力。\n高安全性：採用智能追蹤與監控系統，確保貨物安全。"
-      ],
-      "weaknesses": [
-        "初期投入成本高：智能物流系統與倉儲設備的建置成本較高。\n市場競爭壓力大：面對國際物流巨頭與在地物流公司的激烈競爭。\n品牌認知度需提升：相較於傳統物流大廠，市場認可度仍需強化。"
-      ],
-      "opportunities": [
-        "電商市場增長：隨著線上購物市場持續擴張，物流需求激增。\n綠色物流趨勢：可發展環保物流模式，如電動車配送、碳中和倉儲。\n智慧物流發展：AI與無人機配送等技術創新帶來發展機會。\n跨境電商成長：國際貿易增加，跨境物流需求攀升。"
-      ],
-      "threats": [
-        "物流成本波動：燃料、人工等成本上升，影響獲利。\n政策與法規限制：國際物流涉及多國法規，可能影響運營。\n市場競爭激烈：與FedEx、DHL等國際物流公司競爭壓力大。\n供應鏈中斷風險：疫情、戰爭、自然災害等不可控因素影響物流運作。"
-      ]
-    },
-    {
-      "id": "448d",
-      "projectId": "c90d",
-      "strengths": [
-        "測試"
-      ],
-      "weaknesses": [
-        "測試"
-      ],
-      "opportunities": [
-        "測試"
-      ],
-      "threats": [
-        "測試"
-      ]
-    },
-    {
-      "id": "8e75",
-      "projectId": "72a7",
-      "strengths": [
-        "測試2"
-      ],
-      "weaknesses": [
-        "測試2"
-      ],
-      "opportunities": [
-        "測試2"
-      ],
-      "threats": [
-        "測試2"
-      ]
+      "id": "328e",
+      "projectId": "2ce4",
+      "strengths": "這是優勢++",
+      "weaknesses": "這是劣勢++",
+      "opportunities": "這是機會++",
+      "threats": "這是威脅++"
     }
   ],
   "marketSize": [
     {
       "projectId": "1",
-      "content": "台灣中式餐飲市場在2019年的市場規模達到約1,500億台幣，並預計每年以約5%的年增長率穩定增長。其中，高品質、正宗的中國美食顯示出強勁的消費者需求，特別是在大城市和觀光熱點。"
+      "id": "dbe1",
+      "content": "測試市場規模"
     },
     {
-      "projectId": "843c",
-      "content": "全球物流市場規模（2023年）：超過 10兆美元，預計持續增長。\n亞太地區物流市場：因電商發展迅速，年均增長率約 6-8%。\n台灣物流市場：本地電商、零售與跨境電商需求旺盛，物流產業發展潛力巨大。"
+      "id": "a9a6",
+      "projectId": "df12",
+      "content": "測試市場規模"
     },
     {
-      "id": "8660",
-      "projectId": "c90d",
-      "content": "測試"
-    },
-    {
-      "id": "56cc",
-      "projectId": "72a7",
-      "content": "測試2"
-    },
-    {
-      "id": "fdd5",
-      "projectId": "2b6d",
-      "content": "測試3"
+      "id": "a54d",
+      "projectId": "2ce4",
+      "content": "這是市場規模"
     }
   ],
   "teams": [
     {
       "projectId": "1",
-      "teamDescription": "創始人及經營者：林小姐，擁有十年以上的餐飲業經驗，曾在多家知名餐廳擔任高級管理職位。憑藉對中國菜文化的深刻理解和熱愛，致力於打造正宗的中華風味餐廳。\n廚藝團隊：主廚 李師傅，來自廣東，擁有豐富的粤菜烹飪經驗，精通粤式烹調技巧，對於食材選擇和烹調方法有獨到見解。\n副廚 王師傅，專攻川菜，擅長於麻辣風味的川菜烹調，有多年的川菜廚藝經驗，保證每道川菜的正宗口味。\n前台服務團隊：客戶服務經理 陳先生，負責協調和管理前台服務，具有良好的溝通能力和顧客服務經驗，確保每位顧客都能享受到優質的用餐體驗。\n後勤及行政支持：行政總監 張小姐，負責餐廳的日常運營和行政管理，擁有出色的組織能力和管理技巧，確保餐廳運作高效且符合標準。"
+      "id": "82a6",
+      "teamDescription": "測試團隊"
     },
     {
-      "projectId": "843c",
-      "teamDescription": "我們的團隊由一群擁有豐富物流經驗與技術專長的專業人員組成，包括：\n\n供應鏈管理專家：負責優化物流流程，提升效率。\nIT與數據分析團隊：開發智能物流管理系統，提高運輸透明度與準確性。\n客服與營運團隊：確保客戶獲得即時支援與最佳服務體驗。\n市場與業務開發團隊：積極拓展市場，建立合作夥伴關係。"
+      "id": "91d4",
+      "projectId": "df12",
+      "teamDescription": "測試團隊"
     },
     {
-      "id": "1f76",
-      "projectId": "c90d",
-      "teamDescription": "測試"
-    },
-    {
-      "id": "be20",
-      "projectId": "72a7",
-      "teamDescription": "測試2"
-    },
-    {
-      "id": "4f67",
-      "projectId": "2b6d",
-      "teamDescription": "測試3"
+      "id": "af41",
+      "projectId": "2ce4",
+      "teamDescription": "這是說明"
     }
   ],
   "models": [
     {
       "projectId": "1",
-      "business_model": "採用傳統的餐飲業商業模式，注重提供高品質的中國美食體驗。"
+      "id": "ce27",
+      "business_model": "測試商業模式"
     },
     {
-      "projectId": "843c",
-      "business_model": "B2B（企業對企業）\n\n企業客戶訂閱供應鏈管理服務，優化物流流程。\n提供倉儲、配送與進出口物流服務，提升企業競爭力。\nB2C（企業對消費者）\n\n提供快遞與宅配服務，支援電商平台與零售業者。\n整合智能物流系統，提升配送效率與客戶滿意度。\nC2C（消費者對消費者）\n\n透過物流網絡，提供個人包裹寄送與跨境配送服務。\n訂閱與增值服務\n\n提供即時追蹤、保險、綠色配送等額外服務，提高客單價。"
+      "id": "81e9",
+      "projectId": "df12",
+      "business_model": "測試商業模式"
     },
     {
-      "id": "2fe3",
-      "projectId": "c90d",
-      "business_model": "測試"
-    },
-    {
-      "id": "9a04",
-      "projectId": "72a7",
-      "business_model": "測試2"
-    },
-    {
-      "id": "b3b8",
-      "projectId": "2b6d",
-      "business_model": "測試3"
+      "id": "0187",
+      "projectId": "2ce4",
+      "business_model": "這是商業模式"
     }
   ],
   "products": [
     {
       "projectId": "1",
-      "productDescription": "粵菜系列：清蒸魚、白切雞。如清蒸魚、白切雞等典型的粤式烹飪佳餚，保證新鮮和風味豐富。額外提供：小籠包。"
+      "id": "7dcb",
+      "productDescription": "測試商業模式"
     },
     {
-      "projectId": "843c",
-      "productDescription": "智能快遞服務：提供當日/次日送達、高效配送選項。\n倉儲與供應鏈管理：企業級倉儲、分揀與庫存管理服務。\n冷鏈物流：適用於食品、生技產品等需低溫運輸的產業。\n國際物流：提供海運、空運與國際快遞服務，支援全球貿易。\n智能物流系統：提供物流追蹤、數據分析與路線優化服務。"
+      "id": "391e",
+      "projectId": "df12",
+      "productDescription": "測試產品"
     },
     {
-      "id": "25c9",
-      "projectId": "c90d",
-      "productDescription": "測試"
-    },
-    {
-      "id": "24f6",
-      "projectId": "72a7",
-      "productDescription": "測試2"
-    },
-    {
-      "id": "dc6c",
-      "projectId": "2b6d",
-      "productDescription": "測試3"
+      "id": "a194",
+      "projectId": "2ce4",
+      "productDescription": "這是產品"
     }
   ],
   "projectCompete": [
     {
       "projectId": "1",
-      "competeDescription": "在台灣市場，一些知名的競爭品牌包括：鼎泰豐（Din Tai Fung）：以其精緻的小籠包和台灣菜系聞名全球，是台灣最具代表性的餐廳之一。滿福樓（Man Fu Lou）：專注於粤菜和中式點心，以高品質的食材和烹飪技術聞名。霜玉（Shuang Yu）：提供現代創新的中華料理，結合台灣本土食材和烹飪風格。南京三兄弟：以其多樣化的菜單和實惠的價格吸引大眾，是台灣家庭常去的中式餐廳之一。金車（Jin Che）：以其創新的川菜和湘菜菜式聞名，提供多樣化的選擇和風味。我們將透過其獨特的菜品組合、優質的服務和競爭力的價格策略，以及在本地市場的市場定位來區隔自己。"
+      "id": "2b7d",
+      "competeDescription": "測試競爭產品"
     },
     {
-      "projectId": "843c",
-      "teamDescription": "黑貓宅急便：在台灣擁有強大的物流配送網絡。\n大榮貨運：專注於台灣本地與跨境物流服務。\n宅配通：提供快遞與倉儲整合服務。"
+      "id": "7518",
+      "projectId": "df12",
+      "competeDescription": "測試競爭產品"
     },
     {
-      "id": "e06c",
-      "projectId": "c90d",
-      "teamDescription": "測試"
-    },
-    {
-      "id": "3676",
-      "projectId": "72a7",
-      "teamDescription": "測試2"
-    },
-    {
-      "id": "ae5c",
-      "projectId": "2b6d",
-      "teamDescription": "測試3"
+      "id": "02c9",
+      "projectId": "2ce4",
+      "competeDescription": "這是競爭產品"
     }
   ],
   "founderInfo": [
     {
       "projectId": "1",
-      "entrepreneurDescription": "林美鳳，教育背景：中山大學商學院，工商管理學士學位（BBA），主修餐飲管理，專業為企業策略和行銷。經歷：1. 頂太瘋餐廳集團 - 餐飲經理（2010年至今），負責管理日常餐廳運營，包括人員管理、供應鏈和成本控制。領導團隊確保卓越的客戶服務和餐飲體驗，開發並實施市場推廣策略，提高餐廳的知名度和業績。2. 抬碩國際餐飲公司 - 餐飲經理（2005年-2010年），負責多個餐飲項目的開發和管理，包括菜單設計和廚房運作管理，管理客戶關係，確保客戶滿意度和忠誠度。技能與特質：擁有豐富的餐飲業經驗和企業管理技能，出色的溝通能力和領導才能，能有效帶領團隊達成目標，對中國菜文化和食品衛生安全有深入的理解和關注。語言能力：中文（母語），英文（流利）。"
+      "id": "3628",
+      "entrepreneurDescription": "測是創業者資訊"
     },
     {
-      "projectId": "843c",
-      "entrepreneurDescription": "創辦人： 王志偉\n背景： 物流與供應鏈管理專家，擁有超過 15 年業界經驗。曾於知名國際物流企業擔任高階管理職位，具備豐富的市場洞察與策略規劃能力。\n\n聯合創辦人： 陳怡君\n背景： IT與數據分析專家，專精於人工智慧與大數據技術，曾開發多個智慧物流管理系統。負責技術開發與創新應用，推動迅捷物流的數位轉型。"
+      "id": "71fc",
+      "projectId": "df12",
+      "entrepreneurDescription": "測是創業者資訊"
     },
     {
-      "id": "c53b",
-      "projectId": "72a7",
-      "entrepreneurDescription": "測試2"
-    },
-    {
-      "id": "1463",
-      "projectId": "2b6d",
-      "entrepreneurDescription": "測試3"
+      "id": "7f8c",
+      "projectId": "2ce4",
+      "entrepreneurDescription": "這是創業者資訊"
     }
   ],
   "members": [
@@ -345,80 +236,258 @@
   ],
   "industryOptions": [
     {
-      "value": "wholesale-retail",
-      "label": "批發/零售"
+      "value": "wholesaleretail",
+      "label": "批發/零售",
+      "id": "bb5e",
+      "imgSrc": "/assets/images/Map-item-1.png"
     },
     {
       "value": "biotechnology",
-      "label": "生物科技"
+      "label": "生物科技",
+      "id": "1c02",
+      "imgSrc": "/assets/images/Map-item-2.png"
     },
     {
       "value": "internet",
-      "label": "網際網路相關"
+      "label": "網際網路相關",
+      "id": "5d11",
+      "imgSrc": "/assets/images/Map-item-3.png"
     },
     {
       "value": "education",
-      "label": "文教相關"
+      "label": "文教相關",
+      "id": "bef1",
+      "imgSrc": "/assets/images/Map-item-4.png"
     },
     {
       "value": "media",
-      "label": "大眾傳播相關"
+      "label": "大眾傳播相關",
+      "id": "e210",
+      "imgSrc": "/assets/images/Map-item-5.png"
     },
     {
       "value": "travel",
-      "label": "旅遊/休閒/運動"
+      "label": "旅遊/休閒/運動",
+      "id": "20fd",
+      "imgSrc": "/assets/images/Map-item-6.png"
     },
     {
       "value": "services",
-      "label": "一般服務"
+      "label": "一般服務",
+      "id": "a1e0",
+      "imgSrc": "/assets/images/Map-item-7.png"
     },
     {
       "value": "electronics",
-      "label": "電子資訊/軟體/半導體相關"
+      "label": "電子資訊/軟體/半導體相關",
+      "id": "8786",
+      "imgSrc": "/assets/images/Map-item-8.png"
     },
     {
       "value": "manufacturing",
-      "label": "一般製造"
+      "label": "一般製造",
+      "id": "9fd1",
+      "imgSrc": "/assets/images/Map-item-9.png"
     },
     {
       "value": "logistics",
-      "label": "物流/倉儲"
+      "label": "物流/倉儲",
+      "id": "4597",
+      "imgSrc": "/assets/images/Map-item-10.png"
     },
     {
       "value": "politics",
-      "label": "政治宗教及社福相關"
+      "label": "政治宗教及社福相關",
+      "id": "e6fc",
+      "imgSrc": "/assets/images/Map-item-11.png"
     },
     {
       "value": "finance",
-      "label": "金融投顧/保險"
+      "label": "金融投顧/保險",
+      "id": "ce6e",
+      "imgSrc": "/assets/images/Map-item-12.png"
     },
     {
       "value": "consulting",
-      "label": "法律/會計/顧問/研發"
+      "label": "法律/會計/顧問/研發",
+      "id": "fc7a",
+      "imgSrc": "/assets/images/Map-item-13.png"
     },
     {
       "value": "design",
-      "label": "設計相關"
+      "label": "設計相關",
+      "id": "e445",
+      "imgSrc": "/assets/images/Map-item-14.png"
     },
     {
       "value": "realestate",
-      "label": "建築營造/不動產相關"
+      "label": "建築營造/不動產相關",
+      "id": "2714",
+      "imgSrc": "/assets/images/Map-item-15.png"
     },
     {
       "value": "healthcare",
-      "label": "醫療保健/環境衛生"
+      "label": "醫療保健/環境衛生",
+      "id": "2af8",
+      "imgSrc": "/assets/images/Map-item-16.png"
     },
     {
       "value": "mining",
-      "label": "礦石及土石採取"
+      "label": "礦石及土石採取",
+      "id": "b40c",
+      "imgSrc": "/assets/images/Map-item-17.png"
     },
     {
       "value": "accommodation",
-      "label": "住宿相關"
+      "label": "住宿相關",
+      "id": "c04e",
+      "imgSrc": "/assets/images/Map-item-18.png"
     },
     {
       "value": "food",
-      "label": "餐飲"
+      "label": "餐飲",
+      "id": "8e3d",
+      "imgSrc": "/assets/images/Map-item-19.png"
+    }
+  ],
+  "articles": [
+    {
+      "id": "1",
+      "title": "如何學習 React？",
+      "content": "<p>我最近在學習 React，有沒有推薦的學習資源？</p>",
+      "author": "happy1234",
+      "authorAvatar": "/assets/images/頭像1.png",
+      "createdAt": "2024-03-01T12:00:00Z",
+      "updatedAt": "2024-03-01T12:00:00Z",
+      "comments": [
+        {
+          "id": "cmt1",
+          "author": "user5678",
+          "authorAvatar": "/assets/images/頭像1.png",
+          "content": "這是一條留言",
+          "createdAt": "2024-07-25T14:00:00Z",
+          "replies": [
+            {
+              "id": "cmt1-1",
+              "author": "user999",
+              "authorAvatar": "/assets/images/頭像1.png",
+              "content": "這篇文章很棒！",
+              "createdAt": "2024-07-25T15:30:00Z"
+            },
+            {
+              "id": "reply-1740888855790",
+              "author": "happy1234",
+              "content": "再次測試留言",
+              "createdAt": "2025-03-02T04:14:15.790Z"
+            }
+          ]
+        },
+        {
+          "id": "cmt-1740812584447",
+          "author": "訪客",
+          "authorAvatar": "",
+          "content": "測試",
+          "createdAt": "2025-03-01T07:03:04.447Z",
+          "replies": [
+            {
+              "id": "reply-1740812594430",
+              "author": "訪客",
+              "authorAvatar": "",
+              "content": "測試22",
+              "createdAt": "2025-03-01T07:03:14.430Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4d40",
+      "title": "測試會員中心發表文章",
+      "content": "<p>應該可行的吧?</p>",
+      "author": "happy1234",
+      "authorAvatar": "",
+      "comments": [],
+      "createdAt": "2025-03-02T02:59:40.234Z",
+      "updatedAt": "2025-03-02T02:59:40.236Z"
+    },
+    {
+      "id": "3217",
+      "title": "測試第三次",
+      "content": "<p>測試第三次</p>",
+      "author": "happy1234",
+      "authorAvatar": "",
+      "comments": [
+        {
+          "id": "cmt-1740884783114",
+          "author": "訪客",
+          "authorAvatar": "",
+          "content": "我在這裡新增一筆留言",
+          "createdAt": "2025-03-02T03:06:23.114Z",
+          "replies": []
+        },
+        {
+          "id": "cmt-1740887082739",
+          "author": "訪客",
+          "authorAvatar": "",
+          "content": "這部是有流言嗎",
+          "createdAt": "2025-03-02T03:44:42.739Z",
+          "replies": [
+            {
+              "id": "reply-1740887945912",
+              "author": "happy1234",
+              "content": "測試回覆留言",
+              "createdAt": "2025-03-02T03:59:05.912Z"
+            },
+            {
+              "id": "reply-1740888095953",
+              "author": "happy1234",
+              "content": "我在測試回覆會不會有提視窗",
+              "createdAt": "2025-03-02T04:01:35.953Z"
+            }
+          ]
+        }
+      ],
+      "createdAt": "2025-03-02T03:05:12.699Z",
+      "updatedAt": "2025-03-02T03:05:12.699Z"
+    },
+    {
+      "id": "f65b",
+      "title": "測試第四次",
+      "content": "<p>測試第四次</p><p>測試第四次</p><p>測試第四次</p><p>測試第四次</p><p><br></p>",
+      "author": "",
+      "authorAvatar": "",
+      "comments": [],
+      "createdAt": "2025-03-02T03:13:45.014Z",
+      "updatedAt": "2025-03-02T03:13:45.015Z"
+    },
+    {
+      "id": "af29",
+      "title": "測試第五次",
+      "content": "<p>看看會員帳號有沒有出現</p>",
+      "author": "",
+      "authorAvatar": "",
+      "comments": [
+        {
+          "id": "cmt-1740886972120",
+          "author": "訪客",
+          "authorAvatar": "",
+          "content": "測試留言",
+          "createdAt": "2025-03-02T03:42:52.120Z",
+          "replies": []
+        }
+      ],
+      "createdAt": "2025-03-02T03:24:14.963Z",
+      "updatedAt": "2025-03-02T03:24:14.963Z"
+    },
+    {
+      "id": "c9ae",
+      "title": "測試第六次的標題有沒有被編輯成功",
+      "content": "<p>測試會員帳號有沒有顯示</p>",
+      "author": "happy1234",
+      "authorAvatar": "",
+      "comments": [],
+      "createdAt": "2025-03-02T03:27:06.685Z",
+      "updatedAt": "2025-03-02T03:36:25.878Z"
     }
   ]
 }

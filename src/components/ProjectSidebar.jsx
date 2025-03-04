@@ -1,6 +1,21 @@
 import PropTypes from "prop-types";
 
-const ProjectSidebar = ({ activeSection, setActiveSection, investorName }) => {
+const ProjectSidebar = ({ activeSection, setActiveSection, projectName }) => {
+
+  const sectionTitles = {
+    introduction: "項目簡介",
+    team: "團隊",
+    swot: "SWOT 分析",
+    market: "市場規模",
+    product: "產品",
+    compete: "競爭產品",
+    model: "商業模式",
+    entrepreneur: "創業者資訊",
+    photo: "照片參考",
+    evaluate: "創業者評價"
+  };
+
+  
   return (
     <>
       {/* 電腦版導覽列 */}
@@ -70,25 +85,14 @@ const ProjectSidebar = ({ activeSection, setActiveSection, investorName }) => {
         >
           <div className="d-flex align-items-center text-gray-100 fs-5">
             <img src="/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
-            <p className="ps-1 fw-bold">
-              {activeSection === "introduction" && "項目簡介"}
-              {activeSection === "team" && "團隊"}
-              {activeSection === "swot" && "SWOT 分析"}
-              {activeSection === "market" && "市場規模"}
-              {activeSection === "product" && "產品"}
-              {activeSection === "compete" && "競爭產品"}
-              {activeSection === "model" && "商業模式"}
-              {activeSection === "entrepreneur" && "創業者資訊"}
-              {activeSection === "photo" && "照片參考"}
-              {activeSection === "evaluate" && "創業者評價"}
-            </p>
+            <p className="ps-1 fw-bold">{sectionTitles[activeSection] || "選擇分類"}</p>
           </div>
         </button>
 
         {/* Offcanvas 側邊欄 */}
         <div className="offcanvas offcanvas-start bg-gray-1000 opacity-75" id="offcanvasSidebar">
           <div className="offcanvas-header border-bottom">
-            <h5 className="text-primary-600 fw-bold fs-5">{investorName}</h5>
+            <h5 className="text-primary-600 fw-bold fs-5">{projectName}</h5>
             <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
           </div>
           <div className="offcanvas-body">
@@ -194,7 +198,7 @@ const ProjectSidebar = ({ activeSection, setActiveSection, investorName }) => {
 ProjectSidebar.propTypes = {
   activeSection: PropTypes.string.isRequired,
   setActiveSection: PropTypes.func.isRequired,
-  investorName: PropTypes.string.isRequired,
+  projectName: PropTypes.string.isRequired,
 };
 
 export default ProjectSidebar;

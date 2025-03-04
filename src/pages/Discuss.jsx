@@ -1,34 +1,28 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const Discuss = () => {
-  // 模擬文章列表
-  const [articles] = useState([
-    {
-      id: 1,
-      title: "是否該放棄年薪7百萬的工作轉去創業?",
-      publishDate: "2023/7/2 22:04",
-      lastReply: "2023/8/2 16:04",
-      replies: 66,
-    },
-    {
-      id: 2,
-      title: "創業第一步該做什麼?",
-      publishDate: "2023/6/15 10:30",
-      lastReply: "2023/7/5 12:20",
-      replies: 45,
-    },
-    {
-      id: 3,
-      title: "如何找到合適的創業夥伴?",
-      publishDate: "2023/5/20 14:15",
-      lastReply: "2023/6/10 08:40",
-      replies: 78,
-    },
-  ]);
+  const [articles, setArticles] = useState([]); // 存放文章列表
+  const [loading, setLoading] = useState(true); // 讀取狀態
+  const [error, setError] = useState(null); // 錯誤狀態
+  const [hoveredArticle, setHoveredArticle] = useState(null); // 控制 hover 文章
 
-  // 控制 hover 的文章 ID
-  const [hoveredArticle, setHoveredArticle] = useState(null);
+  useEffect(() => {
+    const fetchArticles = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/articles"); // API 取得文章
+        setArticles(response.data);
+      } catch (err) {
+        setError("無法獲取文章列表，請稍後再試！");
+        console.error("API 取得文章列表失敗:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchArticles();
+  }, []);
 
   return (
     <main className="bg-green py-15">
@@ -46,38 +40,54 @@ const Discuss = () => {
         </div>
       </section>
 
+      {/* API 載入狀態 */}
+      {loading && <p className="text-center text-white">載入中...</p>}
+      {error && <p className="text-center text-danger">{error}</p>}
+
       {/* 文章列表表格 */}
-      <section className="container">
-        <table className="table table-striped table-hover">
-          <thead className="table-gray-800 table-bordered">
-            <tr className="text-center fs-5">
-              <th scope="col">標題</th>
-              <th scope="col">發佈時間</th>
-              <th scope="col">最後回覆時間</th>
-              <th scope="col">回應數</th>
-            </tr>
-          </thead>
-          <tbody className="text-center table table-sm table-gray-800">
-            {articles.map((article) => (
-              <tr key={article.id} className="tbody-text-hover align-middle">
-                <th scope="row">
-                  <Link
-                    to={`/article/${article.id}`}
-                    className={`text-decoration-none ${hoveredArticle === article.id ? "text-primary-600" : "text-white"}`}
-                    onMouseEnter={() => setHoveredArticle(article.id)}
-                    onMouseLeave={() => setHoveredArticle(null)}
-                  >
-                    {article.title}
-                  </Link>
-                </th>
-                <td>{article.publishDate}</td>
-                <td>{article.lastReply}</td>
-                <td>{article.replies}</td>
+      {!loading && !error && (
+        <section className="container">
+          <table className="table table-striped table-hover">
+            <thead className="table-gray-800 table-bordered">
+              <tr className="text-center fs-5">
+                <th scope="col">標題</th>
+                <th scope="col">發佈時間</th>
+                <th scope="col">最後回覆時間</th>
+                <th scope="col">回應數</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      </section>
+            </thead>
+            <tbody className="text-center table table-sm table-gray-800">
+              {articles.length > 0 ? (
+                articles.map((article) => (
+                  <tr key={article.id} className="tbody-text-hover align-middle">
+                    <th scope="row">
+                      <Link
+                        to={`/article/${article.id}`}
+                        className={`text-decoration-none ${
+                          hoveredArticle === article.id ? "text-primary-600" : "text-white"
+                        }`}
+                        onMouseEnter={() => setHoveredArticle(article.id)}
+                        onMouseLeave={() => setHoveredArticle(null)}
+                      >
+                        {article.title}
+                      </Link>
+                    </th>
+                    <td>{new Date(article.createdAt).toLocaleString()}</td>
+                    <td>{new Date(article.updatedAt).toLocaleString()}</td>
+                    <td>{article.comments.length}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center text-gray-400">
+                    尚無文章，趕快來發表第一篇吧！
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </section>
+      )}
     </main>
   );
 };

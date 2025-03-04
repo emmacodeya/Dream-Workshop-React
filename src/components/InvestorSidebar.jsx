@@ -1,6 +1,15 @@
 import PropTypes from "prop-types";
 
 const InvestorSidebar = ({ activeSection, setActiveSection, investorName }) => {
+  
+  const sectionTitles = {
+    autobiography: "自傳",
+    experience: "投資經歷",
+    resource: "具體相關資源",
+    photo: "照片參考",
+    evaluate: "投資人評價",
+  };
+
   return (
     <>
       {/* 電腦版導覽列 */}
@@ -60,13 +69,7 @@ const InvestorSidebar = ({ activeSection, setActiveSection, investorName }) => {
         >
           <div className="d-flex align-items-center text-gray-100 fs-5">
             <img src="/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
-            <p className="ps-1 fw-bold">
-              {activeSection === "autobiography" && "自傳"}
-              {activeSection === "experience" && "投資經歷"}
-              {activeSection === "resource" && "具體相關資源"}
-              {activeSection === "photo" && "照片參考"}
-              {activeSection === "evaluate" && "投資人評價"}
-            </p>
+            <p className="ps-1 fw-bold">{sectionTitles[activeSection] || "選擇分類"}</p>
           </div>
         </button>
 
