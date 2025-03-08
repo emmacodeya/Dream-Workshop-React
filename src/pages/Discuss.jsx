@@ -1,17 +1,22 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Pagination from "../components/Pagination"; 
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Discuss = () => {
-  const [articles, setArticles] = useState([]); // 存放文章列表
-  const [loading, setLoading] = useState(true); // 讀取狀態
-  const [error, setError] = useState(null); // 錯誤狀態
-  const [hoveredArticle, setHoveredArticle] = useState(null); // 控制 hover 文章
+  const [articles, setArticles] = useState([]); 
+  const [loading, setLoading] = useState(true); 
+  const [error, setError] = useState(null); 
+  const [hoveredArticle, setHoveredArticle] = useState(null); 
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/articles"); // API 取得文章
+        const response = await axios.get(`${API_URL}/articles`); 
         setArticles(response.data);
       } catch (err) {
         setError("無法獲取文章列表，請稍後再試！");
@@ -23,6 +28,17 @@ const Discuss = () => {
 
     fetchArticles();
   }, []);
+
+  // 計算總頁數
+  const totalPages = Math.ceil(articles.length / itemsPerPage);
+
+  // ✅ **修正這一行，確保變數名稱正確**
+  const paginatedArticles = articles.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
+  
 
   return (
     <main className="bg-green py-15">
@@ -57,8 +73,8 @@ const Discuss = () => {
               </tr>
             </thead>
             <tbody className="text-center table table-sm table-gray-800">
-              {articles.length > 0 ? (
-                articles.map((article) => (
+              {paginatedArticles.length > 0 ? (
+                paginatedArticles.map((article) => (
                   <tr key={article.id} className="tbody-text-hover align-middle">
                     <th scope="row">
                       <Link
@@ -87,6 +103,11 @@ const Discuss = () => {
             </tbody>
           </table>
         </section>
+      )}
+
+      {/* ✅ 分頁功能 */}
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
     </main>
   );

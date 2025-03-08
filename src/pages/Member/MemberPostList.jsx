@@ -4,7 +4,7 @@ import { Modal, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
-const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberPostList = () => {
   const [posts, setPosts] = useState([]);

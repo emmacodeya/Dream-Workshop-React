@@ -1,54 +1,12 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
+import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./ProjectList.scss";
-import axios from "axios";
-
-// 公司成立狀態對應表
-const statusMap = {
-    notestablished: "未成立",
-    established: "已成立"
-  };
-  
-  // 產業分類對應表 (從 `industryOptions` 來)
-  const industryMap = {
-    wholesaleretail: "批發/零售",
-    biotechnology: "生物科技",
-    internet: "網際網路相關",
-    education: "文教相關",
-    media: "大眾傳播相關",
-    travel: "旅遊/休閒/運動",
-    services: "一般服務",
-    electronics: "電子資訊/軟體/半導體相關",
-    manufacturing: "一般製造",
-    logistics: "物流/倉儲",
-    politics: "政治宗教及:福相關",
-    finance: "金融投顧:保險",
-    consulting:"法律/會計/顧問/研發",
-    design: "設計相關",
-    realestate: "建築營造/不動產相關",
-    healthcare: "醫療保健/環境衛生",
-    mining: "礦石土石採取",
-    accommodation: "住宿相關",
-    food: "餐飲"
-
-  };
-  
-  // 人數規模對應表
-  const sizeMap = {
-    one: "10人以下",
-    two: "11-50人",
-    three: "51-100人",
-    four: "101-200人",
-    five: "201-500人",
-    six: "501-1000人",
-    seven: "1001-5000人",
-    eight: "5001-10,000人",
-    nine: "10,001人以上"
-  };
 
 // 排序選項
 const sortOptions = [
@@ -59,17 +17,38 @@ const sortOptions = [
     { value: "size-asc", label: "依規模：小至大" }, 
   ];
   
+  const API_URL = import.meta.env.VITE_API_URL;
 
 const ProjectList = () => {
-  const [selectedIndustry, setSelectedIndustry] = useState("");
-  const [sortOrder, setSortOrder] = useState("default");
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [industries, setIndustries] = useState([]);
+  const [selectedIndustry, setSelectedIndustry] = useState("");
+  const [sortOrder, setSortOrder] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/projects")
+    axios.get(`${API_URL}/projects`).then((res) => {
+      setProjects(res.data);
+    });
+    
+    // 檢查是否有登入的會員
+    const storedUser = localStorage.getItem("useraccount");
+    if (!storedUser) {
+      return;
+    }
+    
+    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
+      if (res.data.length > 0) {
+        setUser(res.data[0]);
+      }
+    });
+  }, [navigate]);
+
+  useEffect(() => {
+    axios.get(`${API_URL}/projects`)
       .then((response) => {
         setProjects(response.data);
         
@@ -80,7 +59,7 @@ const ProjectList = () => {
       })
       .catch((error) => console.error("Error fetching projects:", error));
   
-    axios.get("http://localhost:3000/industryOptions")
+    axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         setIndustries(response.data);
       })
@@ -100,12 +79,8 @@ const ProjectList = () => {
     
   };
  
-
-  
-  
-  
   useEffect(() => {
-    axios.get("http://localhost:3000/industryOptions")
+    axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const updatedIndustries = [
           { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" }, 
@@ -117,18 +92,35 @@ const ProjectList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, []);
   
-  
-  
-  
-  
-  // 收藏功能
-  const toggleLike = (id) => {
-    setFilteredProjects(prevProjects =>
-      prevProjects.map(project =>
-        project.id === id ? { ...project, liked: !project.liked } : project
-      )
-    );
+   // 切換收藏狀態
+   const toggleFavorite = async (projectId) => {
+    if (!user) {
+      alert("請先登入會員帳號");
+      navigate("/");
+      return;
+    }
+
+    const isFavorite = user.collectedProjects.includes(projectId);
+    const updatedFavorites = isFavorite
+      ? user.collectedProjects.filter((id) => id !== projectId) // 移除收藏
+      : [...user.collectedProjects, projectId]; // 新增收藏
+
+    try {
+      await axios.patch(`${API_URL}/members/${user.id}`, {
+        collectedProjects: updatedFavorites,
+      });
+      setUser((prevUser) => ({ ...prevUser, collectedProjects: updatedFavorites }));
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId ? { ...project, liked: !isFavorite } : project
+        )
+      );
+    } catch (error) {
+      console.error("更新收藏失敗", error);
+    }
   };
+
+
   
   // 排序功能
   const sizeRanking = {
@@ -192,8 +184,12 @@ const ProjectList = () => {
             <SwiperSlide key={project.id}>
               <div className="card bg-gray-800 text-center h-100">
                 <div className="popular-card-body position-relative">
-                  <button className="border-0 bg-transparent" onClick={() => toggleLike(project.id)}>
-                    <img className="favorite" src={project.liked ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"} alt="heart" />
+                  <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
+                  <img
+                    className="favorite"
+                    src={user?.collectedProjects.includes(project.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                    alt="heart"
+                  />
                   </button>
                   <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
                   <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
@@ -272,13 +268,14 @@ const ProjectList = () => {
             <h3 className="text-white fs-3 fw-bold">
             <Link to={`/project/${project.id}`} className="text-white" onClick={() => window.scrollTo(0, 0)}>{project.name}
             </Link>
-
             </h3>
-            <button onClick={() => toggleLike(project.id)} className="favorite border-0 bg-transparent">
-                <img
-                src={project.liked ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
-                alt="heart"
-                />
+            <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
+            <img
+              className="favorite"
+              src={user?.collectedProjects.includes(project.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+              alt="heart"
+            />
+
             </button>
             </div>
 
@@ -293,15 +290,15 @@ const ProjectList = () => {
                 <div className="d-flex pb-2">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">公司成立狀態</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{statusMap[project.status] || "未知"}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(statusMap, project.status)}</li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">產業分類</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{industryMap[project.industry] || project.industry}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(industryMap, project.industry)}</li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">規模</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{sizeMap[project.size] || project.size}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(sizeMap, project.size)}</li>
                     </ul>
                 </div>
                 <div className="d-flex">

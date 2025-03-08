@@ -5,6 +5,8 @@ import { Modal, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const PostArticle = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -38,7 +40,7 @@ const PostArticle = () => {
     const currentTime = new Date().toISOString();
 
     try {
-      const response = await axios.post("http://localhost:3000/articles", {
+      const response = await axios.post(`${API_URL}/articles`, {
         title,
         content,
         author: useraccount,

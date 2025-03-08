@@ -1,100 +1,126 @@
+import { useState, useEffect } from "react";
+import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Carousel } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import Pagination from "../components/Pagination"; 
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Activity = () => {
+  const [activities, setActivities] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
+
+  // 透過 API 獲取活動數據
+  useEffect(() => {
+    const fetchActivities = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/activities`);
+        setActivities(response.data);
+      } catch (error) {
+        console.error("獲取活動數據失敗:", error);
+      }
+    };
+    fetchActivities();
+  }, []);
+
+  // ✅ **修正變數名稱，確保使用 `activities` 而不是 `articles`**
+  const totalPages = Math.ceil(activities.length / itemsPerPage);
+
+  const paginatedActivities = activities.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <main className="bg-green py-15">
-      {/* 熱門活動標題 */}
-      <h2 className="text-center text-primary-600 my-8">熱門活動</h2>
-
       {/* 滿版輪播牆 */}
       <section className="w-100">
         <Carousel>
-        <Carousel.Item>
-            <img
-                src="/assets/images/卡斯柏分享會.png"
-                className="d-block w-100"
-                alt="創業分享會"
-                style={{ width: "1920px", height: "520px", minHeight: "520px", maxHeight: "520px", objectFit: "cover" }}
-            />
-        </Carousel.Item>
-          <Carousel.Item>
-            <img src="/assets/images/創夢工坊展覽會.png" className="d-block w-100" alt="創業展覽會" 
-            style={{ width: "1920px", height: "520px", minHeight: "520px", maxHeight: "520px", objectFit: "cover" }}/>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img src="/assets/images/聯誼活動.png" className="d-block w-100" alt="聯誼活動" 
-            style={{ width: "1920px", height: "520px", minHeight: "520px", maxHeight: "520px", objectFit: "cover" }}/>
-          </Carousel.Item>
+          {activities
+            .filter((event) => event.carouselImage) // 只顯示有輪播圖片的活動
+            .slice(0, 3)
+            .map((event) => (
+              <Carousel.Item key={event.id}>
+                <img
+                  src={event.carouselImage}
+                  className="d-block w-100"
+                  alt={event.title}
+                  style={{
+                    width: "1920px",
+                    height: "520px",
+                    minHeight: "520px",
+                    maxHeight: "520px",
+                    objectFit: "cover",
+                  }}
+                />
+              </Carousel.Item>
+            ))}
         </Carousel>
       </section>
 
+      {/* 熱門活動標題 */}
+      <h2 className="text-center text-primary-600 my-8">熱門活動</h2>
+
       {/* 活動列表 */}
       <section className="container pt-9">
-        {[
-          {
-            id: 1,
-            img: "/assets/images/卡斯柏分享會.png",
-            title: "卡斯柏創業分享會",
-            date: "2024年9月15日",
-            time: "14:00-17:00",
-            location: "高雄市鹽埕區七賢三路123號2樓",
-            link: "/activity-casper",
-          },
-          {
-            id: 2,
-            img: "/assets/images/創夢工坊展覽會.png",
-            title: "創夢工坊展覽會",
-            date: "2024年9月20日",
-            time: "14:00-17:00",
-            location: "新北市板橋區中正路120號",
-            link: "/activity",
-          },
-          {
-            id: 3,
-            img: "/assets/images/聯誼活動.png",
-            title: "與投資人來一場聯誼活動吧",
-            date: "2024年9月15日",
-            time: "14:00-17:00",
-            location: "新北市板橋區中正路120號",
-            link: "/activity",
-          },
-          {
-            id: 4,
-            img: "/assets/images/創夢工坊展覽會915.png",
-            title: "創夢工坊展覽會",
-            date: "2024年9月15日",
-            time: "14:00-17:00",
-            location: "新北市板橋區中正路120號",
-            link: "/activity",
-          },
-        ].map((event) => (
-          <div className="card mb-4" key={event.id}>
-            <div className="row g-0 d-flex align-items-center bg-gray-800">
-              <div className="col-md-3">
-              <img src={event.img} className="img-fluid rounded-start w-100" alt={event.title} />
+        {paginatedActivities.map((event) => (  // ✅ **這裡改用 paginatedActivities**
+          <div className="card mb-4 border-0" key={event.id} style={{ backgroundColor: "#1E1E1E" }}>
+            <div className="row g-0 d-flex align-items-center bg-gray-800 rounded">
+              <div className="col-md-4 p-5">
+                <img
+                  src={event.image}
+                  className="img-fluid rounded-start w-100"
+                  alt={event.title}
+                  style={{ height: "100%", objectFit: "cover" }}
+                />
               </div>
-              <div className="col-md-6">
+              <div className="col-md-8">
                 <div className="card-body text-white">
-                  <h2 className="card-title text-primary-1000 fw-bold">{event.title}</h2>
+                  <div className=" d-flex align-items-center justify-content-between border-bottom border-gray-600">
+                    <h2 className="card-title text-primary-600 fw-bold">{event.title}</h2>
+                    <p className="text-gray-400 fs-6">
+                      報名剩餘名額 <span className="fw-bold">{event.remainingSlots} 位</span>
+                    </p>
+                  </div>
+                  
+                  <ul className="fs-5 list-unstyled d-flex pb-2 pt-4">
+                    <li className="pe-8 ">
+                      <span className="text-gray-400">日期</span> <br />
+                      <span className="fw-bold">{event.date}</span>
+                    </li>
+                    <li>
+                      <span className="text-gray-400">時間</span> <br />
+                      <span className="fw-bold">{event.time}</span>
+                    </li>
+                   </ul>
+                 
                   <ul className="fs-5 list-unstyled">
-                    <li>日期：{event.date}</li>
-                    <li>時間：{event.time}</li>
-                    <li>地點：{event.location}</li>
+                  <li>  
+                      <span className="text-gray-400">地點</span> <br />
+                      <span className="fw-bold">{event.location}</span>
+                    </li>
                   </ul>
+                  <div className="d-flex justify-content-end">
+                    {/* 查看詳情按鈕 */}
+                    <Link to={`/activity/${event.id}`} className="btn btn-primary-600 px-4 py-2 fw-bold">
+                      查看詳情
+                    </Link>
+                  </div>
                 </div>
               </div>
-              <div className="col-md-3 d-flex flex-column flex-lg-row justify-content-center">
-                <Link to={event.link} className="btn btn-primary-600 py-lg-3 py-2 px-4">
-                  查看詳情
-                </Link>
-              </div>
+             
             </div>
           </div>
         ))}
       </section>
+
+      {/* ✅ **修正分頁功能，確保 `totalPages > 1` 才顯示 Pagination */}
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
     </main>
   );
 };

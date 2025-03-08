@@ -1,30 +1,13 @@
 import { useState, useEffect } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { industryMap, translate } from "../../utils/mappings"; 
 import axios from "axios";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./InvestorList.scss";
 
-// 產業分類對應表
-const industryMap = {
-  "wholesaleretail": "批發/零售",
-  "biotechnology": "生物科技",
-  "internet": "網際網路相關",
-  "education": "文教相關",
-  "media": "大眾傳播相關",
-  "travel": "旅遊/休閒/運動",
-  "services": "一般服務",
-  "electronics": "電子資訊/軟體/半導體相關",
-  "manufacturing": "一般製造",
-  "logistics": "物流/倉儲",
-  "finance": "金融投顧/保險",
-  "design": "設計相關",
-  "realestate": "建築營造/不動產相關",
-  "healthcare": "醫療保健/環境衛生",
-  "food": "餐飲"
-};
 
 // 排序選項
 const sortOptions = [
@@ -33,6 +16,8 @@ const sortOptions = [
   { value: "capital-asc", label: "依資本額：低至高" }
 ];
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 const InvestorList = () => {
   const [investors, setInvestors] = useState([]);
   const [filteredInvestors, setFilteredInvestors] = useState([]);
@@ -40,11 +25,31 @@ const InvestorList = () => {
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    axios.get(`${API_URL}/investors`).then((res) => {
+      setInvestors(res.data);
+    });
+    
+    // 檢查是否有登入的會員
+    const storedUser = localStorage.getItem("useraccount");
+    if (!storedUser) {
+      return;
+    }
+    
+    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
+      if (res.data.length > 0) {
+        setUser(res.data[0]);
+      }
+    });
+  }, [navigate]);
 
 
   useEffect(() => {
     // 獲取投資人資料
-    axios.get("http://localhost:3000/investors")
+    axios.get(`${API_URL}/investors`)
       .then((response) => {
         setInvestors(response.data);
         setFilteredInvestors(response.data);
@@ -52,7 +57,7 @@ const InvestorList = () => {
       .catch((error) => console.error("Error fetching investors:", error));
 
     // 獲取產業分類
-    axios.get("http://localhost:3000/industryOptions")
+    axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const updatedIndustries = [
           { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" },
@@ -66,14 +71,16 @@ const InvestorList = () => {
   // 產業篩選
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
-    let filtered = industryValue
-      ? investors.filter((investor) =>
-          investor.industry.includes(industryValue)
-        )
-      : investors;
-    setFilteredInvestors(filtered);
+    setFilteredInvestors(
+      industryValue
+        ? investors.filter((investor) =>
+            Array.isArray(investor.industry)
+              ? investor.industry.includes(industryValue)
+              : investor.industry === industryValue
+          )
+        : investors
+    );
   };
-
  // 排序功能
  const handleSortChange = (order) => {
   setSortOrder(order);
@@ -104,10 +111,39 @@ const truncateText = (text, maxLength = 20) => {
   return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 };
 
-// 轉換偏好領域 (多個產業) 為中文名稱
-const formatIndustryNames = (industryArray) => {
-  return industryArray.map(industry => industryMap[industry] || industry).join("，");
+// // 轉換偏好領域 (多個產業) 為中文名稱
+// const formatIndustryNames = (industryArray) => {
+//   return industryArray.map(industry => industryMap[industry] || industry).join("，");
+// };
+
+// 切換投資人收藏狀態
+const toggleFavorite = async (investorId) => {
+  if (!user) {
+    alert("請先登入會員帳號");
+    navigate("/");
+    return;
+  }
+
+  const isFavorite = user.collectedInvestors.includes(investorId);
+  const updatedFavorites = isFavorite
+    ? user.collectedInvestors.filter((id) => id !== investorId) 
+    : [...user.collectedInvestors, investorId]; 
+
+  try {
+    await axios.patch(`${API_URL}/members/${user.id}`, {
+      collectedInvestors: updatedFavorites,
+    });
+    setUser((prevUser) => ({ ...prevUser, collectedInvestors: updatedFavorites }));
+    setInvestors((prevInvestors) =>
+      prevInvestors.map((investor) =>
+        investor.id === investorId ? { ...investor, liked: !isFavorite } : investor
+      )
+    );
+  } catch (error) {
+    console.error("更新收藏失敗", error);
+  }
 };
+
 
 
   return (
@@ -125,15 +161,23 @@ const formatIndustryNames = (industryArray) => {
             <SwiperSlide key={investor.id}>
               <div className="card bg-gray-800 text-center h-100">
                 <div className="popular-card-body position-relative">
-                  <img className="company-logo mb-3 w-25" src={investor.avatar} alt={investor.name} />
+                <button
+                  className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
+                >
+                  <img className="favorite" src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                   alt="heart"
+                  />
+                </button>
+                  <img className="company-logo mb-3 w-25"
+                  src={investor.avatar} alt={investor.name} />
                   <h4 className="mb-3 popular-card-title text-primary-600">{investor.name}</h4>
                   <h5 className="text-gray-200">偏好投資領域</h5>
-                  <h6 className="fw-bold text-gray-100">{formatIndustryNames(investor.industry)}</h6>
+                  <h6 className="fw-bold text-gray-100"> {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}</h6>
                   <p>{truncateText(investor.introduction)}</p>
                 </div>
                 <div className="btn btn-gray-600 py-3">
                   <p className="fs-5">資本額</p>
-                  <p className="fs-5 fw-bold text-white">NT$ {investor.capital}</p>
+                  <p className="fs-5 fw-bold text-white">{investor.capital}</p>
                 </div>
               </div>
             </SwiperSlide>
@@ -171,7 +215,7 @@ const formatIndustryNames = (industryArray) => {
             <button 
                 className="btn btn-dark dropdown-toggle" 
                 type="button" 
-                onClick={toggleDropdown}  // ✅ 手動切換開關
+                onClick={toggleDropdown} 
                 aria-expanded={isDropdownOpen}
               >
                 {sortOptions.find(option => option.value === sortOrder)?.label || "排序方式"}
@@ -199,10 +243,18 @@ const formatIndustryNames = (industryArray) => {
                 <h3 className="text-white fs-3 fw-bold">
                   <Link to={`/investor/${investor.id}`} className="text-white">{investor.name}</Link>
                 </h3>
+                <button
+                  className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
+                >
+                  <img className="favorite " src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                    alt="heart"
+                  />
+                </button>
               </div>
               <div className="row g-0 created-body">
                 <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
-                  <img src={investor.avatar} className="img-fluid rounded-start" alt={investor.name} />
+                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar"
+                  alt={investor.name} />
                 </div>
                 <div className="col-md-8">
                   {/* 電腦版 */}
@@ -210,7 +262,7 @@ const formatIndustryNames = (industryArray) => {
             <div className="d-flex pb-2">
                 <ul className="list-unstyled">
                 <li className="fs-5 text-gray-400 fw-bold">偏好領域</li>
-                <li className="fs-5 text-primary-400 fw-bold">{formatIndustryNames(investor.industry)}</li>
+                <li className="fs-5 text-primary-400 fw-bold"> {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}</li>
                 </ul>
                 <ul className="list-unstyled ps-12">
                 <li className="fs-5 text-gray-400 fw-bold">資金規模</li>

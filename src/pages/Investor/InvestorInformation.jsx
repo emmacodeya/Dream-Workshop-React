@@ -5,7 +5,7 @@ import InvestorSidebar from "../../components/InvestorSidebar";
 import InvestorEvaluate from "./InvestorEvaluate"; 
 
 
-const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const InvestorInformation = () => {
   const { id } = useParams();
@@ -71,7 +71,7 @@ const InvestorInformation = () => {
                     ))}
                   </h5>
                   <h2 className="fs-2 m-1 text-light">
-                    資金規模：NT$ {parseInt(investor.capital).toLocaleString()}
+                    資金規模： {parseInt(investor.capital).toLocaleString()}
                   </h2>
                   <p className="m-1 fs-6 text-gray-400">
                     聯絡方式：{investor.email} | {investor.mobile}
@@ -129,9 +129,7 @@ const InvestorInformation = () => {
             )}
 
             {/* 投資人評價 */}
-            {activeSection === "evaluate" && (
-              <InvestorEvaluate />
-            )}
+            {activeSection === "evaluate" && <InvestorEvaluate investorId={id} />}
           </div>
         </div>
       </div>
