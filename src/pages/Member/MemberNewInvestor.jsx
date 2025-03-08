@@ -189,7 +189,7 @@ const MemberNewInvestor = ({ useraccount }) => {
 
         {/* 照片區 */}
       <div className="py-8">
-        <h5 className="text-white">上傳照片參考</h5>
+        <h5 className="text-white py-4">上傳照片參考</h5>
         <div className="d-flex flex-md-row flex-column align-items-center">
           {["referencePhoto1", "referencePhoto2"].map((key, index) => (
             <div key={index} className="custom-upload-image me-3" style={{ width: "250px", height: "250px", border: "2px solid #ccc", backgroundImage: `url(${images[key]})` }}>
@@ -202,11 +202,11 @@ const MemberNewInvestor = ({ useraccount }) => {
       
 
         {/* 按鈕區 */}
-        <div className="d-flex justify-content-around pt-8">
-          <button type="button" className="btn btn-lg btn-outline-danger fw-bold" onClick={handleClear}>
+        <div className="d-flex justify-content-center pt-8">
+          <button type="button" className="btn btn-lg btn-outline-danger fw-bold mx-3" onClick={handleClear}>
             <i className="bi bi-x-circle"></i> 清除
           </button>
-          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold">
+          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold mx-3">
             <i className="bi bi-save"></i> 儲存變更
           </button>
         </div>

@@ -52,11 +52,11 @@ const InvestorInformation = () => {
                 />
               </div>
 
-              {/* 投資人資訊 */}
+              {/* 右側投資人資訊 */}
               <div className="col-lg-8">
                 <div className="card-body ps-5">
                   <div className="d-flex align-items-center">
-                    <h1 className="fs-1 text-primary-600 fw-bold m-1">
+                    <h1 className="fs-1 text-primary-600 fw-bold my-5">
                       {investor.name} <i className="bi bi-clipboard-check fs-3"></i>
                     </h1>
                   </div>
@@ -70,7 +70,7 @@ const InvestorInformation = () => {
                       </span>
                     ))}
                   </h5>
-                  <h2 className="fs-2 m-1 text-light">
+                  <h2 className="fs-2 mx-1 my-5 text-light">
                     資金規模： {parseInt(investor.capital).toLocaleString()}
                   </h2>
                   <p className="m-1 fs-6 text-gray-400">
