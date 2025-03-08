@@ -108,7 +108,7 @@ const MemberNewProjects = () => {
     <div className="container mt-5">
       <h3 className="text-gray-400 py-8 fw-bolder">基本資料</h3>
 
-      <div className="d-sm-flex">
+      <div className="d-sm-flex m-5">
         {/* 公司商標上傳 */}
         {["companyLogo", "companyImage"].map((key, index) => (
           <div key={index} className="me-4">
@@ -169,8 +169,11 @@ const MemberNewProjects = () => {
               {errors.projectName && <p className="text-danger">{errors.projectName.message}</p>}
       </div>
 
-      <div className="col-xl-3">
-        <label htmlFor="contactPerson" className="form-label text-white fs-5">聯絡人</label>
+      <div className="col-xl-3 ">
+        <label htmlFor="contactPerson" className="form-label text-white fs-5">聯絡人
+        <br />
+          <span className="fs-6 text-gray-400">請填入真實姓名</span>
+          </label>
         <input
           {...register("contactPerson", { required: "請填寫聯絡人" })}
           className={`form-control inputField ${errors.contactPerson ? "is-invalid" : ""}`}
@@ -179,7 +182,10 @@ const MemberNewProjects = () => {
       </div>
 
       <div className="col-xl-3">
-    <label htmlFor="contactPhone" className="form-label text-white fs-5">聯絡電話</label>
+    <label htmlFor="contactPhone" className="form-label text-white fs-5">聯絡電話
+    <br />
+          <span className="fs-6 text-gray-400">請填入本人行動電話號碼</span>
+    </label>
     <input
             {...register("contactPhone", {
               required: "請填寫聯絡電話",
@@ -215,9 +221,9 @@ const MemberNewProjects = () => {
           {errors.address && <p className="text-danger">{errors.address.message}</p>}
         </div>
 
-        <div className="col-xl-4">
+        <div className="col-xl-6">
   <label htmlFor="businessStatus" className="form-label text-white fs-5">
-    公司成立狀態 <span className="fs-6 text-gray-400 ps-1">如為已設立公司,需再填寫公司統一編號。</span>
+    公司成立狀態 <span className="fs-6 text-gray-400 ps-1">如已設立公司,需填寫公司統一編號</span>
   </label>
   <select
             {...register("businessStatus", { required: "請選擇公司成立狀態" })}
@@ -230,7 +236,7 @@ const MemberNewProjects = () => {
           {errors.businessStatus && <p className="text-danger">{errors.businessStatus.message}</p>}
 </div>
 
-<div className="col-xl-6 pt-xl-6">
+<div className="col-xl-6">
   <label htmlFor="companyNumber" className="form-label text-white fs-5">
     統一編號 <span className="fs-6 text-gray-400 ps-1">我們將會審核此統編,請正確填寫</span>
   </label>
@@ -251,7 +257,7 @@ const MemberNewProjects = () => {
 </div>
 
 
-<div className="col-xl-4">
+<div className="col-xl-3">
   <label htmlFor="industry" className="form-label text-white fs-5">產業分類</label>
   <select
             {...register("industry", { required: "請選擇產業分類" })}
@@ -288,7 +294,7 @@ const MemberNewProjects = () => {
 </div>
 
 
-<div className="col-xl-2">
+<div className="col-xl-3">
   <label htmlFor="capital" className="form-label text-white fs-5">資本額</label>
   <input
     type="text"
@@ -309,7 +315,7 @@ const MemberNewProjects = () => {
   {errors.capital && <p className="text-danger">{errors.capital.message}</p>}
 </div>
 
-<div className="col-xl-2">
+<div className="col-xl-3">
   <label htmlFor="fundraising" className="form-label text-white fs-5">募資金額</label>
   <input
     type="text"
@@ -373,11 +379,11 @@ const MemberNewProjects = () => {
 
 
       {/* 按鈕區 */}
-      <div className="d-flex justify-content-around pt-8">
-          <button type="button" className="btn btn-lg btn-outline-danger fw-bold" onClick={handleClear}>
+      <div className="d-flex justify-content-center pt-8">
+          <button type="button" className="btn btn-lg btn-outline-danger fw-bold mx-3" onClick={handleClear}>
             <i className="bi bi-x-circle"></i> 清除
           </button>
-          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold">
+          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold mx-3">
             <i className="bi bi-save"></i> 儲存變更
           </button>
         </div>

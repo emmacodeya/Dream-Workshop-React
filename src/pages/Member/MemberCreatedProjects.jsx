@@ -267,7 +267,7 @@ const handleImageUpload = async (e) => {
   return (
     <div className="container mt-5">
       {projects.map((project) => (
-        <div key={project.id} className="card bg-gray-800 mt-lg-8 mt-5">
+        <div key={project.id} className="card bg-gray-800 mt-lg-8 mt-5 p-5">
           <div className="d-flex justify-content-between created-title">
             <div className="d-flex align-items-center">
               <h3 className="text-white fs-3 fw-bold ms-lg-10">{project.name}</h3>

@@ -174,46 +174,58 @@ const ProjectList = () => {
   return (
     <div className="bg-green">
       <div className="container py-lg-15">
-        <h2 className="fw-bold text-center text-primary-600 mb-5">熱門創業項目</h2>
-        <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
-          1296: { slidesPerView: 4 },
-          768: { slidesPerView: 2 },
-          375: { slidesPerView: 1.5 }
-        }}>
-          {projects.map((project) => (
-            <SwiperSlide key={project.id}>
-              <div className="card bg-gray-800 text-center h-100">
-                <div className="popular-card-body position-relative">
-                  <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
-                  <img
-                    className="favorite"
-                    src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                    alt="heart"
-                  />
-                  </button>
-                  <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
-                  <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
-                  <p>{project.description}</p>
-                </div>
-                <a href="#" className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資金規模</p>
-                  <p className="fs-5 fw-bold text-white">{project.funding}</p>
-                </a>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">熱門創業項目</h2>
+        <Swiper 
+          modules={[Navigation]} 
+          navigation 
+          slidesPerView={4} 
+          spaceBetween={16} 
+          breakpoints={{
+            1296: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            375: { slidesPerView: 1.5 }
+          }}
+          >
+  {projects.map((project) => (
+    <SwiperSlide 
+    key={project.id}>
+      <div className="card bg-gray-800 text-center d-flex flex-column h-100">
+        <div className="popular-card-body position-relative flex-grow-1">
+          <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
+            <img
+              className="favorite"
+              src={user?.collectedProjects.includes(project.id) ? 
+                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : 
+                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              alt="heart"
+            />
+          </button>
+          <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
+          <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
+          <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
+          <p>{project.description}</p>
+        </div>
+        <a href="#" className="btn btn-gray-600 py-3">
+          <p className="fs-5">資金規模</p>
+          <p className="fs-5 fw-bold text-white">{project.funding}</p>
+        </a>
+      </div>
+    </SwiperSlide> 
+  ))}
+</Swiper>
 
-        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1">篩選產業</h2>
+
+        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1 mt-5">篩選產業</h2>
         <p className="text-gray-200 text-center fs-4 mb-lg-8">快速找尋您的投資標的</p>
         <div className="row row-cols-lg-5 row-cols-md-2 row-cols-2 g-lg-3 g-1">
         {displayedIndustries.map((industry) => (
         <div className="col" key={industry.value}>
           <button
-            className={`card industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+            className={`card industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
+              width:250,
+              height:70,
               backgroundImage: `url(${industry.imgSrc})`, 
               backgroundSize: "cover", 
               backgroundRepeat: "no-repeat" 

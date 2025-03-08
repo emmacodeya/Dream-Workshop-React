@@ -125,7 +125,7 @@ const MemberArticleMessage = () => {
                 <td>{comment.content}</td>
                 <td>{new Date(comment.createdAt).toLocaleString()}</td>
                 <td>
-                  <Button variant="outline-primary" onClick={() => handleOpenModal(comment.id)}>
+                  <Button variant="outline-primary-600" onClick={() => handleOpenModal(comment.id)}>
                     回覆
                   </Button>
                 </td>
@@ -148,9 +148,9 @@ const MemberArticleMessage = () => {
           ></textarea>
           {contentError && <div className="text-danger mt-2">請輸入內容</div>}
         </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="secondary" onClick={handleCloseModal}>取消</Button>
-          <Button variant="primary" onClick={handleReplySubmit}>送出</Button>
+        <Modal.Footer className="border-0 bg-gray-1000 d-flex justify-content-between">
+          <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={handleCloseModal}>取消</Button>
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleReplySubmit}>送出</Button>
         </Modal.Footer>
       </Modal>
       {/* 提示視窗 */}

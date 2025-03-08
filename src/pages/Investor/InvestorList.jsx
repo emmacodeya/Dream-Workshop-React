@@ -149,7 +149,7 @@ const toggleFavorite = async (investorId) => {
   return (
     <div className="bg-green">
       <div className="container py-lg-15">
-        <h2 className="fw-bold text-center text-primary-600 mb-5">推薦投資人</h2>
+        <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">推薦投資人</h2>
 
         {/* 投資人輪播 */}
         <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
@@ -185,7 +185,7 @@ const toggleFavorite = async (investorId) => {
         </Swiper>
 
         {/* 產業篩選 */}
-        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1">篩選產業</h2>
+        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1 mt-5">篩選產業</h2>
         <p className="text-gray-200 text-center fs-4 mb-lg-8">快速找尋您的投資標的</p>
         <div className="row row-cols-lg-5 row-cols-md-2 row-cols-2 g-lg-3 g-1">
         {industries.map((industry) => (
@@ -194,6 +194,8 @@ const toggleFavorite = async (investorId) => {
                 className={`card industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
                 onClick={() => handleIndustryChange(industry.value)}
                 style={{ 
+                  width:250,
+                  height:70,
                   backgroundImage: `url(${industry.imgSrc})`, 
                   backgroundSize: "cover", 
                   backgroundRepeat: "no-repeat" 

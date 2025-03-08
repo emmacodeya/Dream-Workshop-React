@@ -102,8 +102,8 @@ const MemberPostArticle = () => {
       </div>
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">{modalMessage}</Modal.Body>
-        <Modal.Footer className="border-0 text-center">
-          <Button variant="primary" onClick={() => setShowModal(false)}>確認</Button>
+        <Modal.Footer className="border-0 bg-gray-1000 text-center d-flex justify-content-center p-2">
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={() => setShowModal(false)}>確認</Button>
         </Modal.Footer>
       </Modal>
     </div>
