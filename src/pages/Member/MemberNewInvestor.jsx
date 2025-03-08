@@ -208,6 +208,8 @@ const MemberNewInvestor = ({ useraccount }) => {
           </button>
           <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold mx-3">
             <i className="bi bi-save"></i> 儲存變更
+
+            
           </button>
         </div>
       </form>
