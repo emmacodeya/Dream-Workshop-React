@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberInfo = () => {
-  const [useraccount, setUseraccount] = useState("");
+  const [useraccount, setUseraccount] = useState(localStorage.getItem("useraccount") || "");
   const [preview, setPreview] = useState(null);
   const [gender, setGender] = useState(""); 
-  const userId = localStorage.getItem("userId");
 
   const {
     register,
@@ -17,50 +19,51 @@ const MemberInfo = () => {
 
   
   useEffect(() => {
-    if (!userId) {
+    if (!useraccount) {
       console.error("請登入帳號");
       return;
     }
-  
-    fetch(`http://localhost:3000/members/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setUseraccount(data.useraccount || "");
-          setGender(data.gender || "");
-          setPreview(data.avatar ? data.avatar : ""); 
-          setValue("name", data.name);
-          setValue("email", data.email);
-          setValue("mobile", data.mobile);
-          setValue("gender", data.gender || "");
-        }
-      })
-      .catch((error) => console.error("獲取會員資料失敗:", error));
-  }, [userId, setValue]);
+    axios.get(`${API_URL}/members?useraccount=${useraccount}`)
+    .then((res) => {
+      if (res.data.length > 0) {
+        const userData = res.data[0]; // 取第一筆符合的會員資料
+        setUseraccount(userData.useraccount || "");
+        setGender(userData.gender || "");
+        setPreview(userData.avatar ? userData.avatar : ""); 
+        setValue("name", userData.name);
+        setValue("email", userData.email);
+        setValue("mobile", userData.mobile);
+        setValue("gender", userData.gender || "");
+      } else {
+        console.error("查無此會員");
+      }
+    })
+    .catch((error) => console.error("獲取會員資料失敗:", error));
+}, [useraccount, setValue]);
 
   // 提交表單
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`http://localhost:3000/members/${userId}`, { 
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: data.name,
-          email: data.email,
-          mobile: data.mobile,
-          gender: gender,
-          avatar: preview
-        })
+      const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+      if (res.data.length === 0) {
+        alert("無法找到該會員");
+        return;
+      }
+
+      const memberId = res.data[0].id; // 取得會員 ID 以進行更新
+
+      await axios.patch(`${API_URL}/members/${memberId}`, {
+        name: data.name,
+        email: data.email,
+        mobile: data.mobile,
+        gender: gender,
+        avatar: preview
       });
 
-      if (response.ok) {
-        alert("會員資料更新成功！");
-      } else {
-        alert("更新失敗，請再試一次！");
-      }
+      alert("會員資料更新成功！");
     } catch (error) {
-      console.error("錯誤:", error);
-      alert("發生錯誤，請稍後再試！");
+      console.error("更新失敗:", error);
+      alert("更新失敗，請稍後再試！");
     }
   };
   

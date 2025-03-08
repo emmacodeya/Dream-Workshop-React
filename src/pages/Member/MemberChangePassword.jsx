@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberChangePassword = () => {
-  const userId = "1"; // 目前寫死測試用，未來請改為動態取得
+  const useraccount = localStorage.getItem("useraccount") || "";
 
   const {
     register,
@@ -26,10 +29,17 @@ const MemberChangePassword = () => {
     }
 
     try {
-      const res = await fetch(`http://localhost:3000/members/${userId}`);
-      const userData = await res.json();
+      const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+      
+      if (res.data.length === 0) {
+        alert("無法找到該會員");
+        return;
+      }
 
-      if (!userData || !userData.password) {
+      const userData = res.data[0]; // 取得會員資訊
+      const memberId = userData.id; // 取得會員 ID
+
+      if (!userData.password) {
         alert("無法獲取使用者資訊");
         return;
       }
@@ -39,18 +49,12 @@ const MemberChangePassword = () => {
         return;
       }
 
-      const updateRes = await fetch(`http://localhost:3000/members/${userId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password: data.newPassword }),
+      await axios.patch(`${API_URL}/members/${memberId}`, {
+        password: data.newPassword,
       });
 
-      if (updateRes.ok) {
-        alert("密碼更新成功！");
-        window.location.reload();
-      } else {
-        alert("密碼更新失敗");
-      }
+      alert("密碼更新成功！");
+      window.location.reload();
     } catch (error) {
       alert("發生錯誤，請稍後再試");
       console.error(error);

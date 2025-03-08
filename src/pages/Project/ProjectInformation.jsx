@@ -4,7 +4,7 @@ import axios from "axios";
 import ProjectSidebar from "../../components/ProjectSidebar";
 import ProjectEvaluate from "./ProjectEvaluate"; 
 
-const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const ProjectInformation = () => {
   const { id } = useParams();
@@ -119,7 +119,13 @@ const ProjectInformation = () => {
         </div>
 
         {/* 側邊導航 */}
-        <ProjectSidebar activeSection={activeSection} setActiveSection={setActiveSection} />
+        {project && (
+        <ProjectSidebar 
+          projectName={project.name || "未命名專案"} 
+          activeSection={activeSection} 
+          setActiveSection={setActiveSection} 
+        />
+      )}
 
         {/* 內容區域 */}
         <div className="row">
@@ -154,7 +160,8 @@ const ProjectInformation = () => {
               </div>
             )}
 
-            {activeSection === "evaluate" && <ProjectEvaluate />}
+            {activeSection === "evaluate" && <ProjectEvaluate projectId={id} />}
+
           </div>
         </div>
       </div>

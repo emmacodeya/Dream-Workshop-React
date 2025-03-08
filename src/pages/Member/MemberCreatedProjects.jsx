@@ -3,34 +3,17 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom"; 
+import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 
 
-const API_URL = "http://localhost:3000";
+const API_URL = import.meta.env.VITE_API_URL;
 
-
-const statusMap = {
-  "notestablished": "未成立",
-  "established": "已成立"
-};
-
-const sizeMap = {
-  "one": "10 人以下",
-  "two": "11-50 人",
-  "three": "51-100 人",
-  "four": "101-200 人",
-  "five": "201-500 人",
-  "six": "501-1000 人",
-  "seven": "1001-5000 人",
-  "eight": "5001-10,000 人",
-  "nine": "10,001 人以上"
-};
 
 
 const MemberCreatedProjects = ({ useraccount }) => {
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState(null);
   const [industryOptions, setIndustryOptions] = useState([]);
-  const [industryMap, setIndustryMap] = useState({}); 
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const navigate = useNavigate(); 
   const [companyLogo, setCompanyLogo] = useState("");
@@ -56,24 +39,14 @@ const MemberCreatedProjects = ({ useraccount }) => {
           { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" },
           ...response.data,
         ]);
-  
-        const industryMapping = response.data.reduce((acc, item) => {
-          acc[item.value] = item.label;
-          return acc;
-        }, {});
-        setIndustryMap(industryMapping);
       } catch (error) {
         console.error("獲取產業分類失敗", error);
       }
     };
-  
-  
     fetchProjects();
     fetchIndustries();
   }, [useraccount]);
 
-   
-  
 
  // 刪除專案
  const handleDelete = async (id) => {
@@ -108,31 +81,27 @@ const MemberCreatedProjects = ({ useraccount }) => {
       );
   
       const projectData = projectRes.data;
-      setValue("name", projectData.name);
-      setValue("industry", projectData.industry || "");
-      setValue("capital", projectData.capital);
-      setValue("funding", projectData.funding);
-      setValue("contactPerson", projectData.contactPerson || ""); 
-      setValue("contactPhone", projectData.contactPhone || ""); 
-      setValue("website", projectData.website || ""); 
-      setValue("companyNumber", projectData.companyNumber || ""); 
-      setValue("description", projectData.description || ""); 
-      setValue("address", projectData.address || ""); 
-      setValue("size", projectData.size || ""); 
-      setValue("companyLogo", projectData.companyLogo || "");
-      setCompanyLogo(projectData.companyLogo || "");
-      setValue("companyImage", projectData.companyImage || "");
-      setCompanyImage(projectData.companyImage || ""); 
-      setValue("strengths", projectData.swot?.strengths || "");
-      setValue("weaknesses", projectData.swot?.weaknesses || "");
-      setValue("opportunities", projectData.swot?.opportunities || "");
-      setValue("threats", projectData.swot?.threats || "");
-      setValue("content", projectData.content || "");
-      setValue("teamDescription", projectData.teamDescription || "");
-      setValue("business_model", projectData.business_model || "");
-      setValue("productDescription", projectData.productDescription || "");
-      setValue("competeDescription", projectData.competeDescription || "");
-      setValue("entrepreneurDescription", projectData.entrepreneurDescription || "");
+
+        // 定義需要設置的欄位
+        const fields = [
+          "name", "industry", "capital", "funding", "contactPerson",
+          "contactPhone", "website", "companyNumber", "description",
+          "address", "size", "companyLogo", "companyImage",
+          "content", "teamDescription", "business_model",
+          "productDescription", "competeDescription", "entrepreneurDescription"
+        ];
+
+        // 批量設置值，預設為空字串避免 undefined
+        fields.forEach(field => setValue(field, projectData[field] || ""));
+
+        // 設定 SWOT 分析的值，確保 projectData.swot 存在
+        const swotFields = ["strengths", "weaknesses", "opportunities", "threats"];
+        swotFields.forEach(field => setValue(field, projectData.swot?.[field] || ""));
+
+        // 設定圖片
+        setCompanyLogo(projectData.companyLogo || "");
+        setCompanyImage(projectData.companyImage || "");
+
       
   
       
@@ -202,29 +171,22 @@ const MemberCreatedProjects = ({ useraccount }) => {
     try {
         const projectId = selectedProject.id;
 
-        // 先取得原始資料，確保 useraccount 不變
+        // 取得完整的原始專案資料，確保所有欄位都被保留
         const projectRes = await axios.get(`${API_URL}/projects/${projectId}`);
-        const originalUserAccount = projectRes.data.useraccount;
+        const originalData = projectRes.data;  // 取得完整的原始資料
 
-        await axios.put(`${API_URL}/projects/${projectId}`, {
-          useraccount: originalUserAccount,
-          name: data.name,
-          contactPerson: data.contactPerson,
-          contactPhone: data.contactPhone,
-          website: data.website,
-          address: data.address,
-          companyNumber: data.companyNumber,
-          status: data.status,
-          industry: data.industry,
-          description: data.description,
-          size: data.size,
-          capital: data.capital,
-          funding: data.funding,
-          companyLogo: companyLogo, 
-          companyImage: companyImage,
-        });
+        // 建立更新資料物件，保留未修改的欄位
+        const updatedData = {
+            ...originalData,  // 保留所有原始欄位
+            ...data,  // 更新表單提交的欄位
+            companyLogo: companyLogo || originalData.companyLogo,  // 確保圖片不會被清空
+            companyImage: companyImage || originalData.companyImage,  // 確保圖片不會被清空
+        };
 
-        // 更新其他欄位 (如 SWOT、團隊等)
+        // 送出 PATCH 更新專案，確保 `useraccount` 和其他欄位不被刪除
+        await axios.patch(`${API_URL}/projects/${projectId}`, updatedData);
+
+        // 更新其他關聯資料 (如 SWOT、團隊等)
         const endpoints = [
             { key: "swot", fields: ["strengths", "weaknesses", "opportunities", "threats"] },
             { key: "marketSize", fields: ["content"] },
@@ -236,29 +198,32 @@ const MemberCreatedProjects = ({ useraccount }) => {
         ];
 
         await Promise.all(endpoints.map(async ({ key, fields }) => {
-          try {
-              const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
+            try {
+                const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
 
-              if (res.data.length > 0) {
-                  // **改用 PATCH 更新，確保不刪除其他欄位**
-                  const updateData = fields.reduce((obj, field) => ({ ...obj, [field]: data[field] }), {});
-                  await axios.patch(`${API_URL}/${key}/${res.data[0].id}`, updateData);
-              } else {
-                  // **確保新建資料時不會遺漏 projectId**
-                  const newData = fields.reduce((obj, field) => ({ ...obj, [field]: data[field] }), {});
-                  await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
-              }
-          } catch (error) {
-              console.error(`更新 ${key} 失敗`, error);
-          }
-      }));
+                if (res.data.length > 0) {
+                    // **改用 PATCH 更新，確保不刪除其他欄位**
+                    const updateData = {
+                        ...res.data[0],  // 保留原始資料
+                        ...fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || res.data[0][field] }), {})  // 更新必要欄位
+                    };
+                    await axios.patch(`${API_URL}/${key}/${res.data[0].id}`, updateData);
+                } else {
+                    // **確保新建資料時不會遺漏 projectId**
+                    const newData = fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || "" }), {});
+                    await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
+                }
+            } catch (error) {
+                console.error(`更新 ${key} 失敗`, error);
+            }
+        }));
 
-      alert("專案更新成功！");
-      document.querySelector("#editProjectModal .btn-close").click();
-  } catch (error) {
-      console.error("更新失敗", error);
-      alert("更新失敗，請稍後再試！");
-  }
+        alert("專案更新成功！");
+        document.querySelector("#editProjectModal .btn-close").click();
+    } catch (error) {
+        console.error("更新失敗", error);
+        alert("更新失敗，請稍後再試！");
+    }
 };
 
   
@@ -332,18 +297,18 @@ const handleImageUpload = async (e) => {
                 <div className="d-md-flex pb-md-2">
                   <ul className="list-unstyled pb-md-0 pb-1">
                     <li className="fs-5 text-gray-400 fw-bold">公司成立狀態</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{statusMap[project.status] || "未知"}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(statusMap, project.status)}</li>
                   </ul>
                   <ul className="list-unstyled pb-md-0 pb-1">
                     <li className="fs-5 text-gray-400 fw-bold">產業分類</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{industryMap[project.industry] || "未知"}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(industryMap, project.industry)}</li>
 
                   </ul>
                 </div>
                 <div className="d-md-flex pb-md-2">
                   <ul className="list-unstyled pb-md-0 pb-1">
                     <li className="fs-5 text-gray-400 fw-bold">規模</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{sizeMap[project.size] || "未知"}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(sizeMap, project.size)}</li>
                   </ul>
                   <ul className="list-unstyled pb-md-0 pb-1">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>

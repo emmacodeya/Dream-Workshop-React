@@ -8,6 +8,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "swiper/css";
 import "swiper/css/navigation";
 
+
+const API_URL = import.meta.env.VITE_API_URL;
+
 const ArticleContent = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
@@ -27,10 +30,10 @@ const ArticleContent = () => {
   useEffect(() => {
     const fetchArticle = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/articles/${id}`);
+        const res = await axios.get(`${API_URL}/articles/${id}`);
         setArticle(res.data);
 
-        const relatedRes = await axios.get("http://localhost:3000/articles");
+        const relatedRes = await axios.get(`${API_URL}/articles`);
         setRelatedArticles(relatedRes.data.filter((a) => a.id !== id));
       } catch (error) {
         console.error("找不到該文章:", error);
@@ -42,7 +45,7 @@ const ArticleContent = () => {
 
     const fetchComments = async () => {
       try {
-        const res = await axios.get(`http://localhost:3000/articles/${id}`);
+        const res = await axios.get(`${API_URL}/articles/${id}`);
         if (!res.data.comments) {
           throw new Error("此文章沒有留言");
         }
@@ -70,7 +73,7 @@ const ArticleContent = () => {
     setMessageError(false);
 
     try {
-      const res = await axios.get(`http://localhost:3000/articles/${id}`);
+      const res = await axios.get(`${API_URL}/articles/${id}`);
       const article = res.data;
 
       const newComment = {
@@ -83,7 +86,7 @@ const ArticleContent = () => {
       };
 
       const updatedComments = [...(article.comments || []), newComment];
-      await axios.patch(`http://localhost:3000/articles/${id}`, { comments: updatedComments });
+      await axios.patch(`${API_URL}/articles/${id}`, { comments: updatedComments });
       setComments(updatedComments);
       setMessage("");
       alert("留言已送出！");
@@ -104,7 +107,7 @@ const ArticleContent = () => {
     setReplyContent("");
 
     try {
-      const res = await axios.get(`http://localhost:3000/articles/${id}`);
+      const res = await axios.get(`${API_URL}/articles/${id}`);
       const article = res.data;
 
       // 找到要回覆的留言
@@ -128,7 +131,7 @@ const ArticleContent = () => {
       });
 
       // 更新 JSON Server
-      await axios.patch(`http://localhost:3000/articles/${id}`, { comments: updatedComments });
+      await axios.patch(`${API_URL}/articles/${id}`, { comments: updatedComments });
 
       setComments(updatedComments);
       setReplyContent("");
