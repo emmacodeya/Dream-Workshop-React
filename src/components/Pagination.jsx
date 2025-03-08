@@ -17,19 +17,19 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
     <nav>
       <ul className="pagination justify-content-center">
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-          <button className="page-link bg-gray-600 border-0  " onClick={handlePrev}>
+          <button className="page-link bg-transparent text-white border-0  " onClick={handlePrev}>
             上一頁
           </button>
         </li>
         {Array.from({ length: totalPages }, (_, i) => (
           <li key={i + 1} className={`page-item  ${currentPage === i + 1 ? "active" : ""}`}>
-            <button className="page-link bg-gray-600 border-0" onClick={() => onPageChange(i + 1)}>
+            <button className="page-link   bg-transparent border-0" onClick={() => onPageChange(i + 1)}>
               {i + 1}
             </button>
           </li>
         ))}
         <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-          <button className="page-link bg-gray-600 border-0" onClick={handleNext}>
+          <button className="page-link text-white bg-transparent border-0" onClick={handleNext}>
             下一頁
           </button>
         </li>

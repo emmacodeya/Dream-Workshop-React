@@ -180,30 +180,34 @@ const ProjectList = () => {
           768: { slidesPerView: 2 },
           375: { slidesPerView: 1.5 }
         }}>
-          {projects.map((project) => (
-            <SwiperSlide key={project.id}>
-              <div className="card bg-gray-800 text-center h-100">
-                <div className="popular-card-body position-relative">
-                  <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
+        {projects.map((project) => (
+          <SwiperSlide key={project.id} className="h-100">
+            <div className="card bg-gray-800 text-center h-100 d-flex flex-column">
+              {/* 內容區塊，確保佔滿可用空間 */}
+              <div className="popular-card-body position-relative flex-grow-1">
+                <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
                   <img
                     className="favorite"
                     src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
-                  </button>
-                  <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
-                  <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
-                  <p>{project.description}</p>
-                </div>
-                <a href="#" className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資金規模</p>
-                  <p className="fs-5 fw-bold text-white">{project.funding}</p>
-                </a>
+                </button>
+                <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
+                <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
+                <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
+                <p>{project.description}</p>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+
+              {/* 資金規模按鈕，固定在底部 */}
+              <a href="#" className="btn btn-gray-600 py-3 mt-auto">
+                <p className="fs-5">資金規模</p>
+                <p className="fs-5 fw-bold text-white">{project.funding}</p>
+              </a>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
+
 
         <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1">篩選產業</h2>
         <p className="text-gray-200 text-center fs-4 mb-lg-8">快速找尋您的投資標的</p>

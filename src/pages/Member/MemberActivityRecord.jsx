@@ -5,11 +5,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = "http://localhost:3000/activities";
 
 const MemberActivityRecord = () => {
-  const [ongoingActivities, setOngoingActivities] = useState([]); // 現在參加的
-  const [pastActivities, setPastActivities] = useState([]); // 過往活動
+  const [ongoingActivities, setOngoingActivities] = useState([]); 
+  const [pastActivities, setPastActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  // 取得會員 ID
   const user = JSON.parse(localStorage.getItem("user"));
   const userId = user ? user.id : null;
 
@@ -60,10 +58,8 @@ const MemberActivityRecord = () => {
 
   return (
     <div className="container pt-lg-8 pt-5">
-      <h2 className="text-center text-primary-600 mb-4">我的活動紀錄</h2>
-
       {loading ? (
-        <p className="text-center text-white">載入中...</p>
+        <p className="text-center text-white">未有申請紀錄</p>
       ) : (
         <>
           {/* 現在參加的活動 */}
