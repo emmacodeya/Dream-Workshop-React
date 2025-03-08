@@ -590,115 +590,115 @@
       "value": "wholesaleretail",
       "label": "批發/零售",
       "id": "bb5e",
-      "imgSrc": "/assets/images/Map-item-1.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-1.png"
     },
     {
       "value": "biotechnology",
       "label": "生物科技",
       "id": "1c02",
-      "imgSrc": "/assets/images/Map-item-2.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-2.png"
     },
     {
       "value": "internet",
       "label": "網際網路相關",
       "id": "5d11",
-      "imgSrc": "/assets/images/Map-item-3.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-3.png"
     },
     {
       "value": "education",
       "label": "文教相關",
       "id": "bef1",
-      "imgSrc": "/assets/images/Map-item-4.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-4.png"
     },
     {
       "value": "media",
       "label": "大眾傳播相關",
       "id": "e210",
-      "imgSrc": "/assets/images/Map-item-5.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-5.png"
     },
     {
       "value": "travel",
       "label": "旅遊/休閒/運動",
       "id": "20fd",
-      "imgSrc": "/assets/images/Map-item-6.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-6.png"
     },
     {
       "value": "services",
       "label": "一般服務",
       "id": "a1e0",
-      "imgSrc": "/assets/images/Map-item-7.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-7.png"
     },
     {
       "value": "electronics",
       "label": "電子資訊/軟體/半導體相關",
       "id": "8786",
-      "imgSrc": "/assets/images/Map-item-8.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-8.png"
     },
     {
       "value": "manufacturing",
       "label": "一般製造",
       "id": "9fd1",
-      "imgSrc": "/assets/images/Map-item-9.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-9.png"
     },
     {
       "value": "logistics",
       "label": "物流/倉儲",
       "id": "4597",
-      "imgSrc": "/assets/images/Map-item-10.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-10.png"
     },
     {
       "value": "politics",
       "label": "政治宗教及社福相關",
       "id": "e6fc",
-      "imgSrc": "/assets/images/Map-item-11.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-11.png"
     },
     {
       "value": "finance",
       "label": "金融投顧/保險",
       "id": "ce6e",
-      "imgSrc": "/assets/images/Map-item-12.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-12.png"
     },
     {
       "value": "consulting",
       "label": "法律/會計/顧問/研發",
       "id": "fc7a",
-      "imgSrc": "/assets/images/Map-item-13.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-13.png"
     },
     {
       "value": "design",
       "label": "設計相關",
       "id": "e445",
-      "imgSrc": "/assets/images/Map-item-14.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-14.png"
     },
     {
       "value": "realestate",
       "label": "建築營造/不動產相關",
       "id": "2714",
-      "imgSrc": "/assets/images/Map-item-15.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-15.png"
     },
     {
       "value": "healthcare",
       "label": "醫療保健/環境衛生",
       "id": "2af8",
-      "imgSrc": "/assets/images/Map-item-16.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-16.png"
     },
     {
       "value": "mining",
       "label": "礦石及土石採取",
       "id": "b40c",
-      "imgSrc": "/assets/images/Map-item-17.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-17.png"
     },
     {
       "value": "accommodation",
       "label": "住宿相關",
       "id": "c04e",
-      "imgSrc": "/assets/images/Map-item-18.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-18.png"
     },
     {
       "value": "food",
       "label": "餐飲",
       "id": "8e3d",
-      "imgSrc": "/assets/images/Map-item-19.png"
+      "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-19.png"
     }
   ],
   "articles": [

@@ -60,7 +60,7 @@ const InvestorList = () => {
     axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const updatedIndustries = [
-          { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" },
+          { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
           ...response.data
         ];
         setIndustries(updatedIndustries);
@@ -164,7 +164,7 @@ const toggleFavorite = async (investorId) => {
                 <button
                   className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
                 >
-                  <img className="favorite" src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                  <img className="favorite" src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                    alt="heart"
                   />
                 </button>
@@ -246,7 +246,7 @@ const toggleFavorite = async (investorId) => {
                 <button
                   className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
                 >
-                  <img className="favorite " src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                  <img className="favorite " src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>

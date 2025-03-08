@@ -83,7 +83,7 @@ const ProjectList = () => {
     axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const updatedIndustries = [
-          { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" }, 
+          { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" }, 
           ...response.data
         ];
         setIndustries(updatedIndustries);
@@ -165,7 +165,7 @@ const ProjectList = () => {
   
 
   const displayedIndustries = [
-    { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" },
+    { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
     ...industries.filter((industry) => industry.value !== ""), // 確保不會有重複
   ];
   
@@ -187,7 +187,7 @@ const ProjectList = () => {
                   <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
                   <img
                     className="favorite"
-                    src={user?.collectedProjects.includes(project.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+                    src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                   </button>
@@ -272,7 +272,7 @@ const ProjectList = () => {
             <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
             <img
               className="favorite"
-              src={user?.collectedProjects.includes(project.id) ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"}
+              src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
 
