@@ -137,7 +137,7 @@ const InvestorSidebar = ({ activeSection, setActiveSection, investorName }) => {
 InvestorSidebar.propTypes = {
   activeSection: PropTypes.string.isRequired,
   setActiveSection: PropTypes.func.isRequired,
-  investorName: PropTypes.string.isRequired,
+  investorName: PropTypes.string,
 };
 
 export default InvestorSidebar;

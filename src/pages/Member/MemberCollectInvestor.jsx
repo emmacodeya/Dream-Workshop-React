@@ -1,41 +1,46 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { industryMap, translate } from "../../utils/mappings";
+import { Link } from "react-router-dom";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberCollectInvestor = () => {
-  // 收藏的投資人
-  const [investors, setInvestors] = useState([
-    {
-      id: 1,
-      name: "謝阿金",
-      preference: ["餐飲", "一般服務", "批發/零售"],
-      capital: "4,000,000",
-      image: "/assets/images/海綿寶寶.png",
-      remark: "請填寫備註...",
-    },
-    {
-      id: 2,
-      name: "曹穎惠",
-      preference: ["餐飲", "一般服務", "批發/零售"],
-      capital: "3,000,000",
-      image: "/assets/images/留言頭像1.png",
-      remark: "請填寫備註...",
-    },
-    {
-      id: 3,
-      name: "中村修二",
-      preference: ["餐飲", "一般服務", "大眾傳播相關"],
-      capital: "50,000,000",
-      image: "/assets/images/留言頭像2.png",
-      remark: "請填寫備註...",
-    },
-  ]);
+  const [investors, setInvestors] = useState([]);
+  const [user, setUser] = useState(null);
 
-  // 處理備註變更
-  const handleRemarkChange = (id, value) => {
-    setInvestors((prevInvestors) =>
-      prevInvestors.map((investor) =>
-        investor.id === id ? { ...investor, remark: value } : investor
-      )
-    );
+  useEffect(() => {
+    const storedUser = localStorage.getItem("useraccount");
+    if (!storedUser) return;
+
+    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
+      if (res.data.length > 0) {
+        const userData = res.data[0];
+        setUser(userData);
+        axios.get(`${API_URL}/investors`).then((investorRes) => {
+          const collectedInvestors = investorRes.data.filter((i) => userData.collectedInvestors.includes(i.id));
+          setInvestors(collectedInvestors);
+        });
+      }
+    });
+  }, []);
+
+  const toggleFavorite = async (investorId) => {
+    if (!user) return;
+
+    const updatedFavorites = user.collectedInvestors.includes(investorId)
+      ? user.collectedInvestors.filter((id) => id !== investorId)
+      : [...user.collectedInvestors, investorId];
+
+    try {
+      await axios.patch(`${API_URL}/members/${user.id}`, {
+        collectedInvestors: updatedFavorites,
+      });
+      setUser((prevUser) => ({ ...prevUser, collectedInvestors: updatedFavorites }));
+      setInvestors((prevInvestors) => prevInvestors.filter((i) => updatedFavorites.includes(i.id)));
+    } catch (error) {
+      console.error("更新收藏失敗", error);
+    }
   };
 
   return (
@@ -48,7 +53,7 @@ const MemberCollectInvestor = () => {
               <i className="bi bi-person-check-fill text-primary-400 fs-lg-3 fs-5 ps-1"></i>
             </div>
             <div>
-              <button className="btn">
+              <button className="btn" onClick={() => toggleFavorite(investor.id)}>
                 <img src="/assets/images/icons/heart.png" alt="heart" />
               </button>
             </div>
@@ -56,51 +61,27 @@ const MemberCollectInvestor = () => {
 
           <div className="row g-0 created-bady investor-created-bady">
             <div className="col-md-6 d-flex align-items-center justify-content-center">
-              <img src={investor.image} className="img-fluid rounded-start" alt={investor.name} />
+              <img src={investor.avatar} className="img-fluid rounded-start" alt={investor.name} />
             </div>
             <div className="col-md-6">
               <div className="card-body investor-card-body created-form">
-                <div className="d-md-flex pb-md-2">
-                  <ul className="list-unstyled pb-md-0 pb-1">
-                    <li className="fs-5 text-gray-400 fw-bold">偏好領域</li>
-                    {investor.preference.map((pref, index) => (
-                      <li key={index} className="fs-3 text-primary-400 fw-bold">{pref}</li>
-                    ))}
-                  </ul>
-                  <ul className="list-unstyled pb-md-0 pb-1">
-                    <li className="fs-5 text-gray-400 fw-bold">資本規模</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{investor.capital}</li>
-                  </ul>
-                </div>
-              </div>
-
-              <div className="d-flex align-items-center p-md-3">
-                <form className="row g-lg-3 g-0 w-100">
-                  <div className="col">
-                    <label htmlFor={`remark-${investor.id}`} className="form-label text-white fs-5"></label>
-                    <textarea
-                      id={`remark-${investor.id}`}
-                      rows="3"
-                      className="w-100 bg-transparent text-white"
-                      value={investor.remark}
-                      onChange={(e) => handleRemarkChange(investor.id, e.target.value)}
-                    ></textarea>
-                  </div>
-                </form>
-                <button type="button" className="btn btn-gray-200 text-gray-800 fw-bold ms-lg-5 ms-2">
-                  保存
-                </button>
+                <ul className="list-unstyled pb-md-0 pb-1">
+                  <li className="fs-5 text-gray-400 fw-bold">偏好領域</li>
+                  <li className="fs-3 text-primary-400 fw-bold">
+                  {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}
+                  </li>
+                </ul>
+                <ul className="list-unstyled pb-md-0 pb-1">
+                  <li className="fs-5 text-gray-400 fw-bold">資本規模</li>
+                  <li className="fs-3 text-primary-400 fw-bold">{investor.capital}</li>
+                </ul>
               </div>
             </div>
           </div>
-
           <div>
-            <a
-              href="/pages/investor/Investor-autobiography.html"
-              className="btn btn-primary-600 w-100 py-2 bg-gray-600 border-0 text-primary-600 fs-5 fw-bold"
-            >
+            <Link to={`/investor/${investor.id}`} className="btn btn-primary-600 w-100 py-2 bg-gray-600 border-0 text-primary-600 fs-5 fw-bold">
               查看詳情<i className="bi bi-chevron-right ps-1"></i>
-            </a>
+            </Link>
           </div>
         </div>
       ))}

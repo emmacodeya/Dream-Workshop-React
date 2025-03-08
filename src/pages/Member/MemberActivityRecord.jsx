@@ -1,51 +1,122 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
+const ACTIVITY_API_URL = "http://localhost:3000/activities";
 
 const MemberActivityRecord = () => {
-  // 活動紀錄
-  const [activities] = useState([
-    {
-      id: 1,
-      name: "卡斯柏創業分享會",
-      date: "2024年9月15日",
-      status: "已申請參加",
-      statusClass: "text-danger",
-    },
-    {
-      id: 2,
-      name: "創新資本對接會 - 投資者與創業者的完美邂逅",
-      date: "2023年10月20日",
-      status: "活動已過期",
-      statusClass: "text-gray-400",
-    },
-    {
-      id: 3,
-      name: "創業夢想會 - 創業者的聯誼交流",
-      date: "2023年1月28日",
-      status: "活動已過期",
-      statusClass: "text-gray-400",
-    },
-  ]);
+  const [ongoingActivities, setOngoingActivities] = useState([]); // 現在參加的
+  const [pastActivities, setPastActivities] = useState([]); // 過往活動
+  const [loading, setLoading] = useState(true);
+
+  // 取得會員 ID
+  const user = JSON.parse(localStorage.getItem("user"));
+  const userId = user ? user.id : null;
+
+  useEffect(() => {
+    if (!userId) return;
+
+    const fetchActivityRecords = async () => {
+      try {
+        // 取得該會員的報名紀錄
+        const { data: registrations } = await axios.get(`${API_URL}?userId=${userId}`);
+        if (registrations.length === 0) {
+          setLoading(false);
+          return;
+        }
+
+        // 取得活動詳細資料
+        const activityResponses = await Promise.all(
+          registrations.map((reg) => axios.get(`${ACTIVITY_API_URL}/${reg.activityId}`))
+        );
+
+        // 取得當前日期
+        const today = new Date().toISOString().split("T")[0];
+
+        // 整理數據並分類
+        const activities = registrations.map((reg, index) => {
+          const activity = activityResponses[index].data;
+          return {
+            id: reg.id,
+            name: activity.title,
+            date: activity.date,
+            status: new Date(activity.date) >= new Date(today) ? "正在參加" : "已結束",
+            statusClass: new Date(activity.date) >= new Date(today) ? "text-success" : "text-gray-400",
+          };
+        });
+
+        // 分類活動
+        setOngoingActivities(activities.filter((act) => act.status === "正在參加"));
+        setPastActivities(activities.filter((act) => act.status === "已結束"));
+      } catch (error) {
+        console.error("無法獲取活動紀錄:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchActivityRecords();
+  }, [userId]);
 
   return (
     <div className="container pt-lg-8 pt-5">
-      <table className="table table-dark table-hover table-bordered border-gray-600">
-        <thead className="text-center fs-4">
-          <tr>
-            <th scope="col" className="text-primary-1000">活動名稱</th>
-            <th scope="col" className="text-primary-1000">活動日期</th>
-            <th scope="col" className="text-primary-1000">狀態</th>
-          </tr>
-        </thead>
-        <tbody className="text-center">
-          {activities.map((activity) => (
-            <tr key={activity.id}>
-              <td>{activity.name}</td>
-              <td>{activity.date}</td>
-              <td className={activity.statusClass}>{activity.status}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <h2 className="text-center text-primary-600 mb-4">我的活動紀錄</h2>
+
+      {loading ? (
+        <p className="text-center text-white">載入中...</p>
+      ) : (
+        <>
+          {/* 現在參加的活動 */}
+          {ongoingActivities.length > 0 && (
+            <>
+              <h3 className="text-white">現在參加的活動</h3>
+              <table className="table table-dark table-hover table-bordered border-gray-600">
+                <thead className="text-center fs-4">
+                  <tr>
+                    <th scope="col" className="text-primary-1000">活動名稱</th>
+                    <th scope="col" className="text-primary-1000">活動日期</th>
+                    <th scope="col" className="text-primary-1000">狀態</th>
+                  </tr>
+                </thead>
+                <tbody className="text-center">
+                  {ongoingActivities.map((activity) => (
+                    <tr key={activity.id}>
+                      <td>{activity.name}</td>
+                      <td>{activity.date}</td>
+                      <td className={activity.statusClass}>{activity.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+
+          {/* 過往活動 */}
+          {pastActivities.length > 0 && (
+            <>
+              <h3 className="text-white mt-5">過往參加的活動</h3>
+              <table className="table table-dark table-hover table-bordered border-gray-600">
+                <thead className="text-center fs-4">
+                  <tr>
+                    <th scope="col" className="text-primary-1000">活動名稱</th>
+                    <th scope="col" className="text-primary-1000">活動日期</th>
+                    <th scope="col" className="text-primary-1000">狀態</th>
+                  </tr>
+                </thead>
+                <tbody className="text-center">
+                  {pastActivities.map((activity) => (
+                    <tr key={activity.id}>
+                      <td>{activity.name}</td>
+                      <td>{activity.date}</td>
+                      <td className={activity.statusClass}>{activity.status}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
+          )}
+        </>
+      )}
     </div>
   );
 };

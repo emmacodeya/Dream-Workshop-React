@@ -1,4 +1,5 @@
 import { Routes, Route, useLocation, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
 import MemberSidebar from "../../components/MemberSidebar";
 import MemberInfo from "./MemberInfo";
 import MemberIdentity from "./MemberIdentity";
@@ -18,16 +19,16 @@ import MemberSiteNews from "./MemberSiteNews";
 import MemberPostArticle from "./MemberPostArticle";
 import MemberPostList from "./MemberPostList";
 import MemberArticleMessage from "./MemberArticleMessage";
-import './MemberHome.scss';
-
-
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./MemberHome.scss";
 
 const MemberHome = () => {
   const location = useLocation();
-  const useraccount = localStorage.getItem("useraccount") || "";
+  const [useraccount, setUseraccount] = useState("");
 
+  useEffect(() => {
+    setUseraccount(localStorage.getItem("useraccount") || "");
+  }, []);
 
   const pageTitles = {
     "/member": "個人資料",
@@ -76,33 +77,32 @@ const MemberHome = () => {
         </h2>
       </section>
 
-      {/* 會員中心內容*/}
-      <div className="container"> 
+      {/* 會員中心內容 */}
+      <div className="container">
         <div className="row">
           <aside className="col-lg-3">
             <MemberSidebar />
           </aside>
           <main className="col-lg-9">
             <Routes>
-              <Route path="/" element={<MemberInfo />} />
-              <Route path="identity" element={<MemberIdentity />} />
-              <Route path="change-password" element={<MemberChangePassword />} />
-              <Route path="points" element={<MemberPoints />} />
-              <Route path="settings" element={<MemberSettings />} />
+              <Route path="/" element={<MemberInfo useraccount={useraccount} />} />
+              <Route path="identity" element={<MemberIdentity useraccount={useraccount} />} />
+              <Route path="change-password" element={<MemberChangePassword useraccount={useraccount} />} />
+              <Route path="points" element={<MemberPoints useraccount={useraccount} />} />
+              <Route path="settings" element={<MemberSettings useraccount={useraccount} />} />
               <Route path="new-projects" element={<MemberNewProjects />} />
               <Route path="created-projects" element={<MemberCreatedProjects useraccount={useraccount} />} />
               <Route path="new-investor" element={<MemberNewInvestor useraccount={useraccount} />} />
-              <Route path="evaluate-projects" element={<MemberEvaluateProjects />} />
-              <Route path="evaluate-investor" element={<MemberEvaluateInvestor />} />
-              <Route path="collect-projects" element={<MemberCollectProjects />} />
+              <Route path="evaluate-projects" element={<MemberEvaluateProjects useraccount={useraccount} />} />
+              <Route path="evaluate-investor" element={<MemberEvaluateInvestor useraccount={useraccount} />} />
+              <Route path="collect-projects" element={<MemberCollectProjects useraccount={useraccount} />} />
               <Route path="collect-investor" element={<MemberCollectInvestor />} />
-              <Route path="apply-activity" element={<MemberApplyActivity />} />
-              <Route path="activity-record" element={<MemberActivityRecord />} />
+              <Route path="apply-activity" element={<MemberApplyActivity useraccount={useraccount} />} />
+              <Route path="activity-record" element={<MemberActivityRecord useraccount={useraccount} />} />
               <Route path="site-news" element={<MemberSiteNews />} />
               <Route path="post-article" element={<MemberPostArticle />} />
               <Route path="post-list" element={<MemberPostList />} />
               <Route path="article-message" element={<MemberArticleMessage />} />
-              
             </Routes>
           </main>
         </div>

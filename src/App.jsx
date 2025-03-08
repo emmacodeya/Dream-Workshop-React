@@ -12,20 +12,16 @@ import PostArticle from "./pages/PostArticle";
 import AboutUs from "./pages/AboutUs";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Activity from "./pages/Activity";
-import ActivityCasper from "./pages/ActivityCasper";
+import ActivityDetail from "./pages/ActivityDetail";
 import ArticleContent from "./pages/ArticleContent";
-
-
-
-
-
-
+import PayPlan from "./pages/PayPlan";
 
 function App() {
   return (
     <Router>
       <Header />
       <Routes>
+        
         <Route path="/" element={<Home />} />
         <Route path="/member/*" element={<MemberHome />} />
         <Route path="/projects" element={<ProjectList />} /> 
@@ -38,8 +34,9 @@ function App() {
         <Route path="/about-us" element={<AboutUs />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/activity" element={<Activity />} />
-        <Route path="/activity-casper" element={<ActivityCasper />} />
+        <Route path="/activity/:id" element={<ActivityDetail />} />
         <Route path="/article-content" element={<ArticleContent />} />
+        <Route path="/pay-plan" element={<PayPlan />} />
       </Routes>
       <Footer />
     </Router>

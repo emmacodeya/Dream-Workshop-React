@@ -1,41 +1,47 @@
 import { useState, useEffect } from "react";
+import axios from "axios";
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberIdentity = () => {
   const [userData, setUserData] = useState({ name: "" });
-
-  const [images, setImages] = useState({
-    frontId: null,
-    backId: null,
-    secondId: null
-  });
-
-  const [status, setStatus] = useState("pending");
+  const [images, setImages] = useState({ frontId: null, backId: null, secondId: null });
+  const [status, setStatus] = useState(""); // 預設為空值 ""
   const [isUploading, setIsUploading] = useState(false);
-  const userId = localStorage.getItem("userId") || "1";
+  const useraccount = localStorage.getItem("useraccount") || "";
 
+  // 獲取會員資料及身份驗證狀態
   useEffect(() => {
-    fetch(`http://localhost:3000/members/${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
-        if (data) {
-          setUserData({ name: data.name || "" });
+    if (!useraccount) {
+      console.error("請登入帳號");
+      return;
+    }
 
-          if (data.identityVerification) {
+    axios.get(`${API_URL}/members?useraccount=${useraccount}`)
+      .then((res) => {
+        if (res.data.length > 0) {
+          const userData = res.data[0];
+          setUserData({ name: userData.name || "" });
+
+          // **正確方式：直接從 userData.identityVerification 取得狀態**
+          if (userData.identityVerification) {
+            setStatus(userData.identityVerification.status || ""); // 可能為 "", "pending", "approved", "rejected"
             setImages({
-              frontId: data.identityVerification?.frontId || null,
-              backId: data.identityVerification?.backId || null,
-              secondId: data.identityVerification?.secondId || null
+              frontId: userData.identityVerification.frontId || null,
+              backId: userData.identityVerification.backId || null,
+              secondId: userData.identityVerification.secondId || null
             });
-
-            setStatus(data.identityVerification?.status || "pending");
           } else {
-            setImages({ frontId: null, backId: null, secondId: null });
+            setStatus(""); // 如果沒有身份驗證，狀態為 ""
           }
+        } else {
+          console.error("查無此會員");
         }
       })
-      .catch((error) => console.error("獲取會員資料失敗:", error));
-  }, [userId]);
+      .catch((error) => console.error("獲取身份驗證狀態失敗:", error));
+  }, [useraccount]);
 
+  // 上傳圖片處理
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -57,6 +63,7 @@ const MemberIdentity = () => {
     reader.readAsDataURL(file);
   };
 
+  // 提交身份驗證
   const handleSaveChanges = async () => {
     if (!images.frontId || !images.backId || !images.secondId) {
       alert("請上傳所有身份驗證圖片");
@@ -65,30 +72,32 @@ const MemberIdentity = () => {
 
     setIsUploading(true);
     try {
-      const response = await fetch(`http://localhost:3000/members/${userId}`, {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          identityVerification: {
-            frontId: images.frontId,
-            backId: images.backId,
-            secondId: images.secondId,
-            status: "pending"
-          }
-        })
+      const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+      if (res.data.length === 0) {
+        alert("無法找到該會員");
+        return;
+      }
+
+      const memberId = res.data[0].id; // 取得會員 ID
+
+      await axios.patch(`${API_URL}/members/${memberId}`, {
+        identityVerification: {
+          frontId: images.frontId,
+          backId: images.backId,
+          secondId: images.secondId,
+          status: "pending" // 提交後狀態變更
+        }
       });
 
-      if (response.ok) {
-        alert("身分證圖片上傳成功！");
-      } else {
-        alert("上傳失敗，請再試一次！");
-      }
+      alert("身分證圖片上傳成功！");
+      setStatus("pending"); // 提交後設為 "審核中"
     } catch (error) {
       console.error("圖片上傳失敗:", error);
       alert("發生錯誤，請稍後再試！");
     }
     setIsUploading(false);
   };
+
 
   return (
     <div className="container my-8">
@@ -167,21 +176,24 @@ const MemberIdentity = () => {
           </label>
           <input className="form-control" type="file" id="secondId" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileChange(e, "secondId")} />
         </div>
-        <div className="mt-3 mt-lg-0">
-          {status === "pending" ? (
-            <button type="button" className="btn btn-lg fw-bold btn-gray-600" disabled>審核中</button>
-          ) : status === "approved" ? (
-            <button type="button" className="btn btn-lg fw-bold btn-success" disabled>審核通過</button>
-          ) : (
-            <button type="button" className="btn btn-lg fw-bold btn-danger" disabled>審核未通過</button>
-          )}
-        </div>
+
+        {/* 身份驗證狀態按鈕 */}
+      <div className="mt-3 mt-lg-0">
+        {status === "" ? (
+          <button type="button" className="btn btn-lg fw-bold btn-primary-600" onClick={handleSaveChanges} disabled={isUploading}>
+            {isUploading ? "上傳中..." : "提交審核"}
+          </button>
+        ) : status === "pending" ? (
+          <button type="button" className="btn btn-lg fw-bold btn-gray-600" disabled>審核中</button>
+        ) : status === "approved" ? (
+          <button type="button" className="btn btn-lg fw-bold btn-success" disabled>審核成功</button>
+        ) : (
+          <button type="button" className="btn btn-lg fw-bold btn-warning" onClick={handleSaveChanges} disabled={isUploading}>
+            {isUploading ? "上傳中..." : "重新提交"}
+          </button>
+        )}
       </div>
-      {/* 按鈕區 */}
-      <div className="d-flex justify-content-center mt-5">
-        <button type="button" className="btn btn-lg btn-outline-primary-600 fw-bold" onClick={handleSaveChanges} disabled={isUploading}>
-          {isUploading ? "上傳中..." : "儲存變更"}
-        </button>
+
       </div>
     </div>
   );

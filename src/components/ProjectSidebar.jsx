@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 
-const ProjectSidebar = ({ activeSection, setActiveSection, projectName }) => {
+const ProjectSidebar = ({ activeSection, setActiveSection, projectName = "未命名專案" }) => {
 
   const sectionTitles = {
     introduction: "項目簡介",
@@ -198,7 +198,7 @@ const ProjectSidebar = ({ activeSection, setActiveSection, projectName }) => {
 ProjectSidebar.propTypes = {
   activeSection: PropTypes.string.isRequired,
   setActiveSection: PropTypes.func.isRequired,
-  projectName: PropTypes.string.isRequired,
+  projectName: PropTypes.string, 
 };
 
 export default ProjectSidebar;
