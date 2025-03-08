@@ -26,7 +26,7 @@ const MemberInfo = () => {
     axios.get(`${API_URL}/members?useraccount=${useraccount}`)
     .then((res) => {
       if (res.data.length > 0) {
-        const userData = res.data[0]; // 取第一筆符合的會員資料
+        const userData = res.data[0]; 
         setUseraccount(userData.useraccount || "");
         setGender(userData.gender || "");
         setPreview(userData.avatar ? userData.avatar : ""); 
@@ -50,7 +50,7 @@ const MemberInfo = () => {
         return;
       }
 
-      const memberId = res.data[0].id; // 取得會員 ID 以進行更新
+      const memberId = res.data[0].id; 
 
       await axios.patch(`${API_URL}/members/${memberId}`, {
         name: data.name,
@@ -144,9 +144,9 @@ const MemberInfo = () => {
         <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
           
           {/* 使用者帳號（唯讀） */}
-        <div className="mb-3 row">
-          <label className="col-md-2 col-form-label text-white">使用者帳號:</label>
-          <div className="col-md-10">
+        <div className="my-3 row">
+          <label className="col-md-2 col-4 col-form-label text-white">使用者帳號:</label>
+          <div className="col-md-10 col-8">
             <input type="text" readOnly className="form-control-plaintext text-white" value={useraccount} />
           </div>
         </div>

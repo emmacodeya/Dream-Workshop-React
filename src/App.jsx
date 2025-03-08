@@ -18,10 +18,9 @@ import PayPlan from "./pages/PayPlan";
 
 function App() {
   return (
-    <Router>
+    <Router >
       <Header />
       <Routes>
-        
         <Route path="/" element={<Home />} />
         <Route path="/member/*" element={<MemberHome />} />
         <Route path="/projects" element={<ProjectList />} /> 

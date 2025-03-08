@@ -1467,7 +1467,10 @@ $pagination-hover-border-color: var(
   --#{$prefix}border-color
 ) !default; // Todo in v6: remove this?
 
-$pagination-active-color: $component-active-color !default;
+
+
+// $pagination-active-color: $component-active-color !default;
+$pagination-active-color: var(--bs-primary-600) !default;
 $pagination-active-bg: $component-active-bg !default;
 $pagination-active-border-color: $component-active-bg !default;
 
