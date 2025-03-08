@@ -54,7 +54,7 @@ const MemberCollectInvestor = () => {
             </div>
             <div>
               <button className="btn" onClick={() => toggleFavorite(investor.id)}>
-                <img src="/assets/images/icons/heart.png" alt="heart" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" alt="heart" />
               </button>
             </div>
           </div>

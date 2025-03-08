@@ -11,7 +11,7 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
   const [replyContent, setReplyContent] = useState("");
   const [replyTargetId, setReplyTargetId] = useState(null);
 
-  // ✅ 讀取該會員創立的投資人評價
+  //  讀取該會員創立的投資人評價
   useEffect(() => {
     if (!useraccount) return;
 
@@ -25,7 +25,7 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
           .then((evalResponse) => {
             const evaluations = evalResponse.data.filter((evaluationItem) => investorIds.includes(evaluationItem.investorId));
 
-            // **✅ 只保留有評價的投資人**
+            // **只保留有評價的投資人**
             const investorsWithEvaluations = userInvestors
               .map((inv) => ({
                 ...inv,
@@ -40,7 +40,7 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
       .catch((error) => console.error("獲取投資人失敗:", error));
   }, [useraccount]);
 
-  // ✅ 提交回覆
+  // 提交回覆
   const handleSubmitReply = async () => {
     if (!replyTargetId || !replyContent.trim()) return;
 
@@ -56,22 +56,22 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
       const evaluation = investor.evaluations.find((evaluation) => evaluation.id === replyTargetId);
 
       const updatedReplies = [
-        ...(evaluation.replies || []), // ✅ 確保 `replies` 陣列存在
+        ...(evaluation.replies || []), // 確保 `replies` 陣列存在
         {
           id: `r${Date.now()}`,
-          useraccount: useraccount, // ✅ 使用當前會員帳號
-          name: useraccount, // ✅ 顯示會員帳號
+          useraccount: useraccount, // 使用當前會員帳號
+          name: useraccount, // 顯示會員帳號
           date: new Date().toLocaleDateString(),
           comment: replyContent,
         },
       ];
 
-      // ✅ 發送 PATCH 請求，更新 `replies`
+      // 發送 PATCH 請求，更新 `replies`
       await axios.patch(`${API_URL}/investorEvaluations/${replyTargetId}`, {
         replies: updatedReplies,
       });
 
-      // ✅ 更新本地 state，讓回覆即時顯示
+      // 更新本地 state，讓回覆即時顯示
       const updatedInvestors = [...investors];
       updatedInvestors[evaluationIndex].evaluations.find((evalItem) => evalItem.id === replyTargetId).replies = updatedReplies;
       setInvestors(updatedInvestors);
