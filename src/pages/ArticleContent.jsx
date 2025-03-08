@@ -287,11 +287,11 @@ const ArticleContent = () => {
           ></textarea>
           {replyError && <div className="text-danger mt-2">請輸入內容</div>}
         </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="secondary" onClick={() => setReplyContent("")}>
+        <Modal.Footer className="border-0 bg-gray-1000">
+          <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={() => setReplyContent("")}>
             清除
           </Button>
-          <Button variant="primary" onClick={handleReplySubmit}>送出</Button>
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleReplySubmit}>送出</Button>
         </Modal.Footer>
       </Modal>
 

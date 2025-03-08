@@ -133,19 +133,19 @@ const MemberPostList = () => {
           <label className="form-label mt-3">內容</label>
           <ReactQuill theme="snow" value={content} onChange={setContent}  />
         </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="secondary" onClick={handleCloseEditModal}>取消</Button>
-          <Button variant="primary" onClick={handleSaveEdit}>儲存變更</Button>
+        <Modal.Footer className="border-0 bg-gray-1000 d-flex justify-content-between">
+          <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={handleCloseEditModal}>取消</Button>
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleSaveEdit}>儲存變更</Button>
         </Modal.Footer>
       </Modal>
 
       {/* 刪除確認 Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
-        <Modal.Header closeButton className="border-0 bg-gray-1000"></Modal.Header>
+        <Modal.Header closeButton className="border-0 bg-gray-1000 p-2"></Modal.Header>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
           是否確認刪除?
         </Modal.Body>
-        <Modal.Footer className="border-0 text-center">
+        <Modal.Footer className="border-0 bg-gray-1000 text-center d-flex justify-content-center">
           <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseDeleteModal}>
             取消
           </Button>

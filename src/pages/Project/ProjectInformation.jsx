@@ -95,19 +95,19 @@ const ProjectInformation = () => {
               {/* 右側文字資訊 */}
               <div className="col-lg-8">
                 <div className="card-body ps-5">
-                  <h1 className="fs-1 text-primary-600 fw-bold m-1">
+                  <h1 className="fs-1 text-primary-600 fw-bold my-5">
                     {project.name} <i className="bi bi-clipboard-check fs-3"></i>
                   </h1>
                   <h5 className="fs-5 text-light m-1">公司成立狀態：{project.status === "established" ? "已成立" : "未成立"}</h5>
                   <h5 className="fs-5 text-light m-1">產業分類：{industryMap[project.industry] || "未知"}</h5>
                   <h5 className="fs-5 text-light m-1">資本額： {parseInt(project.capital).toLocaleString()}</h5>
-                  <h1 className="fs-2 m-1 text-light">募資金額：{parseInt(project.funding).toLocaleString()}</h1>
-                  <p className="m-1 fs-6 text-gray-400">地址：{project.address}</p>
+                  <h1 className="fs-2 mx-1 my-5 text-light">募資金額：{parseInt(project.funding).toLocaleString()}</h1>
+                  <p className="m-1 fs-6 text-gray-00">地址：{project.address}</p>
                 </div>
               </div>
             </div>
                 {/* 按鈕 */}
-                <div className="d-flex justify-content-center">
+                <div className="d-flex justify-content-center mt-5">
                   <button className="btn btn-primary-600 mb-5 mx-3 rounded-2">
                     合作聯繫 <i className="bi bi-unlock ps-1"></i>
                   </button>
@@ -144,12 +144,12 @@ const ProjectInformation = () => {
                 <p>威脅：{swot.threats}</p>
               </div>
             )}
-            {activeSection === "market" && <p>{marketSize}</p>}
-            {activeSection === "model" && <p>{businessModel}</p>}
-            {activeSection === "product" && <p>{productDescription}</p>}
-            {activeSection === "compete" && <p>{competeDescription}</p>}
-            {activeSection === "entrepreneur" && <p>{founderInfo}</p>}
-            {activeSection === "team" && <p>{team}</p>}
+            {activeSection === "market" && <p className="py-10">{marketSize}</p>}
+            {activeSection === "model" && <p className="py-10">{businessModel}</p>}
+            {activeSection === "product" && <p className="py-10">{productDescription}</p>}
+            {activeSection === "compete" && <p className="py-10">{competeDescription}</p>}
+            {activeSection === "entrepreneur" && <p className="py-10">{founderInfo}</p>}
+            {activeSection === "team" && <p className="py-10">{team}</p>}
             {activeSection === "photo" && (
               <div className="py-10">
                 {project.companyImage ? (
@@ -160,7 +160,7 @@ const ProjectInformation = () => {
               </div>
             )}
 
-            {activeSection === "evaluate" && <ProjectEvaluate projectId={id} />}
+            {activeSection === "evaluate" && <ProjectEvaluate className="py-10" projectId={id} />}
 
           </div>
         </div>
