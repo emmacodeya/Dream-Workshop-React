@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,8 @@ const MemberPostList = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const useraccount = localStorage.getItem("useraccount") || "";
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -29,6 +32,15 @@ const MemberPostList = () => {
 
     fetchArticles();
   }, [useraccount]);
+
+
+  const totalPages = Math.ceil(posts.length / itemsPerPage);
+
+
+  const paginatedPosts = posts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleOpenEditModal = async (postId) => {
     try {
@@ -96,7 +108,7 @@ const MemberPostList = () => {
           </tr>
         </thead>
         <tbody className="text-center table table-sm table-gray-800">
-        {posts.map((post) => (
+        {paginatedPosts.map((post) => (
             <tr key={post.id} className="tbody-text-hover align-middle">
               <th scope="row">
                 <a href={`/article/${post.id}`}>{post.title}</a>
@@ -116,7 +128,9 @@ const MemberPostList = () => {
           ))}
         </tbody>
       </table>
-
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
       {/* 編輯文章 Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} centered size="lg">
         <Modal.Header closeButton className="border-0 bg-gray-1000">
@@ -133,19 +147,19 @@ const MemberPostList = () => {
           <label className="form-label mt-3">內容</label>
           <ReactQuill theme="snow" value={content} onChange={setContent}  />
         </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="secondary" onClick={handleCloseEditModal}>取消</Button>
-          <Button variant="primary" onClick={handleSaveEdit}>儲存變更</Button>
+        <Modal.Footer className="border-0 bg-gray-1000 d-flex justify-content-between">
+          <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={handleCloseEditModal}>取消</Button>
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleSaveEdit}>儲存變更</Button>
         </Modal.Footer>
       </Modal>
 
       {/* 刪除確認 Modal */}
       <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
-        <Modal.Header closeButton className="border-0 bg-gray-1000"></Modal.Header>
+        <Modal.Header closeButton className="border-0 bg-gray-1000 p-2"></Modal.Header>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
           是否確認刪除?
         </Modal.Body>
-        <Modal.Footer className="border-0 text-center">
+        <Modal.Footer className="border-0 bg-gray-1000 text-center d-flex justify-content-center">
           <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseDeleteModal}>
             取消
           </Button>

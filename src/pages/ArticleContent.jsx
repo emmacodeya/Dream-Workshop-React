@@ -26,7 +26,6 @@ const ArticleContent = () => {
   const [replyError, setReplyError] = useState(false);
   const [relatedArticles, setRelatedArticles] = useState([]);
 
-  // **🔹 取得文章與留言**
   useEffect(() => {
     const fetchArticle = async () => {
       try {
@@ -60,7 +59,7 @@ const ArticleContent = () => {
     fetchComments();
   }, [id]);
 
-  // **🔹 發表留言**
+
   const handleSubmit = async () => {
     if (!agree) {
       alert("請先同意討論區規則與條款");
@@ -109,8 +108,6 @@ const ArticleContent = () => {
     try {
       const res = await axios.get(`${API_URL}/articles/${id}`);
       const article = res.data;
-
-      // 找到要回覆的留言
       const updatedComments = article.comments.map((comment) => {
         if (comment.id === replyTo) {
           return {
@@ -130,7 +127,6 @@ const ArticleContent = () => {
         return comment;
       });
 
-      // 更新 JSON Server
       await axios.patch(`${API_URL}/articles/${id}`, { comments: updatedComments });
 
       setComments(updatedComments);
@@ -143,12 +139,12 @@ const ArticleContent = () => {
     }
   };
 
-  // **🔹 處理輸入框變化**
+
   const handleInputChange = (e) => {
     setMessage(e.target.value);
   };
 
-  // **🔹 處理 checkbox 變化**
+
   const handleCheckboxChange = () => {
     setAgree(!agree);
   };
@@ -287,11 +283,11 @@ const ArticleContent = () => {
           ></textarea>
           {replyError && <div className="text-danger mt-2">請輸入內容</div>}
         </Modal.Body>
-        <Modal.Footer className="border-0">
-          <Button variant="secondary" onClick={() => setReplyContent("")}>
+        <Modal.Footer className="border-0 bg-gray-1000">
+          <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={() => setReplyContent("")}>
             清除
           </Button>
-          <Button variant="primary" onClick={handleReplySubmit}>送出</Button>
+          <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleReplySubmit}>送出</Button>
         </Modal.Footer>
       </Modal>
 

@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Pagination from "../../components/Pagination"; 
 import "swiper/css";
 import "swiper/css/navigation";
 import "./ProjectList.scss";
@@ -28,13 +29,14 @@ const ProjectList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     axios.get(`${API_URL}/projects`).then((res) => {
       setProjects(res.data);
     });
     
-    // 檢查是否有登入的會員
     const storedUser = localStorage.getItem("useraccount");
     if (!storedUser) {
       return;
@@ -51,8 +53,6 @@ const ProjectList = () => {
     axios.get(`${API_URL}/projects`)
       .then((response) => {
         setProjects(response.data);
-        
-        // 如果未選擇特定產業，則更新 `filteredProjects`
         if (!selectedIndustry) {
           setFilteredProjects(response.data);
         }
@@ -66,9 +66,10 @@ const ProjectList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, [selectedIndustry]);
   
-  // 產業篩選
+
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
+    setCurrentPage(1);
   
     let filtered = industryValue
       ? projects.filter((p) => p.industry?.trim().toLowerCase() === industryValue.trim().toLowerCase()) 
@@ -92,7 +93,7 @@ const ProjectList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, []);
   
-   // 切換收藏狀態
+
    const toggleFavorite = async (projectId) => {
     if (!user) {
       alert("請先登入會員帳號");
@@ -102,8 +103,8 @@ const ProjectList = () => {
 
     const isFavorite = user.collectedProjects.includes(projectId);
     const updatedFavorites = isFavorite
-      ? user.collectedProjects.filter((id) => id !== projectId) // 移除收藏
-      : [...user.collectedProjects, projectId]; // 新增收藏
+      ? user.collectedProjects.filter((id) => id !== projectId) 
+      : [...user.collectedProjects, projectId]; 
 
     try {
       await axios.patch(`${API_URL}/members/${user.id}`, {
@@ -121,8 +122,6 @@ const ProjectList = () => {
   };
 
 
-  
-  // 排序功能
   const sizeRanking = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9
@@ -166,54 +165,70 @@ const ProjectList = () => {
 
   const displayedIndustries = [
     { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
-    ...industries.filter((industry) => industry.value !== ""), // 確保不會有重複
+    ...industries.filter((industry) => industry.value !== ""), 
   ];
   
-  
+    const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+    const paginatedProjects = filteredProjects.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
   return (
     <div className="bg-green">
       <div className="container py-lg-15">
-        <h2 className="fw-bold text-center text-primary-600 mb-5">熱門創業項目</h2>
-        <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
-          1296: { slidesPerView: 4 },
-          768: { slidesPerView: 2 },
-          375: { slidesPerView: 1.5 }
-        }}>
-          {projects.map((project) => (
-            <SwiperSlide key={project.id}>
-              <div className="card bg-gray-800 text-center h-100">
-                <div className="popular-card-body position-relative">
-                  <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
-                  <img
-                    className="favorite"
-                    src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                    alt="heart"
-                  />
-                  </button>
-                  <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
-                  <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
-                  <p>{project.description}</p>
-                </div>
-                <a href="#" className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資金規模</p>
-                  <p className="fs-5 fw-bold text-white">{project.funding}</p>
-                </a>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+        <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">熱門創業項目</h2>
+        <Swiper 
+          modules={[Navigation]} 
+          navigation 
+          slidesPerView={4} 
+          spaceBetween={16} 
+          breakpoints={{
+            1296: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            375: { slidesPerView: 1.5 }
+          }}
+          >
+  {projects.map((project) => (
+    <SwiperSlide 
+    key={project.id}>
+      <div className="card bg-gray-800 text-center d-flex flex-column h-100">
+        <div className="popular-card-body position-relative flex-grow-1">
+          <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
+            <img
+              className="favorite"
+              src={user?.collectedProjects.includes(project.id) ? 
+                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : 
+                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              alt="heart"
+            />
+          </button>
+          <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
+          <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
+          <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
+          <p>{project.description}</p>
+        </div>
+        <a href="#" className="btn btn-gray-600 py-3">
+          <p className="fs-5">資金規模</p>
+          <p className="fs-5 fw-bold text-white">{project.funding}</p>
+        </a>
+      </div>
+    </SwiperSlide> 
+  ))}
+</Swiper>
 
-        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1">篩選產業</h2>
+
+        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1 mt-5">篩選產業</h2>
         <p className="text-gray-200 text-center fs-4 mb-lg-8">快速找尋您的投資標的</p>
         <div className="row row-cols-lg-5 row-cols-md-2 row-cols-2 g-lg-3 g-1">
         {displayedIndustries.map((industry) => (
         <div className="col" key={industry.value}>
           <button
-            className={`card industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+            className={`card industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
+              width:250,
+              height:70,
               backgroundImage: `url(${industry.imgSrc})`, 
               backgroundSize: "cover", 
               backgroundRepeat: "no-repeat" 
@@ -260,8 +275,7 @@ const ProjectList = () => {
           </div>
 
            {/* 篩選後列表 */}
-        
-        {filteredProjects.map((project) => (
+        {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-8">
             {/* 頁面標題 */}
             <div className="d-flex justify-content-between project-title p-3">
@@ -346,6 +360,9 @@ const ProjectList = () => {
             </div>
         </div>
         ))}
+        {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
         </div>
       </div>
     </div>

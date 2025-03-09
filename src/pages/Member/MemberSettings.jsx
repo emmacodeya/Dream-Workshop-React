@@ -6,8 +6,6 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MemberSettings = () => {
   const [isDeleting, setIsDeleting] = useState(false);
   const useraccount = localStorage.getItem("useraccount") || "";
-
-  // 處理刪除帳號 API
   const handleDeleteAccount = async () => {
     if (!useraccount) {
       alert("未找到用戶帳號，請重新登入");
@@ -21,7 +19,6 @@ const MemberSettings = () => {
     setIsDeleting(true);
 
     try {
-      // 先用 useraccount 查找會員 ID
       const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
 
       if (res.data.length === 0) {
@@ -29,15 +26,12 @@ const MemberSettings = () => {
         setIsDeleting(false);
         return;
       }
-
-      const memberId = res.data[0].id; // 取得會員 ID
-
-      // 刪除該會員
+      const memberId = res.data[0].id; 
       await axios.delete(`${API_URL}/members/${memberId}`);
 
       alert("帳號已成功刪除！");
-      localStorage.removeItem("useraccount"); // 移除本地儲存的 useraccount
-      window.location.href = "/"; // 重新導向首頁
+      localStorage.removeItem("useraccount"); 
+      window.location.href = "/"; 
     } catch (error) {
       console.error("刪除帳號失敗:", error);
       alert("發生錯誤，請稍後再試");

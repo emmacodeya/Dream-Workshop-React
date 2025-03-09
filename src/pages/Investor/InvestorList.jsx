@@ -3,6 +3,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link, useNavigate } from "react-router-dom";
 import { industryMap, translate } from "../../utils/mappings"; 
+import Pagination from "../../components/Pagination"; 
 import axios from "axios";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -27,6 +28,8 @@ const InvestorList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     axios.get(`${API_URL}/investors`).then((res) => {
@@ -71,6 +74,7 @@ const InvestorList = () => {
   // 產業篩選
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
+    setCurrentPage(1); 
     setFilteredInvestors(
       industryValue
         ? investors.filter((investor) =>
@@ -111,11 +115,6 @@ const truncateText = (text, maxLength = 20) => {
   return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 };
 
-// // 轉換偏好領域 (多個產業) 為中文名稱
-// const formatIndustryNames = (industryArray) => {
-//   return industryArray.map(industry => industryMap[industry] || industry).join("，");
-// };
-
 // 切換投資人收藏狀態
 const toggleFavorite = async (investorId) => {
   if (!user) {
@@ -144,48 +143,69 @@ const toggleFavorite = async (investorId) => {
   }
 };
 
+ 
+  const totalPages = Math.ceil(filteredInvestors.length / itemsPerPage);
 
+
+  const paginatedInvestors = filteredInvestors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="bg-green">
       <div className="container py-lg-15">
-        <h2 className="fw-bold text-center text-primary-600 mb-5">推薦投資人</h2>
+        <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">推薦投資人</h2>
 
         {/* 投資人輪播 */}
-        <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
-          1296: { slidesPerView: 4 },
-          768: { slidesPerView: 2 },
-          375: { slidesPerView: 1.5 }
-        }}>
+        <Swiper 
+          modules={[Navigation]} 
+          navigation 
+          slidesPerView={4} 
+          spaceBetween={16}   
+          breakpoints={{
+            1296: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            375: { slidesPerView: 1.5 }
+          }}
+        >
+
           {investors.map((investor) => (
-            <SwiperSlide key={investor.id}>
-              <div className="card bg-gray-800 text-center h-100">
-                <div className="popular-card-body position-relative">
+          <SwiperSlide key={investor.id}>
+            <div className="card bg-gray-800 text-center h-100 d-flex flex-column">
+              <div className="popular-card-body position-relative flex-grow-1">
                 <button
-                  className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
+                  className="border-0 bg-transparent"
+                  onClick={() => toggleFavorite(investor.id)}
                 >
-                  <img className="favorite" src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                   alt="heart"
+                  <img
+                    className="favorite"
+                    src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    alt="heart"
                   />
                 </button>
-                  <img className="company-logo mb-3 w-25"
-                  src={investor.avatar} alt={investor.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{investor.name}</h4>
-                  <h5 className="text-gray-200">偏好投資領域</h5>
-                  <h6 className="fw-bold text-gray-100"> {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}</h6>
-                  <p>{truncateText(investor.introduction)}</p>
+                <img className="company-logo mb-3 w-25" src={investor.avatar} alt={investor.name} />
+                <h4 className="card-title popular-card-title text-primary-600 ">{investor.name}</h4>
+                <div className="mb-3">
+                <h5 className="text-gray-200 ">偏好投資領域</h5>
+                <h6 className="fw-bold text-gray-100">
+                    {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}
+                </h6>
                 </div>
-                <div className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資本額</p>
-                  <p className="fs-5 fw-bold text-white">{investor.capital}</p>
-                </div>
+                <p>{truncateText(investor.introduction)}</p>
               </div>
-            </SwiperSlide>
+              <div className="btn btn-gray-600 py-3">
+                <p className="fs-5">資本額</p>
+                <p className="fs-5 fw-bold text-white">{investor.capital}</p>
+              </div>
+            </div>
+        </SwiperSlide>
+        
           ))}
         </Swiper>
 
         {/* 產業篩選 */}
-        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1">篩選產業</h2>
+        <h2 className="fw-bold fs-3 text-center text-primary-600 mb-lg-1 mt-5">篩選產業</h2>
         <p className="text-gray-200 text-center fs-4 mb-lg-8">快速找尋您的投資標的</p>
         <div className="row row-cols-lg-5 row-cols-md-2 row-cols-2 g-lg-3 g-1">
         {industries.map((industry) => (
@@ -194,6 +214,8 @@ const toggleFavorite = async (investorId) => {
                 className={`card industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
                 onClick={() => handleIndustryChange(industry.value)}
                 style={{ 
+                  width:250,
+                  height:70,
                   backgroundImage: `url(${industry.imgSrc})`, 
                   backgroundSize: "cover", 
                   backgroundRepeat: "no-repeat" 
@@ -237,7 +259,7 @@ const toggleFavorite = async (investorId) => {
           </div>
 
           {/* 投資人列表 */}
-          {filteredInvestors.map((investor) => (
+          {paginatedInvestors.map((investor) => (
             <div key={investor.id} className="card bg-gray-800 mt-8">
               <div className="d-flex justify-content-between project-title p-3">
                 <h3 className="text-white fs-3 fw-bold">
@@ -301,6 +323,9 @@ const toggleFavorite = async (investorId) => {
               </div>
             </div>
           ))}
+           {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
         </div>
       </div>
     </div>

@@ -1,11 +1,12 @@
-import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useMemo  } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 const MemberSidebar = () => {
   const location = useLocation();
+  const [sidebarKey, setSidebarKey] = useState(0);
 
   // 定義頁面標題
-  const pageTitles = {
+  const pageTitles = useMemo(() => ({
     "/member": "個人資料",
     "/member/identity": "身分審核",
     "/member/change-password": "修改密碼",
@@ -24,18 +25,31 @@ const MemberSidebar = () => {
     "/member/post-article": "新增文章",
     "/member/post-list": "發文列表",
     "/member/article-message": "查看留言",
-  };
-
-  // 設定當前頁面標題
-  const currentPageTitle = pageTitles[location.pathname] || "會員中心";
+  }), []);
 
   // 手機版標題
-  const [mobileTitle, setMobileTitle] = useState(currentPageTitle);
+  const [mobileTitle, setMobileTitle] = useState(pageTitles[location.pathname] || "會員中心");
+  
+  useEffect(() => {
+    setMobileTitle(pageTitles[location.pathname] || "會員中心");
+  }, [location.pathname, pageTitles]);
+  
 
-  // 更新標題
-  const updateTitle = (title) => {
-    setMobileTitle(title);
-  };
+  useEffect(() => {
+    const offcanvasElement = document.getElementById("offcanvasSidebar");
+  
+    const updateSidebarOnOpen = () => {
+      setSidebarKey((prevKey) => prevKey + 1);
+    };
+  
+    offcanvasElement.addEventListener("show.bs.offcanvas", updateSidebarOnOpen);
+  
+    return () => {
+      offcanvasElement.removeEventListener("show.bs.offcanvas", updateSidebarOnOpen);
+    };
+  }, []);
+  
+  
 
   return (
     <>
@@ -44,158 +58,155 @@ const MemberSidebar = () => {
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4">我的帳戶</li>
           <li>
-            <Link to="/member" 
-             className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("個人資料")}>
+            <NavLink  to="/member" 
+             end
+             className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+             >
               個人資料
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/identity" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/identity" ? "text-primary-600" : "text-white"}`}  
-            onClick={() => updateTitle("身分審核")}>
+            <NavLink  to="/member/identity" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+           >
               身分審核
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/change-password" 
-             className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/change-password" ? "text-primary-600" : "text-white"}`}  
-            onClick={() => updateTitle("修改密碼")}>
+            <NavLink  to="/member/change-password" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+            >
               修改密碼
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/points" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/points" ? "text-primary-600" : "text-white"}`}  
-            onClick={() => updateTitle("可用點數")}>
+            <NavLink  to="/member/points" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+            >
               可用點數
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/settings" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/settings" ? "text-primary-600" : "text-white"}`}
-            onClick={() => updateTitle("隱私設置")}>
+            <NavLink  to="/member/settings" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+            >
               隱私設置
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">創業項目</li>
           <li>
-            <Link to="/member/new-projects" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/new-projects" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("新增創業項目")}>
+            <NavLink  to="/member/new-projects" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+            >
               新增創業項目
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/created-projects" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/created-projects" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("已建創業項目")}>
+            <NavLink  to="/member/created-projects" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+           >
               已建創業項目
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">投資人</li>
           <li>
-            <Link to="/member/new-investor" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/new-investor" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("建立/修改投資人資料")}>
+            <NavLink  to="/member/new-investor" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+            >
             建立/修改投資人資料
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">評價紀錄</li>
           <li>
-            <Link to="/member/evaluate-projects" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/evaluate-projects" ? "text-primary-600" : "text-white"}`}
-            onClick={() => updateTitle("創業項目評價")}>
+            <NavLink  to="/member/evaluate-projects" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+            >
             創業項目評價
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/evaluate-investor" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/evaluate-investor" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("投資人評價")}>
+            <NavLink  to="/member/evaluate-investor" 
+            className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+            >
             投資人評價
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">我的收藏</li>
           <li>
-            <Link to="/member/collect-projects" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/collect-projects" ? "text-primary-600" : "text-white"}`}
-            onClick={() => updateTitle("創業項目收藏列表")}>
+            <NavLink  to="/member/collect-projects" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}
+           >
             創業項目收藏列表
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/collect-investor" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/collect-investor" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("投資人收藏列表")}>
+            <NavLink  to="/member/collect-investor" 
+          className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+            >
             投資人收藏列表
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">我的活動</li>
           <li>
-            <Link to="/member/apply-activity" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/apply-activity" ? "text-primary-600" : "text-white"}`}
-            onClick={() => updateTitle("已申請活動")}>
+            <NavLink  to="/member/apply-activity" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             已申請活動
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/activity-record" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/activity-record" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("活動紀錄")}>
+            <NavLink  to="/member/activity-record" 
+         className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+            >
             活動紀錄
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">我的消息</li>
           <li>
-            <Link to="/member/site-news" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/site-news" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("站內消息")}>
+            <NavLink  to="/member/site-news" 
+         className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}
+           >
             站內消息
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-4 pt-2">討論區</li>
           <li>
-            <Link to="/member/post-article" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/post-article" ? "text-primary-600" : "text-white"}`}
-            onClick={() => updateTitle("新增文章")}>
+            <NavLink  to="/member/post-article" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             新增文章
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/post-list" 
-            className={`nav-link fs-5 ps-1 lh-lg ${location.pathname === "/member/post-list" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("發文列表")}>
+            <NavLink  to="/member/post-list" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             發文列表
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/article-message" 
-            className={`nav-link fs-5 ps-1 lh-lg pb-2 ${location.pathname === "/member/article-message" ? "text-primary-600" : "text-white"}`} 
-            onClick={() => updateTitle("查看留言")}>
+            <NavLink  to="/member/article-message" 
+           className={({ isActive }) => `nav-link fs-5 ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             查看留言
-            </Link>
+            </NavLink >
           </li>
         </ul>
       </div>
@@ -218,122 +229,125 @@ const MemberSidebar = () => {
             <ul className="flex-column fw-bold list-unstyled">
               <li className="nav-link text-gray-400 fs-5">我的帳戶</li>
               <li>
-                <Link to="/member" className="nav-link text-white ps-1 lh-lg pt-2" onClick={() => updateTitle("個人資料")}>
+                <NavLink key={sidebarKey}  to="/member" end 
+               className={({ isActive }) => `nav-link   ps-1 lh-lg pt-2 ${isActive ? "text-primary-600" : "text-white"}`}
+               >
                   個人資料
-                </Link>
+                </NavLink >
               </li>
               <li>
-                <Link to="/member/identity" className="nav-link text-white ps-1 lh-lg" onClick={() => updateTitle("身分審核")}>
+                <NavLink  key={sidebarKey} to="/member/identity" 
+                 className={({ isActive }) => `nav-link  ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
                   身分審核
-                </Link>
+                </NavLink >
               </li>
               <li>
-                <Link to="/member/change-password" className="nav-link text-white ps-1 lh-lg" onClick={() => updateTitle("修改密碼")}>
+                <NavLink key={sidebarKey} to="/member/change-password" 
+                 className={({ isActive }) => `nav-link  ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
                   修改密碼
-                </Link>
+                </NavLink >
               </li>
               <li>
-                <Link to="/member/points" className="nav-link text-white ps-1 lh-lg" onClick={() => updateTitle("可用點數")}>
+                <NavLink key={sidebarKey}  to="/member/points"  className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
                   可用點數
-                </Link>
+                </NavLink >
               </li>
               <li>
-                <Link to="/member/settings" className="nav-link text-white ps-1 lh-lg pb-2" onClick={() => updateTitle("隱私設置")}>
+                <NavLink key={sidebarKey} to="/member/settings"  className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
                   隱私設置
-                </Link>
+                </NavLink >
               </li>
             </ul>
             
             <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">創業項目</li>
           <li>
-            <Link to="/member/new-projects" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("新增創業項目")}>
+            <NavLink key={sidebarKey} to="/member/new-projects" className={({ isActive }) => `nav-link  ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
               新增創業項目
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/created-projects" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("已建創業項目")}>
+            <NavLink key={sidebarKey} to="/member/created-projects" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
               已建創業項目
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">投資人</li>
           <li>
-            <Link to="/member/new-investor" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("建立/修改投資人資料")}>
+            <NavLink key={sidebarKey} to="/member/new-investor" className={({ isActive }) => `nav-link  ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             建立/修改投資人資料
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">評價紀錄</li>
           <li>
-            <Link to="/member/evaluate-projects" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("創業項目評價")}>
-            創業項目評價
-            </Link>
+            <NavLink key={sidebarKey} to="/member/evaluate-projects" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/evaluate-investor" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("投資人評價")}>
+            <NavLink key={sidebarKey} to="/member/evaluate-investor" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             投資人評價
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">我的收藏</li>
           <li>
-            <Link to="/member/collect-projects" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("創業項目收藏列表")}>
+            <NavLink key={sidebarKey} to="/member/collect-projects" className={({ isActive }) => `nav-link  ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             創業項目收藏列表
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/collect-investor" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("投資人收藏列表")}>
+            <NavLink key={sidebarKey} to="/member/collect-investor" className={({ isActive }) => `nav-link  ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             投資人收藏列表
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">我的活動</li>
           <li>
-            <Link to="/member/activity" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("已申請活動")}>
+            <NavLink key={sidebarKey} to="/member/activity" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             已申請活動
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/activity-record" className="nav-link text-white ps-1 lh-lg pb-1" onClick={() => updateTitle("活動紀錄")}>
+            <NavLink key={sidebarKey} to="/member/activity-record" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             活動紀錄
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">我的消息</li>
           <li>
-            <Link to="/member/site-news" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("站內消息")}>
+            <NavLink key={sidebarKey} to="/member/site-news" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             站內消息
-            </Link>
+            </NavLink >
           </li>
         </ul>
 
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">討論區</li>
           <li>
-            <Link to="/member/post-article" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("新增文章")}>
+            <NavLink key={sidebarKey} to="/member/post-article" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             新增文章
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/post-list" className="nav-link text-white  ps-1 lh-lg" onClick={() => updateTitle("發文列表")}>
+            <NavLink key={sidebarKey}  to="/member/post-list" className={({ isActive }) => `nav-link  ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
             發文列表
-            </Link>
+            </NavLink >
           </li>
           <li>
-            <Link to="/member/article-message" className="nav-link text-white  ps-1 lh-lg pb-1" onClick={() => updateTitle("查看留言")}>
+            <NavLink  to="/member/article-message" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             查看留言
-            </Link>
+            </NavLink >
           </li>
         </ul>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import Pagination from "../../components/Pagination"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = "http://localhost:3000/activities";
@@ -9,24 +10,26 @@ const MemberApplyActivity = () => {
   const [activities, setActivities] = useState([]);
   const [selectedRegistration, setSelectedRegistration] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user ? user.id : null;
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
+  const useraccount = localStorage.getItem("useraccount");
 
   useEffect(() => {
-    if (!userId) return;
+    if (!useraccount) return;
 
     const fetchRegisteredActivities = async () => {
       try {
-        // 取得會員的報名紀錄
-        const { data: registrations } = await axios.get(`${API_URL}?userId=${userId}`);
-        if (registrations.length === 0) return;
+        // 會員報名紀錄
+        const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
+          params: { useraccount }
+        });
 
-        // 取得所有活動詳細資訊
+        // 活動詳細資訊
         const activityDetails = await Promise.all(
           registrations.map((reg) => axios.get(`${ACTIVITY_API_URL}/${reg.activityId}`))
         );
 
-        // 取得今天的日期（格式：YYYY-MM-DD）
+        // 取得今天的日期
         const today = new Date().toISOString().split("T")[0];
 
         // 整合報名紀錄與活動資訊
@@ -35,11 +38,10 @@ const MemberApplyActivity = () => {
           return {
             ...reg,
             ...activity,
-            isExpired: new Date(activity.date) < new Date(today), // 判斷是否過期
+            isExpired: new Date(activity.date) < new Date(today), 
           };
         });
 
-        // 排序：未過期的活動在上，已過期的活動在下
         sortedActivities.sort((a, b) => {
           return a.isExpired - b.isExpired;
         });
@@ -51,7 +53,15 @@ const MemberApplyActivity = () => {
     };
 
     fetchRegisteredActivities();
-  }, [userId]);
+  }, [useraccount]);
+
+
+
+  const totalPages = Math.ceil(activities.length / itemsPerPage);
+  const paginatedActivities = activities.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   // 取消報名的 Modal
   const handleOpenModal = (registration) => {
@@ -70,7 +80,9 @@ const MemberApplyActivity = () => {
     if (!selectedRegistration) return;
 
     try {
-      const { data: registrations } = await axios.get(`${API_URL}?userId=${userId}`);
+      const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
+        params: { useraccount }
+      });
       const registration = registrations.find((reg) => reg.activityId === selectedRegistration.activityId);
 
       if (!registration) {
@@ -103,10 +115,10 @@ const MemberApplyActivity = () => {
     <div className="container my-4">
       <h2 className="text-center text-primary-600 mb-4">已報名活動</h2>
 
-      {activities.length === 0 ? (
+      {paginatedActivities.length === 0 ? (
         <p className="text-center text-gray-400">您尚未報名任何活動。</p>
       ) : (
-        activities.map((activity) => (
+        paginatedActivities.map((activity) => (
           <div key={activity.id} className="card border-0 mb-4">
             <div className="row g-0 d-flex align-items-center bg-gray-800">
               <div className="col-md-3">
@@ -146,6 +158,9 @@ const MemberApplyActivity = () => {
             </div>
           </div>
         ))
+      )}
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
 
       {/* 取消申請 Modal */}
