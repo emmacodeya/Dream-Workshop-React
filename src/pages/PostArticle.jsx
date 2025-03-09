@@ -13,16 +13,14 @@ const PostArticle = () => {
   const [agree, setAgree] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
-
-  // 取得會員帳號與頭像
   const useraccount = localStorage.getItem("useraccount") || "";
   const authorAvatar = localStorage.getItem("avatar") || "";
 
-  // 檢查登入狀態
+
   useEffect(() => {
     if (!useraccount) {
       alert("請先登入才能發表文章！");
-      navigate("/login"); // 未來導向登入頁面
+      navigate("/login"); 
     }
   }, [useraccount, navigate]);
 
@@ -45,7 +43,7 @@ const PostArticle = () => {
         content,
         author: useraccount,
         authorAvatar,
-        comments: [], // 初始化為空陣列
+        comments: [], 
         createdAt: currentTime,
         updatedAt: currentTime
       });
@@ -95,7 +93,7 @@ const PostArticle = () => {
             theme="snow" 
             value={content} 
             onChange={setContent}
-            style={{ height: "500px" }} // 設定更高的輸入框
+            style={{ height: "500px" }} 
           />
         </div>
       </div>

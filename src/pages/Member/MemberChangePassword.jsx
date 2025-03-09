@@ -15,13 +15,9 @@ const MemberChangePassword = () => {
     reset,
   } = useForm();
 
-  // 監聽 newPassword 欄位
   const newPassword = watch("newPassword");
-
-  // 控制所有密碼顯示/隱藏
   const [showPassword, setShowPassword] = useState(false);
 
-  // 提交表單
   const onSubmit = async (data) => {
     if (data.newPassword !== data.confirmPassword) {
       alert("新密碼與確認密碼不匹配");
@@ -36,8 +32,8 @@ const MemberChangePassword = () => {
         return;
       }
 
-      const userData = res.data[0]; // 取得會員資訊
-      const memberId = userData.id; // 取得會員 ID
+      const userData = res.data[0]; 
+      const memberId = userData.id; 
 
       if (!userData.password) {
         alert("無法獲取使用者資訊");
@@ -61,10 +57,9 @@ const MemberChangePassword = () => {
     }
   };
 
-  // 按取消，清空表單 & 取消勾選 Checkbox
   const handleCancel = () => {
     reset();
-    setShowPassword(false); // 取消勾選「顯示密碼」
+    setShowPassword(false); 
   };
 
   return (

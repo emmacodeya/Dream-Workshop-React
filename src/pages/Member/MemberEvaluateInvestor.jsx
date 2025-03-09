@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -10,22 +11,20 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
   const [showModal, setShowModal] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyTargetId, setReplyTargetId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
-  //  讀取該會員創立的投資人評價
   useEffect(() => {
     if (!useraccount) return;
 
     axios.get(`${API_URL}/investors?useraccount=${useraccount}`)
       .then((response) => {
         const userInvestors = response.data;
-
-        // 取得所有與這些投資人相關的評價
         const investorIds = userInvestors.map((inv) => inv.id);
         axios.get(`${API_URL}/investorEvaluations`)
           .then((evalResponse) => {
             const evaluations = evalResponse.data.filter((evaluationItem) => investorIds.includes(evaluationItem.investorId));
 
-            // **只保留有評價的投資人**
             const investorsWithEvaluations = userInvestors
               .map((inv) => ({
                 ...inv,
@@ -40,12 +39,20 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
       .catch((error) => console.error("獲取投資人失敗:", error));
   }, [useraccount]);
 
-  // 提交回覆
+
+  const allEvaluations = investors.flatMap((investor) => investor.evaluations);
+
+  const totalPages = Math.ceil(allEvaluations.length / itemsPerPage);
+
+  const paginatedEvaluations = allEvaluations.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  )
+
   const handleSubmitReply = async () => {
     if (!replyTargetId || !replyContent.trim()) return;
 
     try {
-      // 找到對應的投資人與評價
       const evaluationIndex = investors.findIndex((investor) =>
         investor.evaluations.some((evaluation) => evaluation.id === replyTargetId)
       );
@@ -56,30 +63,25 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
       const evaluation = investor.evaluations.find((evaluation) => evaluation.id === replyTargetId);
 
       const updatedReplies = [
-        ...(evaluation.replies || []), // 確保 `replies` 陣列存在
+        ...(evaluation.replies || []), 
         {
           id: `r${Date.now()}`,
-          useraccount: useraccount, // 使用當前會員帳號
-          name: useraccount, // 顯示會員帳號
+          useraccount: useraccount, 
+          name: useraccount, 
           date: new Date().toLocaleDateString(),
           comment: replyContent,
         },
       ];
 
-      // 發送 PATCH 請求，更新 `replies`
       await axios.patch(`${API_URL}/investorEvaluations/${replyTargetId}`, {
         replies: updatedReplies,
       });
 
-      // 更新本地 state，讓回覆即時顯示
       const updatedInvestors = [...investors];
       updatedInvestors[evaluationIndex].evaluations.find((evalItem) => evalItem.id === replyTargetId).replies = updatedReplies;
       setInvestors(updatedInvestors);
-
       setShowModal(false);
       setReplyContent("");
-
-      // ✅ 顯示成功提示
       alert("回覆提交成功！");
 
     } catch (error) {
@@ -88,7 +90,6 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
     }
   };
 
-  // 控制 Modal 開關
   const handleOpenModal = (evaluationId) => {
     setReplyTargetId(evaluationId);
     setShowModal(true);
@@ -111,15 +112,19 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {investors.length === 0 ? (
+          {paginatedEvaluations.length === 0 ? (
             <tr>
               <td colSpan="4" className="text-gray-400 py-4">尚無評價</td>
             </tr>
           ) : (
-            investors.map((investor) =>
-              investor.evaluations.map((evaluationItem) => (
-                <tr key={`${investor.id}-${evaluationItem.id}`}>
-                  <td className="text-white fw-bold">{investor.name}</td>
+            paginatedEvaluations.map((evaluationItem) => {
+              const investor = investors.find((inv) =>
+                inv.evaluations.some((evalItem) => evalItem.id === evaluationItem.id)
+              );
+
+              return (
+                <tr key={evaluationItem.id}>
+                  <td className="text-white fw-bold">{investor ? investor.name : "未知投資人"}</td>
                   <td className="text-white fw-bold">{evaluationItem.name}</td>
                   <td className="text-white">{evaluationItem.comment}</td>
                   <td>
@@ -128,11 +133,17 @@ const MemberEvaluateInvestor = ({ useraccount }) => {
                     </button>
                   </td>
                 </tr>
-              ))
-            )
+              );
+            })
           )}
         </tbody>
+
       </table>
+
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
+
 
       {/* 回覆 Modal */}
       <Modal show={showModal} onHide={handleCloseModal} centered>

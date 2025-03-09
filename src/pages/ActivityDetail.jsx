@@ -3,16 +3,19 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL;// 活動 API
-const REGISTER_API_URL = "http://localhost:3000/registrations"; // 報名 API (假設你有這個 API 端點)
+const API_URL = import.meta.env.VITE_API_URL;
+const REGISTER_API_URL = "http://localhost:3000/registrations"; 
 
 const ActivityDetail = () => {
-  const { id } = useParams(); // 取得 URL 中的活動 ID
+  const { id } = useParams(); 
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [registering, setRegistering] = useState(false); // 報名狀態
-  const [hasRegistered, setHasRegistered] = useState(false); // 是否已報名
-  const navigate = useNavigate(); // 用於導向登入頁面
+  const [registering, setRegistering] = useState(false); 
+  const [hasRegistered, setHasRegistered] = useState(false); 
+  const navigate = useNavigate(); 
+
+  const useraccount = localStorage.getItem("useraccount");
+  const isLoggedIn = !!useraccount;
 
   useEffect(() => {
     const fetchActivity = async () => {
@@ -27,14 +30,12 @@ const ActivityDetail = () => {
     };
 
     const checkIfRegistered = async () => {
-      const user = localStorage.getItem("user");
-      if (!user) return; // 未登入則不檢查
+      if (!useraccount) return; 
 
-      const userData = JSON.parse(user);
       try {
-        const response = await axios.get(`${REGISTER_API_URL}?userId=${userData.id}&activityId=${id}`);
+        const response = await axios.get(`${REGISTER_API_URL}?useraccount=${useraccount}&activityId=${id}`);
         if (response.data.length > 0) {
-          setHasRegistered(true); // 如果有報名紀錄，設為已報名
+          setHasRegistered(true);
         }
       } catch (error) {
         console.error("檢查報名狀態失敗:", error);
@@ -43,20 +44,17 @@ const ActivityDetail = () => {
 
     fetchActivity();
     checkIfRegistered();
-  }, [id]);
+  }, [id, useraccount]);
 
   if (loading) return <p className="text-center text-white">載入中...</p>;
   if (!activity) return <p className="text-center text-danger">找不到活動</p>;
 
-  // 檢查是否登入
-  const user = localStorage.getItem("user");
-  const isLoggedIn = !!user;
 
   // 點擊報名按鈕
   const handleRegister = async () => {
     if (!isLoggedIn) {
       alert("請先登入會員才能報名！");
-      navigate("/"); // 跳轉到登入頁面
+      navigate("/"); 
       return;
     }
 
@@ -70,29 +68,24 @@ const ActivityDetail = () => {
       return;
     }
 
-    setRegistering(true); // 設定報名中狀態
+    setRegistering(true);
 
     try {
-      const userData = JSON.parse(user);
       const registrationData = {
-        userId: userData.id,
-        userName: userData.name, // 假設 `user` 物件內有 `name`
+        useraccount,
         activityId: activity.id,
         activityTitle: activity.title,
         date: activity.date,
       };
 
-      // 發送報名請求
       const response = await axios.post(REGISTER_API_URL, registrationData);
       if (response.status === 201) {
         alert("報名成功！");
-        setHasRegistered(true); // 更新前端狀態
+        setHasRegistered(true);
 
-        // 更新剩餘名額
         const updatedSlots = activity.remainingSlots - 1;
-        await axios.patch(`${API_URL}/${activity.id}`, { remainingSlots: updatedSlots });
+        await axios.patch(`${API_URL}/activities/${activity.id}`, { remainingSlots: updatedSlots });
 
-        // 更新前端顯示的剩餘名額
         setActivity((prevActivity) => ({
           ...prevActivity,
           remainingSlots: updatedSlots,
@@ -104,9 +97,10 @@ const ActivityDetail = () => {
       console.error("報名失敗:", error);
       alert("發生錯誤，請稍後再試！");
     } finally {
-      setRegistering(false); // 取消報名中狀態
+      setRegistering(false);
     }
   };
+
 
   return (
     <main className="container py-15">

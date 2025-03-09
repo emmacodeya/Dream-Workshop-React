@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Pagination from "../../components/Pagination";
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -9,6 +10,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MemberCollectProjects = () => {
   const [projects, setProjects] = useState([]);
   const [user, setUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const storedUser = localStorage.getItem("useraccount");
@@ -25,6 +28,13 @@ const MemberCollectProjects = () => {
       }
     });
   }, []);
+
+    const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+    const paginatedProjects = projects.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
   const toggleFavorite = async (projectId) => {
     if (!user) return;
@@ -46,7 +56,7 @@ const MemberCollectProjects = () => {
 
   return (
     <div className="container mt-5">
-      {projects.map((project) => (
+      {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-lg-8 mt-5">
           <div className="d-flex justify-content-between created-title investor-created-title">
             <div className="d-flex align-items-center">
@@ -62,7 +72,7 @@ const MemberCollectProjects = () => {
 
           <div className="row g-0 created-bady investor-created-bady">
             <div className="col-md-6 d-flex align-items-center justify-content-center">
-              <img src={project.companyLogo} className="img-fluid rounded-start" alt={project.name} />
+              <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
             </div>
             <div className="col-md-6">
               <div className="card-body investor-card-body created-form">
@@ -92,6 +102,9 @@ const MemberCollectProjects = () => {
           </div>
         </div>
       ))}
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
     </div>
   );
 };

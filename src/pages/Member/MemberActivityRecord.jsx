@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Pagination from "../../components/Pagination"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = "http://localhost:3000/activities";
@@ -8,30 +9,33 @@ const MemberActivityRecord = () => {
   const [ongoingActivities, setOngoingActivities] = useState([]); 
   const [pastActivities, setPastActivities] = useState([]);
   const [loading, setLoading] = useState(true);
-  const user = JSON.parse(localStorage.getItem("user"));
-  const userId = user ? user.id : null;
+  const useraccount = localStorage.getItem("useraccount");
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
+
 
   useEffect(() => {
-    if (!userId) return;
+    if (!useraccount) return;
 
     const fetchActivityRecords = async () => {
       try {
-        // 取得該會員的報名紀錄
-        const { data: registrations } = await axios.get(`${API_URL}?userId=${userId}`);
+        // 會員報名紀錄
+        const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
+          params: { useraccount }
+        });
         if (registrations.length === 0) {
           setLoading(false);
           return;
         }
 
-        // 取得活動詳細資料
+        // 活動詳細資料
         const activityResponses = await Promise.all(
           registrations.map((reg) => axios.get(`${ACTIVITY_API_URL}/${reg.activityId}`))
         );
 
-        // 取得當前日期
+        // 當前日期
         const today = new Date().toISOString().split("T")[0];
 
-        // 整理數據並分類
         const activities = registrations.map((reg, index) => {
           const activity = activityResponses[index].data;
           return {
@@ -54,8 +58,15 @@ const MemberActivityRecord = () => {
     };
 
     fetchActivityRecords();
-  }, [userId]);
+  }, [useraccount]);
 
+    const totalPages = Math.ceil((ongoingActivities.length + pastActivities.length) / itemsPerPage);
+
+    const allActivities = [...ongoingActivities, ...pastActivities];
+    const paginatedActivities = allActivities.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
   return (
     <div className="container pt-lg-8 pt-5">
       {loading ? (
@@ -88,7 +99,7 @@ const MemberActivityRecord = () => {
           )}
 
           {/* 過往活動 */}
-          {pastActivities.length > 0 && (
+          {paginatedActivities.length > 0 && (
             <>
               <h3 className="text-white mt-5">過往參加的活動</h3>
               <table className="table table-dark table-hover table-bordered border-gray-600">
@@ -100,7 +111,7 @@ const MemberActivityRecord = () => {
                   </tr>
                 </thead>
                 <tbody className="text-center">
-                  {pastActivities.map((activity) => (
+                  {paginatedActivities.map((activity) => (
                     <tr key={activity.id}>
                       <td>{activity.name}</td>
                       <td>{activity.date}</td>
@@ -109,6 +120,9 @@ const MemberActivityRecord = () => {
                   ))}
                 </tbody>
               </table>
+              {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
             </>
           )}
         </>

@@ -158,35 +158,49 @@ const toggleFavorite = async (investorId) => {
         <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">推薦投資人</h2>
 
         {/* 投資人輪播 */}
-        <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
-          1296: { slidesPerView: 4 },
-          768: { slidesPerView: 2 },
-          375: { slidesPerView: 1.5 }
-        }}>
+        <Swiper 
+          modules={[Navigation]} 
+          navigation 
+          slidesPerView={4} 
+          spaceBetween={16}   
+          breakpoints={{
+            1296: { slidesPerView: 4 },
+            768: { slidesPerView: 2 },
+            375: { slidesPerView: 1.5 }
+          }}
+        >
+
           {investors.map((investor) => (
-            <SwiperSlide key={investor.id}>
-              <div className="card bg-gray-800 text-center h-100">
-                <div className="popular-card-body position-relative">
+          <SwiperSlide key={investor.id}>
+            <div className="card bg-gray-800 text-center h-100 d-flex flex-column">
+              <div className="popular-card-body position-relative flex-grow-1">
                 <button
-                  className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
+                  className="border-0 bg-transparent"
+                  onClick={() => toggleFavorite(investor.id)}
                 >
-                  <img className="favorite" src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                   alt="heart"
+                  <img
+                    className="favorite"
+                    src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    alt="heart"
                   />
                 </button>
-                  <img className="company-logo mb-3 w-25"
-                  src={investor.avatar} alt={investor.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{investor.name}</h4>
-                  <h5 className="text-gray-200">偏好投資領域</h5>
-                  <h6 className="fw-bold text-gray-100"> {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}</h6>
-                  <p>{truncateText(investor.introduction)}</p>
+                <img className="company-logo mb-3 w-25" src={investor.avatar} alt={investor.name} />
+                <h4 className="card-title popular-card-title text-primary-600 ">{investor.name}</h4>
+                <div className="mb-3">
+                <h5 className="text-gray-200 ">偏好投資領域</h5>
+                <h6 className="fw-bold text-gray-100">
+                    {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}
+                </h6>
                 </div>
-                <div className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資本額</p>
-                  <p className="fs-5 fw-bold text-white">{investor.capital}</p>
-                </div>
+                <p>{truncateText(investor.introduction)}</p>
               </div>
-            </SwiperSlide>
+              <div className="btn btn-gray-600 py-3">
+                <p className="fs-5">資本額</p>
+                <p className="fs-5 fw-bold text-white">{investor.capital}</p>
+              </div>
+            </div>
+        </SwiperSlide>
+        
           ))}
         </Swiper>
 

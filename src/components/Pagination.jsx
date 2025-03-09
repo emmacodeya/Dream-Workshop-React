@@ -16,11 +16,12 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
   return (
     <nav>
       <ul className="pagination justify-content-center pt-3">
-        <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
-          <button className="page-link bg-transparent text-white border-0  " onClick={handlePrev}>
-            上一頁
-          </button>
-        </li>
+      <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
+        <button className="page-link bg-transparent text-white border-0" onClick={handlePrev}>
+          <img src="/assets/images/icons/outline-chevron-left.png" alt="上一頁" width="24" height="24" />
+        </button>
+      </li>
+
         {Array.from({ length: totalPages }, (_, i) => (
           <li key={i + 1} className={`page-item  ${currentPage === i + 1 ? "active" : ""}`}>
             <button className="page-link   bg-transparent border-0" onClick={() => onPageChange(i + 1)}>
@@ -29,10 +30,11 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
           </li>
         ))}
         <li className={`page-item ${currentPage === totalPages ? "disabled" : ""}`}>
-          <button className="page-link text-white bg-transparent border-0" onClick={handleNext}>
-            下一頁
+          <button className="page-link bg-transparent text-white border-0" onClick={handleNext}>
+            <img src="/assets/images/icons/baseline-chevron-right.png" alt="下一頁" width="24" height="24" />
           </button>
         </li>
+
       </ul>
     </nav>
   );

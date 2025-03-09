@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
+import Pagination from "../../components/Pagination"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,13 +13,13 @@ const MemberArticleMessage = () => {
   const [notification, setNotification] = useState({ show: false, message: "", success: false });
   const [contentError, setContentError] = useState(false);
   const useraccount = localStorage.getItem("useraccount") || "";
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
         const res = await axios.get(`${API_URL}/articles`);
-        console.log("取得的文章資料:", res.data);
-
         const userArticles = res.data.filter(article => article.author === useraccount);
         const userComments = userArticles.flatMap(article =>
           article.comments.map(comment => ({
@@ -28,8 +29,6 @@ const MemberArticleMessage = () => {
             articleAuthor: article.author,
           }))
         );
-
-        console.log("會員文章內的留言:", userComments);
         setComments(userComments);
       } catch (error) {
         console.error("無法獲取留言:", error);
@@ -38,6 +37,14 @@ const MemberArticleMessage = () => {
 
     fetchComments();
   }, [useraccount]);
+
+
+  const totalPages = Math.ceil(comments.length / itemsPerPage);
+
+  const paginatedComments = comments.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleOpenModal = (commentId) => {
     setReplyTo(commentId);
@@ -102,7 +109,7 @@ const MemberArticleMessage = () => {
   return (
     <div className="container mt-5">
       <h2 className="text-center text-primary-600">我的文章留言</h2>
-      {comments.length === 0 ? (
+      {paginatedComments.length === 0 ? (
         <p className="text-center text-white">目前沒有留言。</p>
       ) : (
         <table className="table table-striped table-hover mt-8">
@@ -115,7 +122,7 @@ const MemberArticleMessage = () => {
             </tr>
           </thead>
           <tbody className="text-center table table-sm table-gray-800">
-            {comments.map((comment) => (
+            {paginatedComments.map((comment) => (
               <tr key={comment.id} className="align-middle">
                 <td>
                   <a href={`/article/${comment.articleId}`} className="text-primary-600">
@@ -133,6 +140,10 @@ const MemberArticleMessage = () => {
             ))}
           </tbody>
         </table>
+      )}
+
+        {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
       {/* 回覆 Modal */}
       <Modal show={showModal} onHide={handleCloseModal} centered>

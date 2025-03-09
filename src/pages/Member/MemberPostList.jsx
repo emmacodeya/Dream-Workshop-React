@@ -3,6 +3,7 @@ import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,8 @@ const MemberPostList = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const useraccount = localStorage.getItem("useraccount") || "";
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const fetchArticles = async () => {
@@ -29,6 +32,15 @@ const MemberPostList = () => {
 
     fetchArticles();
   }, [useraccount]);
+
+
+  const totalPages = Math.ceil(posts.length / itemsPerPage);
+
+
+  const paginatedPosts = posts.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   const handleOpenEditModal = async (postId) => {
     try {
@@ -96,7 +108,7 @@ const MemberPostList = () => {
           </tr>
         </thead>
         <tbody className="text-center table table-sm table-gray-800">
-        {posts.map((post) => (
+        {paginatedPosts.map((post) => (
             <tr key={post.id} className="tbody-text-hover align-middle">
               <th scope="row">
                 <a href={`/article/${post.id}`}>{post.title}</a>
@@ -116,7 +128,9 @@ const MemberPostList = () => {
           ))}
         </tbody>
       </table>
-
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
       {/* 編輯文章 Modal */}
       <Modal show={showEditModal} onHide={handleCloseEditModal} centered size="lg">
         <Modal.Header closeButton className="border-0 bg-gray-1000">

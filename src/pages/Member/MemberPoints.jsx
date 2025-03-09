@@ -3,20 +3,15 @@ import { useNavigate } from "react-router-dom";
 
 const MemberPoints = () => {
   const navigate = useNavigate();
-
-  // 目前可用點數（可變動）
   const [availablePoints, setAvailablePoints] = useState(32);
-
-  // 點數紀錄
   const pointsHistory = [
     { date: "2024/09/22", purchased: "", spent: "", used: 46 },
     { date: "2024/09/08", purchased: "", spent: "", used: 22 },
     { date: "2024/08/22", purchased: 100, spent: 399, used: 0 },
   ];
 
-  // 模擬儲值增加點數
   const handleRecharge = () => {
-    setAvailablePoints((prev) => prev + 100); // 每次儲值加 100 點
+    setAvailablePoints((prev) => prev + 100); 
     navigate("/recharge");
   };
 
@@ -33,7 +28,7 @@ const MemberPoints = () => {
 
         <div className="col-md-4 text-md-end mt-md-0 mt-3">
           <button
-            onClick={handleRecharge} // 使用函式來更新點數
+            onClick={handleRecharge} 
             className="btn btn-lg btn-outline-primary-600 fw-bolder"
           >
             <i className="bi bi-cash"></i> 前往儲值

@@ -3,12 +3,11 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom"; 
+import Pagination from "../../components/Pagination"; 
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
-
-
 
 const MemberCreatedProjects = ({ useraccount }) => {
   const [projects, setProjects] = useState([]);
@@ -18,6 +17,8 @@ const MemberCreatedProjects = ({ useraccount }) => {
   const navigate = useNavigate(); 
   const [companyLogo, setCompanyLogo] = useState("");
   const [companyImage, setCompanyImage] = useState("");
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
    // 獲取會員帳號的創業項目
    useEffect(() => {
@@ -47,6 +48,14 @@ const MemberCreatedProjects = ({ useraccount }) => {
     fetchIndustries();
   }, [useraccount]);
 
+  
+const totalPages = Math.ceil(projects.length / itemsPerPage);
+
+
+const paginatedProjects = projects.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
 
  // 刪除專案
  const handleDelete = async (id) => {
@@ -91,20 +100,17 @@ const MemberCreatedProjects = ({ useraccount }) => {
           "productDescription", "competeDescription", "entrepreneurDescription"
         ];
 
-        // 批量設置值，預設為空字串避免 undefined
+        
         fields.forEach(field => setValue(field, projectData[field] || ""));
 
-        // 設定 SWOT 分析的值，確保 projectData.swot 存在
+       
         const swotFields = ["strengths", "weaknesses", "opportunities", "threats"];
         swotFields.forEach(field => setValue(field, projectData.swot?.[field] || ""));
 
-        // 設定圖片
+        
         setCompanyLogo(projectData.companyLogo || "");
         setCompanyImage(projectData.companyImage || "");
 
-      
-  
-      
       extraData.forEach((res, index) => {
         const { key } = endpoints[index];
   
@@ -170,23 +176,16 @@ const MemberCreatedProjects = ({ useraccount }) => {
 
     try {
         const projectId = selectedProject.id;
-
-        // 取得完整的原始專案資料，確保所有欄位都被保留
         const projectRes = await axios.get(`${API_URL}/projects/${projectId}`);
-        const originalData = projectRes.data;  // 取得完整的原始資料
-
-        // 建立更新資料物件，保留未修改的欄位
+        const originalData = projectRes.data;  
         const updatedData = {
-            ...originalData,  // 保留所有原始欄位
-            ...data,  // 更新表單提交的欄位
-            companyLogo: companyLogo || originalData.companyLogo,  // 確保圖片不會被清空
-            companyImage: companyImage || originalData.companyImage,  // 確保圖片不會被清空
+            ...originalData,  
+            ...data,  
+            companyLogo: companyLogo || originalData.companyLogo, 
+            companyImage: companyImage || originalData.companyImage,  
         };
 
-        // 送出 PATCH 更新專案，確保 `useraccount` 和其他欄位不被刪除
         await axios.patch(`${API_URL}/projects/${projectId}`, updatedData);
-
-        // 更新其他關聯資料 (如 SWOT、團隊等)
         const endpoints = [
             { key: "swot", fields: ["strengths", "weaknesses", "opportunities", "threats"] },
             { key: "marketSize", fields: ["content"] },
@@ -202,14 +201,12 @@ const MemberCreatedProjects = ({ useraccount }) => {
                 const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
 
                 if (res.data.length > 0) {
-                    // **改用 PATCH 更新，確保不刪除其他欄位**
                     const updateData = {
-                        ...res.data[0],  // 保留原始資料
-                        ...fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || res.data[0][field] }), {})  // 更新必要欄位
+                        ...res.data[0], 
+                        ...fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || res.data[0][field] }), {}) 
                     };
                     await axios.patch(`${API_URL}/${key}/${res.data[0].id}`, updateData);
                 } else {
-                    // **確保新建資料時不會遺漏 projectId**
                     const newData = fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || "" }), {});
                     await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
                 }
@@ -266,7 +263,7 @@ const handleImageUpload = async (e) => {
 
   return (
     <div className="container mt-5">
-      {projects.map((project) => (
+      {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-lg-8 mt-5 p-5">
           <div className="d-flex justify-content-between created-title">
             <div className="d-flex align-items-center">
@@ -320,9 +317,6 @@ const handleImageUpload = async (e) => {
                     <li className="fs-5 text-gray-400 fw-bold">募資金額</li>
                     <li className="fs-3 text-primary-400 fw-bold">{project.funding}</li>
                   </ul>
-                  {/* <div>
-                    <button type="button" className={`btn ${project.reviewClass}`}>{project.reviewStatus}</button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -653,9 +647,9 @@ const handleImageUpload = async (e) => {
   </div>
 </div>
 
-     
-
-
+    {totalPages > 1 && (
+    <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+  )}
     </div>
   );
 };

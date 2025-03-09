@@ -1,5 +1,5 @@
 {
- "members": [
+  "members": [
     {
       "id": "1",
       "useraccount": "happy1234",
@@ -187,144 +187,172 @@
       }
     }
   ],
- "investors": [
-  {
-    "useraccount": "happy1234",
-    "name": "Ethan Carter",
-    "mobile": "0912-131-456",
-    "email": "happy5678@gmail.com",
-    "capital": "40000000",
-    "industry": ["wholesaleretail", "services", "food"],
-    "introduction": "專注於餐飲業投資，擁有豐富經營經驗。",
-    "experience": "餐飲產業投資超過10年，熟悉市場趨勢。",
-    "resources": "擁有多家餐飲業供應鏈資源。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar8.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "1"
-  },
-  {
-    "useraccount": "user3030",
-    "name": "王明志",
-    "mobile": "0934567890",
-    "email": "user3@example.com",
-    "capital": "50000000",
-    "industry": ["finance", "realestate"],
-    "introduction": "專注於金融市場與房地產投資。",
-    "experience": "多年投資金融市場與房地產。",
-    "resources": "與多家銀行和建設公司有合作。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar2.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "3"
-  },
-  {
-    "useraccount": "user4040",
-    "name": "林美玲",
-    "mobile": "0945678901",
-    "email": "user4@example.com",
-    "capital": "45000000",
-    "industry": ["biotechnology", "healthcare"],
-    "introduction": "專注於醫療與生技產業的長期投資。",
-    "experience": "擁有超過12年的醫療投資經驗。",
-    "resources": "與生技公司及醫療機構合作密切。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar9.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "4"
-  },
-  {
-    "useraccount": "user5050",
-    "name": "張偉",
-    "mobile": "0956789012",
-    "email": "user5@example.com",
-    "capital": "70000000",
-    "industry": ["electronics", "manufacturing"],
-    "introduction": "投資電子資訊與製造業，促進產業升級。",
-    "experience": "電子產業投資15年，曾投資多家科技公司。",
-    "resources": "擁有供應鏈與製造工廠合作夥伴。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar4.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "5"
-  },
-  {
-    "useraccount": "user6060",
-    "name": "劉俊傑",
-    "mobile": "0967890123",
-    "email": "user6@example.com",
-    "capital": "55000000",
-    "industry": ["internet", "media"],
-    "introduction": "關注網際網路與新媒體技術投資。",
-    "experience": "曾投資數家新創媒體公司，擁有市場經驗。",
-    "resources": "與媒體平台及社群網絡公司有合作。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar5.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "6"
-  },
-  {
-    "useraccount": "user7070",
-    "name": "黃麗芬",
-    "mobile": "0978901234",
-    "email": "user7@example.com",
-    "capital": "60000000",
-    "industry": ["education", "consulting"],
-    "introduction": "關注教育與企業顧問產業的發展。",
-    "experience": "多年教育產業投資經驗。",
-    "resources": "與多所大學及顧問公司有合作。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar6.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "7"
-  },
-  {
-    "useraccount": "user8080",
-    "name": "周志強",
-    "mobile": "0989012345",
-    "email": "user8@example.com",
-    "capital": "65000000",
-    "industry": ["travel", "accommodation"],
-    "introduction": "投資旅遊與住宿產業，促進觀光發展。",
-    "experience": "旅遊飯店業投資超過8年。",
-    "resources": "與國內外旅遊公司合作密切。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar7.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "8"
-  },
-  {
-    "useraccount": "user9090",
-    "name": "鄭惠芳",
-    "mobile": "0990123456",
-    "email": "user9@example.com",
-    "capital": "72000000",
-    "industry": ["wholesaleretail", "logistics"],
-    "introduction": "批發零售與物流產業的投資者。",
-    "experience": "超過10年供應鏈與零售市場投資經驗。",
-    "resources": "擁有電商物流與倉儲管理經驗。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar11.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "9"
-  },
-  {
-    "useraccount": "user1010",
-    "name": "吳家豪",
-    "mobile": "0901234567",
-    "email": "user10@example.com",
-    "capital": "80000000",
-    "industry": ["design", "media"],
-    "introduction": "熱愛設計與影視娛樂產業的投資人。",
-    "experience": "曾投資多部影視作品與設計公司。",
-    "resources": "與設計師、電影公司有深厚合作關係。",
-    "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar10.png",
-    "financialProof": "",
-    "referencePhotos": [],
-    "id": "10"
-  }
-],
- "projects": [
+  "investors": [
+    {
+      "useraccount": "happy1234",
+      "name": "Ethan Carter",
+      "mobile": "0912-131-456",
+      "email": "happy5678@gmail.com",
+      "capital": "40000000",
+      "industry": [
+        "wholesaleretail",
+        "services",
+        "food"
+      ],
+      "introduction": "專注於餐飲業投資，擁有豐富經營經驗。",
+      "experience": "餐飲產業投資超過10年，熟悉市場趨勢。",
+      "resources": "擁有多家餐飲業供應鏈資源。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar8.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "1"
+    },
+    {
+      "useraccount": "user3030",
+      "name": "王明志",
+      "mobile": "0934567890",
+      "email": "user3@example.com",
+      "capital": "50000000",
+      "industry": [
+        "finance",
+        "realestate"
+      ],
+      "introduction": "專注於金融市場與房地產投資。",
+      "experience": "多年投資金融市場與房地產。",
+      "resources": "與多家銀行和建設公司有合作。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar2.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "3"
+    },
+    {
+      "useraccount": "user4040",
+      "name": "林美玲",
+      "mobile": "0945678901",
+      "email": "user4@example.com",
+      "capital": "45000000",
+      "industry": [
+        "biotechnology",
+        "healthcare"
+      ],
+      "introduction": "專注於醫療與生技產業的長期投資。",
+      "experience": "擁有超過12年的醫療投資經驗。",
+      "resources": "與生技公司及醫療機構合作密切。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar9.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "4"
+    },
+    {
+      "useraccount": "user5050",
+      "name": "張偉",
+      "mobile": "0956789012",
+      "email": "user5@example.com",
+      "capital": "70000000",
+      "industry": [
+        "electronics",
+        "manufacturing"
+      ],
+      "introduction": "投資電子資訊與製造業，促進產業升級。",
+      "experience": "電子產業投資15年，曾投資多家科技公司。",
+      "resources": "擁有供應鏈與製造工廠合作夥伴。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar4.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "5"
+    },
+    {
+      "useraccount": "user6060",
+      "name": "劉俊傑",
+      "mobile": "0967890123",
+      "email": "user6@example.com",
+      "capital": "55000000",
+      "industry": [
+        "internet",
+        "media"
+      ],
+      "introduction": "關注網際網路與新媒體技術投資。",
+      "experience": "曾投資數家新創媒體公司，擁有市場經驗。",
+      "resources": "與媒體平台及社群網絡公司有合作。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar5.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "6"
+    },
+    {
+      "useraccount": "user7070",
+      "name": "黃麗芬",
+      "mobile": "0978901234",
+      "email": "user7@example.com",
+      "capital": "60000000",
+      "industry": [
+        "education",
+        "consulting"
+      ],
+      "introduction": "關注教育與企業顧問產業的發展。",
+      "experience": "多年教育產業投資經驗。",
+      "resources": "與多所大學及顧問公司有合作。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar6.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "7"
+    },
+    {
+      "useraccount": "user8080",
+      "name": "周志強",
+      "mobile": "0989012345",
+      "email": "user8@example.com",
+      "capital": "65000000",
+      "industry": [
+        "travel",
+        "accommodation"
+      ],
+      "introduction": "投資旅遊與住宿產業，促進觀光發展。",
+      "experience": "旅遊飯店業投資超過8年。",
+      "resources": "與國內外旅遊公司合作密切。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar7.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "8"
+    },
+    {
+      "useraccount": "user9090",
+      "name": "鄭惠芳",
+      "mobile": "0990123456",
+      "email": "user9@example.com",
+      "capital": "72000000",
+      "industry": [
+        "wholesaleretail",
+        "logistics"
+      ],
+      "introduction": "批發零售與物流產業的投資者。",
+      "experience": "超過10年供應鏈與零售市場投資經驗。",
+      "resources": "擁有電商物流與倉儲管理經驗。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar11.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "9"
+    },
+    {
+      "useraccount": "user1010",
+      "name": "吳家豪",
+      "mobile": "0901234567",
+      "email": "user10@example.com",
+      "capital": "80000000",
+      "industry": [
+        "design",
+        "media"
+      ],
+      "introduction": "熱愛設計與影視娛樂產業的投資人。",
+      "experience": "曾投資多部影視作品與設計公司。",
+      "resources": "與設計師、電影公司有深厚合作關係。",
+      "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar10.png",
+      "financialProof": "",
+      "referencePhotos": [],
+      "id": "10"
+    }
+  ],
+  "projects": [
     {
       "useraccount": "happy1234",
       "name": "林媽媽中式餐館",
@@ -702,224 +730,224 @@
     }
   ],
   "articles": [
-  {
-    "id": "4001",
-    "title": "如何找到合適的創業夥伴？",
-    "content": "<p>創業時，找到對的夥伴是成功的關鍵。你們認為該如何選擇合適的創業夥伴？</p>",
-    "author": "happy1234",
-    "authorAvatar": "https://dream-workshop-api.onrender.com/assets/images/頭像1.png",
-    "createdAt": "2025-03-04T10:00:00Z",
-    "updatedAt": "2025-03-04T10:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-1",
-        "author": "user3030",
-        "content": "我覺得要有共同願景，並且在性格和能力上互補。",
-        "createdAt": "2025-03-04T10:15:00Z",
-        "replies": [
-          {
-            "id": "reply-1-1",
-            "author": "happy1234",
-            "content": "的確，志同道合的夥伴能讓創業之路更順利。",
-            "createdAt": "2025-03-04T10:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4002",
-    "title": "創業初期應該先募資還是先測試市場？",
-    "content": "<p>許多創業者會面臨一個選擇，應該先募資還是先做市場測試？</p>",
-    "author": "user4040",
-    "createdAt": "2025-03-04T11:00:00Z",
-    "updatedAt": "2025-03-04T11:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-2",
-        "author": "user5050",
-        "content": "市場測試很重要，沒有市場驗證的產品很難吸引投資人。",
-        "createdAt": "2025-03-04T11:15:00Z",
-        "replies": [
-          {
-            "id": "reply-2-1",
-            "author": "user4040",
-            "content": "那麼你覺得什麼樣的市場測試方式比較有效呢？",
-            "createdAt": "2025-03-04T11:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4003",
-    "title": "創業時該如何確保現金流穩定？",
-    "content": "<p>現金流是創業的生命線，請問大家有什麼方法可以確保現金流穩定？</p>",
-    "author": "user6060",
-    "createdAt": "2025-03-04T12:00:00Z",
-    "updatedAt": "2025-03-04T12:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-3",
-        "author": "user7070",
-        "content": "可以透過預售產品來確保收入來源。",
-        "createdAt": "2025-03-04T12:15:00Z",
-        "replies": [
-          {
-            "id": "reply-3-1",
-            "author": "user6060",
-            "content": "這個方法不錯，尤其適合 SaaS 或電商模式。",
-            "createdAt": "2025-03-04T12:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4004",
-    "title": "如何吸引投資人參與創業計畫？",
-    "content": "<p>投資人通常會關注哪些重點？我們應該如何準備？</p>",
-    "author": "user8080",
-    "createdAt": "2025-03-04T13:00:00Z",
-    "updatedAt": "2025-03-04T13:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-4",
-        "author": "user9090",
-        "content": "重點是明確的商業模式和成長潛力。",
-        "createdAt": "2025-03-04T13:15:00Z",
-        "replies": [
-          {
-            "id": "reply-4-1",
-            "author": "user8080",
-            "content": "那麼數據和市場報告是不是必要的？",
-            "createdAt": "2025-03-04T13:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4005",
-    "title": "創業過程中最容易犯的錯誤",
-    "content": "<p>創業之路充滿挑戰，哪些常見錯誤應該避免？</p>",
-    "author": "user1010",
-    "createdAt": "2025-03-04T14:00:00Z",
-    "updatedAt": "2025-03-04T14:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-5",
-        "author": "happy1234",
-        "content": "過度擴張是很多創業者容易犯的錯。",
-        "createdAt": "2025-03-04T14:15:00Z",
-        "replies": [
-          {
-            "id": "reply-5-1",
-            "author": "user1010",
-            "content": "沒錯，太快擴張會導致現金流枯竭。",
-            "createdAt": "2025-03-04T14:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4006",
-    "title": "如何有效進行市場調查？",
-    "content": "<p>市場調查對於創業者來說至關重要，請問大家都是如何進行市場調查的？</p>",
-    "author": "user9090",
-    "createdAt": "2025-03-04T15:00:00Z",
-    "updatedAt": "2025-03-04T15:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-6",
-        "author": "user8080",
-        "content": "我通常會先做小規模測試，再透過問卷收集數據。",
-        "createdAt": "2025-03-04T15:15:00Z",
-        "replies": [
-          {
-            "id": "reply-6-1",
-            "author": "user9090",
-            "content": "這個方法不錯，請問你會如何選擇目標受眾？",
-            "createdAt": "2025-03-04T15:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4007",
-    "title": "天使投資 VS 創投，哪個更適合新創？",
-    "content": "<p>創業初期該尋找天使投資人還是創投？這兩者有什麼優缺點？</p>",
-    "author": "user7070",
-    "createdAt": "2025-03-04T16:00:00Z",
-    "updatedAt": "2025-03-04T16:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-7",
-        "author": "user5050",
-        "content": "天使投資比較適合初創公司，而創投則更關注規模化的企業。",
-        "createdAt": "2025-03-04T16:15:00Z",
-        "replies": [
-          {
-            "id": "reply-7-1",
-            "author": "user7070",
-            "content": "的確，天使投資人的投資金額通常較小但更靈活。",
-            "createdAt": "2025-03-04T16:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4008",
-    "title": "如何在競爭激烈的市場中脫穎而出？",
-    "content": "<p>很多創業項目在市場上競爭激烈，該如何打造競爭優勢？</p>",
-    "author": "user6060",
-    "createdAt": "2025-03-04T17:00:00Z",
-    "updatedAt": "2025-03-04T17:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-8",
-        "author": "user4040",
-        "content": "差異化是關鍵，找到獨特的市場定位會幫助公司脫穎而出。",
-        "createdAt": "2025-03-04T17:15:00Z",
-        "replies": [
-          {
-            "id": "reply-8-1",
-            "author": "user6060",
-            "content": "沒錯，品牌故事和產品體驗也是很好的競爭策略。",
-            "createdAt": "2025-03-04T17:30:00Z"
-          }
-        ]
-      }
-    ]
-  },
-  {
-    "id": "4009",
-    "title": "如何建立有效的商業模式？",
-    "content": "<p>一個好的商業模式能讓企業穩健發展，請問大家的經驗是什麼？</p>",
-    "author": "user5050",
-    "createdAt": "2025-03-04T18:00:00Z",
-    "updatedAt": "2025-03-04T18:00:00Z",
-    "comments": [
-      {
-        "id": "cmt-9",
-        "author": "user1010",
-        "content": "確保商業模式能產生可持續的收入，並且讓客戶願意買單。",
-        "createdAt": "2025-03-04T18:15:00Z",
-        "replies": [
-          {
-            "id": "reply-9-1",
-            "author": "user5050",
-            "content": "這點很重要，還有定價策略也要符合市場需求。",
-            "createdAt": "2025-03-04T18:30:00Z"
-          }
-        ]
-      }
-    ]
-  }
-],
+    {
+      "id": "4001",
+      "title": "如何找到合適的創業夥伴？",
+      "content": "<p>創業時，找到對的夥伴是成功的關鍵。你們認為該如何選擇合適的創業夥伴？</p>",
+      "author": "happy1234",
+      "authorAvatar": "https://dream-workshop-api.onrender.com/assets/images/頭像1.png",
+      "createdAt": "2025-03-04T10:00:00Z",
+      "updatedAt": "2025-03-04T10:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-1",
+          "author": "user3030",
+          "content": "我覺得要有共同願景，並且在性格和能力上互補。",
+          "createdAt": "2025-03-04T10:15:00Z",
+          "replies": [
+            {
+              "id": "reply-1-1",
+              "author": "happy1234",
+              "content": "的確，志同道合的夥伴能讓創業之路更順利。",
+              "createdAt": "2025-03-04T10:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4002",
+      "title": "創業初期應該先募資還是先測試市場？",
+      "content": "<p>許多創業者會面臨一個選擇，應該先募資還是先做市場測試？</p>",
+      "author": "user4040",
+      "createdAt": "2025-03-04T11:00:00Z",
+      "updatedAt": "2025-03-04T11:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-2",
+          "author": "user5050",
+          "content": "市場測試很重要，沒有市場驗證的產品很難吸引投資人。",
+          "createdAt": "2025-03-04T11:15:00Z",
+          "replies": [
+            {
+              "id": "reply-2-1",
+              "author": "user4040",
+              "content": "那麼你覺得什麼樣的市場測試方式比較有效呢？",
+              "createdAt": "2025-03-04T11:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4003",
+      "title": "創業時該如何確保現金流穩定？",
+      "content": "<p>現金流是創業的生命線，請問大家有什麼方法可以確保現金流穩定？</p>",
+      "author": "user6060",
+      "createdAt": "2025-03-04T12:00:00Z",
+      "updatedAt": "2025-03-04T12:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-3",
+          "author": "user7070",
+          "content": "可以透過預售產品來確保收入來源。",
+          "createdAt": "2025-03-04T12:15:00Z",
+          "replies": [
+            {
+              "id": "reply-3-1",
+              "author": "user6060",
+              "content": "這個方法不錯，尤其適合 SaaS 或電商模式。",
+              "createdAt": "2025-03-04T12:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4004",
+      "title": "如何吸引投資人參與創業計畫？",
+      "content": "<p>投資人通常會關注哪些重點？我們應該如何準備？</p>",
+      "author": "user8080",
+      "createdAt": "2025-03-04T13:00:00Z",
+      "updatedAt": "2025-03-04T13:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-4",
+          "author": "user9090",
+          "content": "重點是明確的商業模式和成長潛力。",
+          "createdAt": "2025-03-04T13:15:00Z",
+          "replies": [
+            {
+              "id": "reply-4-1",
+              "author": "user8080",
+              "content": "那麼數據和市場報告是不是必要的？",
+              "createdAt": "2025-03-04T13:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4005",
+      "title": "創業過程中最容易犯的錯誤",
+      "content": "<p>創業之路充滿挑戰，哪些常見錯誤應該避免？</p>",
+      "author": "user1010",
+      "createdAt": "2025-03-04T14:00:00Z",
+      "updatedAt": "2025-03-04T14:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-5",
+          "author": "happy1234",
+          "content": "過度擴張是很多創業者容易犯的錯。",
+          "createdAt": "2025-03-04T14:15:00Z",
+          "replies": [
+            {
+              "id": "reply-5-1",
+              "author": "user1010",
+              "content": "沒錯，太快擴張會導致現金流枯竭。",
+              "createdAt": "2025-03-04T14:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4006",
+      "title": "如何有效進行市場調查？",
+      "content": "<p>市場調查對於創業者來說至關重要，請問大家都是如何進行市場調查的？</p>",
+      "author": "user9090",
+      "createdAt": "2025-03-04T15:00:00Z",
+      "updatedAt": "2025-03-04T15:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-6",
+          "author": "user8080",
+          "content": "我通常會先做小規模測試，再透過問卷收集數據。",
+          "createdAt": "2025-03-04T15:15:00Z",
+          "replies": [
+            {
+              "id": "reply-6-1",
+              "author": "user9090",
+              "content": "這個方法不錯，請問你會如何選擇目標受眾？",
+              "createdAt": "2025-03-04T15:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4007",
+      "title": "天使投資 VS 創投，哪個更適合新創？",
+      "content": "<p>創業初期該尋找天使投資人還是創投？這兩者有什麼優缺點？</p>",
+      "author": "user7070",
+      "createdAt": "2025-03-04T16:00:00Z",
+      "updatedAt": "2025-03-04T16:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-7",
+          "author": "user5050",
+          "content": "天使投資比較適合初創公司，而創投則更關注規模化的企業。",
+          "createdAt": "2025-03-04T16:15:00Z",
+          "replies": [
+            {
+              "id": "reply-7-1",
+              "author": "user7070",
+              "content": "的確，天使投資人的投資金額通常較小但更靈活。",
+              "createdAt": "2025-03-04T16:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4008",
+      "title": "如何在競爭激烈的市場中脫穎而出？",
+      "content": "<p>很多創業項目在市場上競爭激烈，該如何打造競爭優勢？</p>",
+      "author": "user6060",
+      "createdAt": "2025-03-04T17:00:00Z",
+      "updatedAt": "2025-03-04T17:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-8",
+          "author": "user4040",
+          "content": "差異化是關鍵，找到獨特的市場定位會幫助公司脫穎而出。",
+          "createdAt": "2025-03-04T17:15:00Z",
+          "replies": [
+            {
+              "id": "reply-8-1",
+              "author": "user6060",
+              "content": "沒錯，品牌故事和產品體驗也是很好的競爭策略。",
+              "createdAt": "2025-03-04T17:30:00Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "4009",
+      "title": "如何建立有效的商業模式？",
+      "content": "<p>一個好的商業模式能讓企業穩健發展，請問大家的經驗是什麼？</p>",
+      "author": "user5050",
+      "createdAt": "2025-03-04T18:00:00Z",
+      "updatedAt": "2025-03-04T18:00:00Z",
+      "comments": [
+        {
+          "id": "cmt-9",
+          "author": "user1010",
+          "content": "確保商業模式能產生可持續的收入，並且讓客戶願意買單。",
+          "createdAt": "2025-03-04T18:15:00Z",
+          "replies": [
+            {
+              "id": "reply-9-1",
+              "author": "user5050",
+              "content": "這點很重要，還有定價策略也要符合市場需求。",
+              "createdAt": "2025-03-04T18:30:00Z"
+            }
+          ]
+        }
+      ]
+    }
+  ],
   "projectEvaluations": [
     {
       "id": "1",
@@ -1052,7 +1080,7 @@
     },
     {
       "id": "2",
-      "title": "創夢工坊展示會",
+      "title": "創新資本對接會",
       "date": "2024-09-20",
       "time": "14:00-17:00",
       "location": "新北市板橋區中正路120號",
@@ -1061,7 +1089,7 @@
       "image": "https://dream-workshop-api.onrender.com/assets/images/activity2.jpg",
       "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel2.jpg",
       "status": "open",
-      "description": "創夢工坊展示會將展示最新創新技術與創業專案，並提供投資人對接機會。",
+      "description": "創新資本對接會將展示最新創新技術與創業專案，並提供投資人對接機會。",
       "schedule": [
         {
           "time": "14:00-14:30",
@@ -1116,63 +1144,70 @@
   "registrations": [
     {
       "id": "6129",
-      "userId": "1",
+      "useraccount": "1",
       "activityId": "2",
       "activityTitle": "創新資本對接會",
       "date": "2023-10-20"
+    },
+    {
+      "id": "b031",
+      "useraccount": "happy1234",
+      "activityId": "1",
+      "activityTitle": "卡斯柏創意分享會",
+      "date": "2025-04-15"
     }
   ],
   "stores": [
     {
-      "id": 1,
+      "id": "1",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin01.png",
       "coinPoint": "100點",
       "coinPrice": 100
     },
     {
-      "id": 2,
+      "id": "2",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.png",
       "coinPoint": "200點",
       "coinPrice": 190
     },
     {
-      "id": 3,
+      "id": "3",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.png",
       "coinPoint": "500點",
       "coinPrice": 480
     },
     {
-      "id": 4,
+      "id": "4",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin03.png",
       "coinPoint": "600點",
       "coinPrice": 550
     },
     {
-      "id": 5,
+      "id": "5",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "800點",
       "coinPrice": 750
     },
     {
-      "id": 6,
+      "id": "6",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "900點",
       "coinPrice": 870
     },
     {
-      "id": 7,
+      "id": "7",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "1000點",
       "coinPrice": 900
     },
     {
-      "id": 8,
+      "id": "8",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "2000點",
       "coinPrice": 1800
     },
     {
-      "id": 9,
+      "id": "9",
       "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "3000點",
       "coinPrice": 2500
