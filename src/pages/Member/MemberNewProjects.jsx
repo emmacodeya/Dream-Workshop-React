@@ -54,7 +54,6 @@ const MemberNewProjects = () => {
 
   const onSubmit = async (data) => {
     try {
-      // 1. 先建立專案
       const projectResponse = await axios.post(`${API_URL}/projects`, {
         name: data.projectName,
         contactPerson: data.contactPerson,
@@ -75,8 +74,6 @@ const MemberNewProjects = () => {
 
       const projectId = projectResponse.data.id;
       console.log("專案新增成功，ID:", projectId);
-
-      // 2. 同步新增相關資料
       const requests = [
         axios.post(`${API_URL}/swot`, {
           projectId,
@@ -276,7 +273,7 @@ const MemberNewProjects = () => {
   <label htmlFor="scale" className="form-label text-white fs-5">人數規模</label>
   <select
     id="scale"
-    {...register("scale", { required: "請選擇人數規模" })} // 綁定 react-hook-form
+    {...register("scale", { required: "請選擇人數規模" })} 
     className={`form-select ${errors.scale ? "is-invalid" : ""}`}
   >
     <option value="">請選擇規模</option>
@@ -368,7 +365,7 @@ const MemberNewProjects = () => {
       </label>
       <textarea
         id={key}
-        {...register(key, { required: "此欄位為必填" })} // 綁定 react-hook-form
+        {...register(key, { required: "此欄位為必填" })} 
         rows="5"
         className={`w-100 bg-transparent inputField text-white ${errors[key] ? "is-invalid" : ""}`}
       ></textarea>

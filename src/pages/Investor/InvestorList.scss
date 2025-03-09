@@ -142,6 +142,21 @@
 //   .business-swiper {
 //     width: 280px;
 //   }
+
+.swiper-button-prev,
+.swiper-button-next {
+  color: $primary-800
+}
+
+.swiper-slide {
+  height: auto !important;
+}
+
+.card {
+  height: 100% !important;
+}
+
+
   .popular-card-body {
     padding: 32px 24px 20px;
     max-height: 304px;
@@ -150,7 +165,7 @@
   .popular-card-title {
     font-weight: bold;
     line-height: 36px;
-    letter-spacing: 11%;
+    letter-spacing: 0.11em; 
   }
   
   // .favorite {

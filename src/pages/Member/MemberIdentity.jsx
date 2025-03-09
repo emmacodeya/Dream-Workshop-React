@@ -6,11 +6,10 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MemberIdentity = () => {
   const [userData, setUserData] = useState({ name: "" });
   const [images, setImages] = useState({ frontId: null, backId: null, secondId: null });
-  const [status, setStatus] = useState(""); // 預設為空值 ""
+  const [status, setStatus] = useState(""); 
   const [isUploading, setIsUploading] = useState(false);
   const useraccount = localStorage.getItem("useraccount") || "";
 
-  // 獲取會員資料及身份驗證狀態
   useEffect(() => {
     if (!useraccount) {
       console.error("請登入帳號");
@@ -23,16 +22,16 @@ const MemberIdentity = () => {
           const userData = res.data[0];
           setUserData({ name: userData.name || "" });
 
-          // **正確方式：直接從 userData.identityVerification 取得狀態**
+          
           if (userData.identityVerification) {
-            setStatus(userData.identityVerification.status || ""); // 可能為 "", "pending", "approved", "rejected"
+            setStatus(userData.identityVerification.status || ""); 
             setImages({
               frontId: userData.identityVerification.frontId || null,
               backId: userData.identityVerification.backId || null,
               secondId: userData.identityVerification.secondId || null
             });
           } else {
-            setStatus(""); // 如果沒有身份驗證，狀態為 ""
+            setStatus("");
           }
         } else {
           console.error("查無此會員");
@@ -41,7 +40,7 @@ const MemberIdentity = () => {
       .catch((error) => console.error("獲取身份驗證狀態失敗:", error));
   }, [useraccount]);
 
-  // 上傳圖片處理
+
   const handleFileChange = (e, key) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -63,7 +62,7 @@ const MemberIdentity = () => {
     reader.readAsDataURL(file);
   };
 
-  // 提交身份驗證
+
   const handleSaveChanges = async () => {
     if (!images.frontId || !images.backId || !images.secondId) {
       alert("請上傳所有身份驗證圖片");
@@ -78,19 +77,19 @@ const MemberIdentity = () => {
         return;
       }
 
-      const memberId = res.data[0].id; // 取得會員 ID
+      const memberId = res.data[0].id; 
 
       await axios.patch(`${API_URL}/members/${memberId}`, {
         identityVerification: {
           frontId: images.frontId,
           backId: images.backId,
           secondId: images.secondId,
-          status: "pending" // 提交後狀態變更
+          status: "pending" 
         }
       });
 
       alert("身分證圖片上傳成功！");
-      setStatus("pending"); // 提交後設為 "審核中"
+      setStatus("pending"); 
     } catch (error) {
       console.error("圖片上傳失敗:", error);
       alert("發生錯誤，請稍後再試！");

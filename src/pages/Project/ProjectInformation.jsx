@@ -20,14 +20,12 @@ const ProjectInformation = () => {
   const [activeSection, setActiveSection] = useState("introduction");
 
   useEffect(() => {
-    // 獲取創業項目的基本資料
     axios.get(`${API_URL}/projects/${id}`)
       .then((response) => {
         setProject(response.data);
       })
       .catch((error) => console.error("Error fetching project data:", error));
 
-    // 獲取產業分類對應關係
     axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const mapping = response.data.reduce((acc, item) => {
@@ -38,37 +36,35 @@ const ProjectInformation = () => {
       })
       .catch((error) => console.error("Error fetching industry options:", error));
   
-    // 獲取 SWOT 分析
     axios.get(`${API_URL}/swot?projectId=${id}`)
       .then((response) => setSwot(response.data[0] || {}))
       .catch((error) => console.error("Error fetching SWOT data:", error));
   
-    // 獲取團隊資訊
+
     axios.get(`${API_URL}/teams?projectId=${id}`)
       .then((response) => setTeam(response.data[0]?.teamDescription || ""))
       .catch((error) => console.error("Error fetching team data:", error));
   
-    // 獲取市場規模
+
     axios.get(`${API_URL}/marketSize?projectId=${id}`)
       .then((response) => setMarketSize(response.data[0]?.content || ""))
       .catch((error) => console.error("Error fetching market size:", error));
-  
-    // 獲取商業模式
+
     axios.get(`${API_URL}/models?projectId=${id}`)
       .then((response) => setBusinessModel(response.data[0]?.business_model || ""))
       .catch((error) => console.error("Error fetching business model:", error));
   
-    // 獲取產品資訊
+
     axios.get(`${API_URL}/products?projectId=${id}`)
       .then((response) => setProductDescription(response.data[0]?.productDescription || ""))
       .catch((error) => console.error("Error fetching product description:", error));
   
-    // 獲取競爭分析
+
     axios.get(`${API_URL}/projectCompete?projectId=${id}`)
       .then((response) => setCompeteDescription(response.data[0]?.competeDescription || ""))
       .catch((error) => console.error("Error fetching project competition:", error));
   
-    // 獲取創辦人資訊
+   
     axios.get(`${API_URL}/founderInfo?projectId=${id}`)
       .then((response) => setFounderInfo(response.data[0]?.entrepreneurDescription || ""))
       .catch((error) => console.error("Error fetching founder info:", error));

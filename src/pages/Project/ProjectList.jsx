@@ -37,7 +37,6 @@ const ProjectList = () => {
       setProjects(res.data);
     });
     
-    // 檢查是否有登入的會員
     const storedUser = localStorage.getItem("useraccount");
     if (!storedUser) {
       return;
@@ -54,8 +53,6 @@ const ProjectList = () => {
     axios.get(`${API_URL}/projects`)
       .then((response) => {
         setProjects(response.data);
-        
-        // 如果未選擇特定產業，則更新 `filteredProjects`
         if (!selectedIndustry) {
           setFilteredProjects(response.data);
         }
@@ -69,7 +66,7 @@ const ProjectList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, [selectedIndustry]);
   
-  // 產業篩選
+
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
     setCurrentPage(1);
@@ -96,7 +93,7 @@ const ProjectList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, []);
   
-   // 切換收藏狀態
+
    const toggleFavorite = async (projectId) => {
     if (!user) {
       alert("請先登入會員帳號");
@@ -106,8 +103,8 @@ const ProjectList = () => {
 
     const isFavorite = user.collectedProjects.includes(projectId);
     const updatedFavorites = isFavorite
-      ? user.collectedProjects.filter((id) => id !== projectId) // 移除收藏
-      : [...user.collectedProjects, projectId]; // 新增收藏
+      ? user.collectedProjects.filter((id) => id !== projectId) 
+      : [...user.collectedProjects, projectId]; 
 
     try {
       await axios.patch(`${API_URL}/members/${user.id}`, {
@@ -125,8 +122,6 @@ const ProjectList = () => {
   };
 
 
-  
-  // 排序功能
   const sizeRanking = {
     "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9
@@ -170,13 +165,10 @@ const ProjectList = () => {
 
   const displayedIndustries = [
     { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
-    ...industries.filter((industry) => industry.value !== ""), // 確保不會有重複
+    ...industries.filter((industry) => industry.value !== ""), 
   ];
   
-    // 計算總頁數
     const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
-
-    // 取得當前頁的專案
     const paginatedProjects = filteredProjects.slice(
       (currentPage - 1) * itemsPerPage,
       currentPage * itemsPerPage

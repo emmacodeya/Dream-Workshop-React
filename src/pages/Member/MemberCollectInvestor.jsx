@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { industryMap, translate } from "../../utils/mappings";
 import { Link } from "react-router-dom";
+import Pagination from "../../components/Pagination";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -8,6 +9,8 @@ const API_URL = import.meta.env.VITE_API_URL;
 const MemberCollectInvestor = () => {
   const [investors, setInvestors] = useState([]);
   const [user, setUser] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     const storedUser = localStorage.getItem("useraccount");
@@ -24,6 +27,14 @@ const MemberCollectInvestor = () => {
       }
     });
   }, []);
+
+
+ const totalPages = Math.ceil(investors.length / itemsPerPage);
+
+ const paginatedInvestors = investors.slice(
+  (currentPage - 1) * itemsPerPage,
+  currentPage * itemsPerPage
+);
 
   const toggleFavorite = async (investorId) => {
     if (!user) return;
@@ -45,7 +56,7 @@ const MemberCollectInvestor = () => {
 
   return (
     <div className="container mt-5">
-      {investors.map((investor) => (
+      {paginatedInvestors.map((investor) => (
         <div key={investor.id} className="card bg-gray-800 mt-lg-8 mt-5">
           <div className="d-flex justify-content-between created-title investor-created-title">
             <div className="d-flex align-items-center">
@@ -61,7 +72,7 @@ const MemberCollectInvestor = () => {
 
           <div className="row g-0 created-bady investor-created-bady">
             <div className="col-md-6 d-flex align-items-center justify-content-center">
-              <img src={investor.avatar} className="img-fluid rounded-start" alt={investor.name} />
+              <img src={investor.avatar} className="img-fluid rounded-start w-25" alt={investor.name} />
             </div>
             <div className="col-md-6">
               <div className="card-body investor-card-body created-form">
@@ -85,6 +96,9 @@ const MemberCollectInvestor = () => {
           </div>
         </div>
       ))}
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
     </div>
   );
 };

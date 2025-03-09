@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -11,6 +12,8 @@ const MemberEvaluateProjects = ({ useraccount }) => {
   const [showModal, setShowModal] = useState(false);
   const [replyContent, setReplyContent] = useState("");
   const [replyTargetId, setReplyTargetId] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   
   useEffect(() => {
@@ -57,6 +60,15 @@ const MemberEvaluateProjects = ({ useraccount }) => {
       .catch((error) => console.error("獲取專案失敗:", error));
   }, [useraccount]);
 
+
+    const allEvaluations = projects.flatMap((project) => project.evaluations);
+
+    const totalPages = Math.ceil(allEvaluations.length / itemsPerPage);
+  
+    const paginatedEvaluations = allEvaluations.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
  
   const handleSubmitReply = async () => {
     if (!replyTargetId || !replyContent.trim()) return;
@@ -130,31 +142,40 @@ const MemberEvaluateProjects = ({ useraccount }) => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {projects.length === 0 ? (
-            <tr>
-              <td colSpan="6" className="text-gray-400 py-4">尚無評價</td>
-            </tr>
+          {paginatedEvaluations.length === 0 ? (
+          <tr>
+          <td colSpan="6" className="text-gray-400 py-4">尚無評價</td>
+          </tr>
           ) : (
-            projects.map((project) =>
-              project.evaluations.map((evaluationItem) => (
-                <tr key={`${project.id}-${evaluationItem.id}`}>
-                  <td className="text-white fw-bold">{project.name}</td>
-                  <td className="text-white">{project.status === "established" ? "已成立" : "未成立"}</td>
-                  <td className="text-white">{industryMap[project.industry] || "未知"}</td>
-                  <td className="text-white fw-bold">{evaluationItem.name}</td>
-                  <td className="text-white">{evaluationItem.comment}</td>
-                  <td>
-                    <button className="btn btn-outline-primary-600" onClick={() => handleOpenModal(evaluationItem.id)}>
-                      回覆
-                    </button>
-                  </td>
-                </tr>
-              ))
-            )
+          paginatedEvaluations.map((evaluationItem) => {
+          const project = projects.find((proj) =>
+            proj.evaluations.some((evaluation) => evaluation.id === evaluationItem.id)
+          );
+
+          return (
+            <tr key={evaluationItem.id}>
+              <td className="text-white fw-bold">{project ? project.name : "未知專案"}</td>
+              <td className="text-white">{project?.status === "established" ? "已成立" : "未成立"}</td>
+              <td className="text-white">{industryMap[project?.industry] || "未知"}</td>
+              <td className="text-white fw-bold">{evaluationItem.name}</td>
+              <td className="text-white">{evaluationItem.comment}</td>
+              <td>
+                <button className="btn btn-outline-primary-600" onClick={() => handleOpenModal(evaluationItem.id)}>
+                  回覆
+                </button>
+              </td>
+            </tr>
+          );
+          })
           )}
-        </tbody>
+          </tbody>
+
       </table>
 
+      {totalPages > 1 && (
+        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+      )}
+      
       {/* 回覆 Modal */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton className="border-0 bg-gray-1000">

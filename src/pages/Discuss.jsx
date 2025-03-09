@@ -29,10 +29,9 @@ const Discuss = () => {
     fetchArticles();
   }, []);
 
-  // 計算總頁數
+ 
   const totalPages = Math.ceil(articles.length / itemsPerPage);
 
-  // ✅ **修正這一行，確保變數名稱正確**
   const paginatedArticles = articles.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -56,7 +55,7 @@ const Discuss = () => {
         </div>
       </section>
 
-      {/* API 載入狀態 */}
+      {/* 載入狀態 */}
       {loading && <p className="text-center text-white">載入中...</p>}
       {error && <p className="text-center text-danger">{error}</p>}
 
@@ -105,7 +104,6 @@ const Discuss = () => {
         </section>
       )}
 
-      {/* ✅ 分頁功能 */}
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
