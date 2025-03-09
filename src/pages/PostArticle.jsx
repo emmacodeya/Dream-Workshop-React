@@ -69,7 +69,8 @@ const PostArticle = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="bg-green">
+    <div className="container py-15 mt-5">
       <h2 className="text-center py-8 fw-bolder text-primary-600">發表文章</h2>
 
       <div className="row my-8">
@@ -138,6 +139,7 @@ const PostArticle = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+    </div>
     </div>
   );
 };

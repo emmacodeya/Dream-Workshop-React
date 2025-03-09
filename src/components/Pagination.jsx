@@ -15,7 +15,7 @@ const Pagination = ({ currentPage, totalPages, onPageChange }) => {
 
   return (
     <nav>
-      <ul className="pagination justify-content-center">
+      <ul className="pagination justify-content-center pt-3">
         <li className={`page-item ${currentPage === 1 ? "disabled" : ""}`}>
           <button className="page-link bg-transparent text-white border-0  " onClick={handlePrev}>
             上一頁
