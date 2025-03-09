@@ -97,8 +97,8 @@ const MemberPostArticle = () => {
         </div>
       </div>
       <div className="d-flex justify-content-center mt-8">
-        <button className="btn btn-lg btn-outline-primary-600 me-3" onClick={handlePostArticle}>發表文章</button>
-        <button className="btn btn-lg btn-outline-danger" onClick={handleClearContent}>清除內文</button>
+        <button className="btn btn-lg btn-outline-danger me-3" onClick={handleClearContent}>清除內文</button>
+        <button className="btn btn-lg btn-outline-primary-600 " onClick={handlePostArticle}>發表文章</button>
       </div>
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">{modalMessage}</Modal.Body>

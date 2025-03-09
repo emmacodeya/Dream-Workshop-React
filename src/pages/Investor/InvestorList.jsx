@@ -3,6 +3,7 @@ import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link, useNavigate } from "react-router-dom";
 import { industryMap, translate } from "../../utils/mappings"; 
+import Pagination from "../../components/Pagination"; 
 import axios from "axios";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -27,6 +28,8 @@ const InvestorList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     axios.get(`${API_URL}/investors`).then((res) => {
@@ -71,6 +74,7 @@ const InvestorList = () => {
   // 產業篩選
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
+    setCurrentPage(1); 
     setFilteredInvestors(
       industryValue
         ? investors.filter((investor) =>
@@ -111,11 +115,6 @@ const truncateText = (text, maxLength = 20) => {
   return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 };
 
-// // 轉換偏好領域 (多個產業) 為中文名稱
-// const formatIndustryNames = (industryArray) => {
-//   return industryArray.map(industry => industryMap[industry] || industry).join("，");
-// };
-
 // 切換投資人收藏狀態
 const toggleFavorite = async (investorId) => {
   if (!user) {
@@ -144,7 +143,14 @@ const toggleFavorite = async (investorId) => {
   }
 };
 
+ 
+  const totalPages = Math.ceil(filteredInvestors.length / itemsPerPage);
 
+
+  const paginatedInvestors = filteredInvestors.slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
 
   return (
     <div className="bg-green">
@@ -239,7 +245,7 @@ const toggleFavorite = async (investorId) => {
           </div>
 
           {/* 投資人列表 */}
-          {filteredInvestors.map((investor) => (
+          {paginatedInvestors.map((investor) => (
             <div key={investor.id} className="card bg-gray-800 mt-8">
               <div className="d-flex justify-content-between project-title p-3">
                 <h3 className="text-white fs-3 fw-bold">
@@ -303,6 +309,9 @@ const toggleFavorite = async (investorId) => {
               </div>
             </div>
           ))}
+           {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
         </div>
       </div>
     </div>

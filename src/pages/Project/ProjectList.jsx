@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 import { Swiper, SwiperSlide } from "swiper/react";
+import Pagination from "../../components/Pagination"; 
 import "swiper/css";
 import "swiper/css/navigation";
 import "./ProjectList.scss";
@@ -28,6 +29,8 @@ const ProjectList = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); 
+  const itemsPerPage = 5; 
 
   useEffect(() => {
     axios.get(`${API_URL}/projects`).then((res) => {
@@ -69,6 +72,7 @@ const ProjectList = () => {
   // 產業篩選
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
+    setCurrentPage(1);
   
     let filtered = industryValue
       ? projects.filter((p) => p.industry?.trim().toLowerCase() === industryValue.trim().toLowerCase()) 
@@ -169,7 +173,14 @@ const ProjectList = () => {
     ...industries.filter((industry) => industry.value !== ""), // 確保不會有重複
   ];
   
-  
+    // 計算總頁數
+    const totalPages = Math.ceil(filteredProjects.length / itemsPerPage);
+
+    // 取得當前頁的專案
+    const paginatedProjects = filteredProjects.slice(
+      (currentPage - 1) * itemsPerPage,
+      currentPage * itemsPerPage
+    );
 
   return (
     <div className="bg-green">
@@ -272,8 +283,7 @@ const ProjectList = () => {
           </div>
 
            {/* 篩選後列表 */}
-        
-        {filteredProjects.map((project) => (
+        {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-8">
             {/* 頁面標題 */}
             <div className="d-flex justify-content-between project-title p-3">
@@ -358,6 +368,9 @@ const ProjectList = () => {
             </div>
         </div>
         ))}
+        {totalPages > 1 && (
+            <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+          )}
         </div>
       </div>
     </div>

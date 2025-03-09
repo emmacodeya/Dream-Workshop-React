@@ -13,7 +13,7 @@ const Activity = () => {
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
-  // 透過 API 獲取活動數據
+
   useEffect(() => {
     const fetchActivities = async () => {
       try {
@@ -26,9 +26,7 @@ const Activity = () => {
     fetchActivities();
   }, []);
 
-  // ✅ **修正變數名稱，確保使用 `activities` 而不是 `articles`**
   const totalPages = Math.ceil(activities.length / itemsPerPage);
-
   const paginatedActivities = activities.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -40,7 +38,7 @@ const Activity = () => {
       <section className="w-100">
         <Carousel>
           {activities
-            .filter((event) => event.carouselImage) // 只顯示有輪播圖片的活動
+            .filter((event) => event.carouselImage) 
             .slice(0, 3)
             .map((event) => (
               <Carousel.Item key={event.id}>
@@ -62,14 +60,14 @@ const Activity = () => {
       </section>
 
       {/* 熱門活動標題 */}
-      <h2 className="text-center text-primary-600 my-8">熱門活動</h2>
+      <h2 className="text-center text-primary-600 mb-lg-8 mt-lg-15 fs-lg-2 mt-8 mb-5 fs-3">熱門活動</h2>
 
       {/* 活動列表 */}
-      <section className="container pt-9">
-        {paginatedActivities.map((event) => (  // ✅ **這裡改用 paginatedActivities**
+      <section className="container">
+        {paginatedActivities.map((event) => ( 
           <div className="card mb-4 border-0" key={event.id} style={{ backgroundColor: "#1E1E1E" }}>
             <div className="row g-0 d-flex align-items-center bg-gray-800 rounded">
-              <div className="col-md-4 p-5">
+              <div className="col-md-4 p-lg-5 pt-5 px-4 pb-2">
                 <img
                   src={event.image}
                   className="img-fluid rounded-start w-100"
@@ -78,32 +76,32 @@ const Activity = () => {
                 />
               </div>
               <div className="col-md-8">
-                <div className="card-body text-white">
-                  <div className=" d-flex align-items-center justify-content-between border-bottom border-gray-600">
-                    <h2 className="card-title text-primary-600 fw-bold">{event.title}</h2>
-                    <p className="text-gray-400 fs-6">
-                      報名剩餘名額 <span className="fw-bold">{event.remainingSlots} 位</span>
+                <div className="card-body text-white pt-0">
+                  <div className=" d-lg-flex align-items-center justify-content-between border-bottom border-gray-600">
+                    <h2 className="card-title text-primary-600 fw-bold  fs-lg-3 fs-5">{event.title}</h2>
+                    <p className="text-gray-400 fs-lg-5 fw-bold  pb-lg-0 pb-2">
+                      報名剩餘名額 <span className="text-gray-100 fw-bold fs-lg-3">{event.remainingSlots} 位</span>
                     </p>
                   </div>
                   
-                  <ul className="fs-5 list-unstyled d-flex pb-2 pt-4">
+                  <ul className="fs-5 list-unstyled d-flex pb-lg-2 pt-lg-4 py-2">
                     <li className="pe-8 ">
-                      <span className="text-gray-400">日期</span> <br />
-                      <span className="fw-bold">{event.date}</span>
+                      <span className="text-gray-400 fs-lg-5 fw-bold">日期</span> <br />
+                      <span className="fw-bold fs-lg-3">{event.date}</span>
                     </li>
                     <li>
-                      <span className="text-gray-400">時間</span> <br />
-                      <span className="fw-bold">{event.time}</span>
+                      <span className="text-gray-400 fs-lg-5 fw-bold">時間</span> <br />
+                      <span className="fw-bold fs-lg-3">{event.time}</span>
                     </li>
                    </ul>
                  
-                  <ul className="fs-5 list-unstyled">
+                  <ul className="fs-5 list-unstyled pb-lg-0 pb-2">
                   <li>  
-                      <span className="text-gray-400">地點</span> <br />
-                      <span className="fw-bold">{event.location}</span>
+                      <span className="text-gray-400 fs-lg-5 fw-bold">地點</span> <br />
+                      <span className="fw-bold fs-lg-3">{event.location}</span>
                     </li>
                   </ul>
-                  <div className="d-flex justify-content-end">
+                  <div className="d-flex justify-content-lg-end ">
                     {/* 查看詳情按鈕 */}
                     <Link to={`/activity/${event.id}`} className="btn btn-primary-600 px-4 py-2 fw-bold">
                       查看詳情
@@ -117,7 +115,6 @@ const Activity = () => {
         ))}
       </section>
 
-      {/* ✅ **修正分頁功能，確保 `totalPages > 1` 才顯示 Pagination */}
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
