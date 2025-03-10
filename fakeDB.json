@@ -1,0 +1,578 @@
+{
+  "projects": [
+    {
+      "useraccount": "happy1234",
+      "name": "林媽媽中式餐館",
+      "contactPerson": "林小姐",
+      "contactPhone": "0912345678",
+      "website": "https://www.example.com",
+      "address": "台北市大安區忠孝東路四段123號",
+      "companyNumber": "12345678",
+      "status": "notestablished",
+      "industry": "food",
+      "description": "提供傳統中式料理，家庭經營的老字號餐廳。",
+      "size": "five",
+      "capital": "90000000",
+      "funding": "50000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "1"
+    },
+    {
+      "useraccount": "techguy2024",
+      "name": "綠能科技有限公司",
+      "contactPerson": "王先生",
+      "contactPhone": "0922333444",
+      "website": "https://www.green-tech.com",
+      "address": "新北市板橋區文化路二段345號",
+      "companyNumber": "87654321",
+      "status": "established",
+      "industry": "tech",
+      "description": "專注於開發綠能產品，提供可再生能源解決方案。",
+      "size": "fifty",
+      "capital": "200000000",
+      "funding": "80000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "2"
+    },
+    {
+      "useraccount": "fashionlover",
+      "name": "時尚服飾品牌",
+      "contactPerson": "陳小姐",
+      "contactPhone": "0933555666",
+      "website": "https://www.fashionstyle.com",
+      "address": "台中市西屯區台灣大道三段789號",
+      "companyNumber": "56781234",
+      "status": "notestablished",
+      "industry": "fashion",
+      "description": "獨特設計，專為年輕族群提供潮流服飾。",
+      "size": "twenty",
+      "capital": "50000000",
+      "funding": "20000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "3"
+    },
+    {
+      "useraccount": "medstartup",
+      "name": "健康醫療科技",
+      "contactPerson": "張博士",
+      "contactPhone": "0955667788",
+      "website": "https://www.medtech.com",
+      "address": "台北市信義區松壽路99號",
+      "companyNumber": "99887766",
+      "status": "established",
+      "industry": "healthcare",
+      "description": "開發 AI 醫療診斷系統，提高醫療效率。",
+      "size": "hundred",
+      "capital": "300000000",
+      "funding": "120000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "4"
+    },
+    {
+      "useraccount": "gamedeveloper",
+      "name": "創新遊戲開發",
+      "contactPerson": "劉先生",
+      "contactPhone": "0988777666",
+      "website": "https://www.innovgame.com",
+      "address": "台南市東區長榮路二段456號",
+      "companyNumber": "11223344",
+      "status": "notestablished",
+      "industry": "gaming",
+      "description": "專注於開發跨平台遊戲，提供沉浸式體驗。",
+      "size": "thirty",
+      "capital": "100000000",
+      "funding": "40000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "5"
+    },
+    {
+      "useraccount": "organicfood",
+      "name": "有機農業發展",
+      "contactPerson": "黃先生",
+      "contactPhone": "0933222111",
+      "website": "https://www.organicfarm.com",
+      "address": "嘉義縣民雄鄉農業路789號",
+      "companyNumber": "33445566",
+      "status": "established",
+      "industry": "agriculture",
+      "description": "推動永續農業，提供無毒有機食品。",
+      "size": "forty",
+      "capital": "150000000",
+      "funding": "60000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "6"
+    },
+    {
+      "useraccount": "smartcity",
+      "name": "智慧城市科技",
+      "contactPerson": "曾小姐",
+      "contactPhone": "0922111333",
+      "website": "https://www.smartcity.com",
+      "address": "高雄市鼓山區蓮池潭路101號",
+      "companyNumber": "66778899",
+      "status": "notestablished",
+      "industry": "iot",
+      "description": "開發智慧交通與智慧家居系統，提升城市效率。",
+      "size": "sixty",
+      "capital": "250000000",
+      "funding": "100000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "7"
+    },
+    {
+      "useraccount": "airobotics",
+      "name": "AI 機器人科技",
+      "contactPerson": "楊博士",
+      "contactPhone": "0911999222",
+      "website": "https://www.airobotics.com",
+      "address": "新竹市科學園區創新路500號",
+      "companyNumber": "88990011",
+      "status": "established",
+      "industry": "robotics",
+      "description": "研發 AI 機器人，應用於工業與醫療領域。",
+      "size": "eighty",
+      "capital": "400000000",
+      "funding": "180000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "8"
+    },
+    {
+      "useraccount": "startupedu",
+      "name": "線上教育平台",
+      "contactPerson": "林教授",
+      "contactPhone": "0977665544",
+      "website": "https://www.edtech.com",
+      "address": "台中市南屯區教育路200號",
+      "companyNumber": "77889900",
+      "status": "notestablished",
+      "industry": "education",
+      "description": "提供 AI 輔助學習，提高學生學習效率。",
+      "size": "thirty",
+      "capital": "70000000",
+      "funding": "25000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "9"
+    },
+    {
+      "useraccount": "blockchainbiz",
+      "name": "區塊鏈金融科技",
+      "contactPerson": "趙先生",
+      "contactPhone": "0966555444",
+      "website": "https://www.blockchainfinance.com",
+      "address": "台北市中正區信義路一段888號",
+      "companyNumber": "44556677",
+      "status": "established",
+      "industry": "blockchain",
+      "description": "提供區塊鏈支付解決方案，提高金融交易安全性。",
+      "size": "hundred",
+      "capital": "500000000",
+      "funding": "200000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "10"
+    }
+  ],
+  "swot": [
+    {
+      "projectId": "1",
+      "strengths": "品牌歷史悠久，擁有忠實顧客",
+      "weaknesses": "市場行銷預算有限",
+      "opportunities": "線上外送市場持續增長",
+      "threats": "餐飲競爭激烈，新品牌不斷出現",
+      "id": "swot1"
+    },
+    {
+      "projectId": "2",
+      "strengths": "技術創新領先，獲得多項專利",
+      "weaknesses": "生產成本較高",
+      "opportunities": "政府支持綠能發展",
+      "threats": "國際競爭對手強大",
+      "id": "swot2"
+    },
+    {
+      "projectId": "3",
+      "strengths": "設計新穎，符合潮流趨勢",
+      "weaknesses": "供應鏈尚未穩定",
+      "opportunities": "社群行銷影響力大",
+      "threats": "國際快時尚品牌競爭",
+      "id": "swot3"
+    },
+    {
+      "projectId": "4",
+      "strengths": "醫療團隊專業，技術領先",
+      "weaknesses": "醫療法規限制多",
+      "opportunities": "高齡化社會需求增加",
+      "threats": "大型醫療機構已有既有市場",
+      "id": "swot4"
+    },
+    {
+      "projectId": "5",
+      "strengths": "遊戲畫面精美，玩法創新",
+      "weaknesses": "研發成本高，資金需求大",
+      "opportunities": "全球遊戲市場持續成長",
+      "threats": "競爭遊戲公司眾多",
+      "id": "swot5"
+    },
+    {
+      "projectId": "6",
+      "strengths": "有機產品品質優良，獲得認證",
+      "weaknesses": "生產成本較高",
+      "opportunities": "消費者對健康食品需求增加",
+      "threats": "價格競爭激烈",
+      "id": "swot6"
+    },
+    {
+      "projectId": "7",
+      "strengths": "智慧家居產品整合性高",
+      "weaknesses": "市場接受度尚未成熟",
+      "opportunities": "5G 和 AI 技術發展迅速",
+      "threats": "國際科技公司競爭強",
+      "id": "swot7"
+    },
+    {
+      "projectId": "8",
+      "strengths": "機器人 AI 技術領先",
+      "weaknesses": "製造成本高，研發周期長",
+      "opportunities": "工業自動化需求提升",
+      "threats": "國際機器人大廠壟斷市場",
+      "id": "swot8"
+    },
+    {
+      "projectId": "9",
+      "strengths": "線上教育系統功能齊全",
+      "weaknesses": "缺乏品牌知名度",
+      "opportunities": "疫情後遠端學習趨勢增長",
+      "threats": "大型教育平台競爭",
+      "id": "swot9"
+    },
+    {
+      "projectId": "10",
+      "strengths": "區塊鏈支付技術安全性高",
+      "weaknesses": "法規監管風險高",
+      "opportunities": "數位貨幣市場持續擴張",
+      "threats": "傳統金融機構強力競爭",
+      "id": "swot10"
+    }
+  ],  
+  "marketSize": [
+    {
+      "projectId": "1",
+      "id": "market1",
+      "content": "全球餐飲市場規模預計在 2025 年達到 500萬美元，外送市場成長迅速。"
+    },
+    {
+      "projectId": "2",
+      "id": "market2",
+      "content": "全球綠能市場預計在 2030 年突破 1 千萬美元，政府補助持續推動成長。"
+    },
+    {
+      "projectId": "3",
+      "id": "market3",
+      "content": "全球時尚產業規模約 25 萬美元，快時尚市場年增長 7%。"
+    },
+    {
+      "projectId": "4",
+      "id": "market4",
+      "content": "全球醫療科技市場預計 2026 年將達 6000 萬美元，AI 醫療診斷需求持續增加。"
+    },
+    {
+      "projectId": "5",
+      "id": "market5",
+      "content": "全球遊戲產業在 2024 年將達 3000 萬美元，行動遊戲市場佔比逐漸提升。"
+    },
+    {
+      "projectId": "6",
+      "id": "market6",
+      "content": "全球有機食品市場在 2025 年預計達 4500 萬美元，消費者對健康飲食需求上升。"
+    },
+    {
+      "projectId": "7",
+      "id": "market7",
+      "content": "智慧城市市場規模將於 2030 年達到 2.5 億美元，IoT 技術成長驅動發展。"
+    },
+    {
+      "projectId": "8",
+      "id": "market8",
+      "content": "全球機器人市場 2025 年預計突破 7000 萬美元，工業自動化需求快速增長。"
+    },
+    {
+      "projectId": "9",
+      "id": "market9",
+      "content": "全球線上教育市場 2026 年將達 4000 萬美元，遠端學習成為新趨勢。"
+    },
+    {
+      "projectId": "10",
+      "id": "market10",
+      "content": "全球區塊鏈市場規模 2025 年將達 4000 萬美元，金融科技應用擴展迅速。"
+    }
+  ],
+  "teams": [
+    {
+      "projectId": "1",
+      "id": "team1",
+      "teamDescription": "由擁有 20 年經驗的廚師組成，專注於傳統中式料理的創新與發展。"
+    },
+    {
+      "projectId": "2",
+      "id": "team2",
+      "teamDescription": "核心團隊來自世界知名科技公司，專注於綠能技術與永續發展。"
+    },
+    {
+      "projectId": "3",
+      "id": "team3",
+      "teamDescription": "設計師與市場行銷專家組成，專注於年輕潮流服飾品牌的建立。"
+    },
+    {
+      "projectId": "4",
+      "id": "team4",
+      "teamDescription": "由醫學專家與 AI 工程師組成，致力於智慧醫療解決方案的開發。"
+    },
+    {
+      "projectId": "5",
+      "id": "team5",
+      "teamDescription": "國際遊戲開發團隊，成員擁有 10 年以上遊戲設計與程式開發經驗。"
+    },
+    {
+      "projectId": "6",
+      "id": "team6",
+      "teamDescription": "農業專家與食品科學家合作，推廣有機農業與健康食品。"
+    },
+    {
+      "projectId": "7",
+      "id": "team7",
+      "teamDescription": "由 IoT 工程師與智慧城市專家組成，致力於智慧交通與家居技術開發。"
+    },
+    {
+      "projectId": "8",
+      "id": "team8",
+      "teamDescription": "AI 機器人專家與工業自動化工程師，開發最新機器人技術應用。"
+    },
+    {
+      "projectId": "9",
+      "id": "team9",
+      "teamDescription": "教育科技專家與軟體工程師，專注於線上學習平台的開發與優化。"
+    },
+    {
+      "projectId": "10",
+      "id": "team10",
+      "teamDescription": "區塊鏈與金融科技專家組成，推動數位貨幣與智能合約技術。"
+    }
+  ],
+  "models": [
+    {
+      "projectId": "1",
+      "id": "model1",
+      "business_model": "實體餐廳 + 線上訂餐與外送服務，提供高品質中式料理。"
+    },
+    {
+      "projectId": "2",
+      "id": "model2",
+      "business_model": "B2B 綠能解決方案 + B2C 太陽能產品銷售，結合政府補助推廣。"
+    },
+    {
+      "projectId": "3",
+      "id": "model3",
+      "business_model": "線上電商平台 + 快閃店，提供限量潮流服飾，主打年輕消費市場。"
+    },
+    {
+      "projectId": "4",
+      "id": "model4",
+      "business_model": "B2B AI 醫療診斷 SaaS 平台，與醫院與診所合作提供精準醫療分析。"
+    },
+    {
+      "projectId": "5",
+      "id": "model5",
+      "business_model": "免費遊戲 + 內購機制 + 遊戲廣告變現，提供跨平台遊戲體驗。"
+    },
+    {
+      "projectId": "6",
+      "id": "model6",
+      "business_model": "有機食品會員訂閱制 + 農場直銷，確保健康食材供應。"
+    },
+    {
+      "projectId": "7",
+      "id": "model7",
+      "business_model": "智慧城市 IoT 設備租賃 + 數據分析 SaaS 服務，提升都市管理效率。"
+    },
+    {
+      "projectId": "8",
+      "id": "model8",
+      "business_model": "AI 機器人硬體銷售 + 企業自動化解決方案，降低人力成本。"
+    },
+    {
+      "projectId": "9",
+      "id": "model9",
+      "business_model": "線上課程訂閱 + AI 學習輔助，提供個人化教育體驗。"
+    },
+    {
+      "projectId": "10",
+      "id": "model10",
+      "business_model": "區塊鏈金融交易平台 + DeFi 服務，提供安全透明的數位貨幣交易。"
+    }
+  ],
+  "products": [
+    {
+      "projectId": "1",
+      "id": "product1",
+      "productDescription": "招牌紅燒牛肉麵，使用新鮮牛骨熬製 8 小時湯頭，搭配手工拉麵。"
+    },
+    {
+      "projectId": "2",
+      "id": "product2",
+      "productDescription": "高效能太陽能板，具備 AI 追蹤技術，提升發電效率 20%。"
+    },
+    {
+      "projectId": "3",
+      "id": "product3",
+      "productDescription": "時尚潮流 T 恤系列，使用環保材質製成，主打年輕市場。"
+    },
+    {
+      "projectId": "4",
+      "id": "product4",
+      "productDescription": "AI 醫療診斷軟體，能夠快速分析 X 光與 MRI 影像，提升醫療診斷效率。"
+    },
+    {
+      "projectId": "5",
+      "id": "product5",
+      "productDescription": "開放世界冒險遊戲，具備沉浸式劇情與多人連線模式。"
+    },
+    {
+      "projectId": "6",
+      "id": "product6",
+      "productDescription": "有機蔬菜禮盒，每週配送，確保新鮮健康，適合家庭與健身族群。"
+    },
+    {
+      "projectId": "7",
+      "id": "product7",
+      "productDescription": "智慧路燈系統，內建 AI 數據分析，優化都市能耗。"
+    },
+    {
+      "projectId": "8",
+      "id": "product8",
+      "productDescription": "AI 清潔機器人，具備自動規劃清潔路線與遠端控制功能。"
+    },
+    {
+      "projectId": "9",
+      "id": "product9",
+      "productDescription": "線上 AI 輔助學習平台，根據學生程度提供個人化教學內容。"
+    },
+    {
+      "projectId": "10",
+      "id": "product10",
+      "productDescription": "區塊鏈支付系統，支持即時交易並確保安全性，適用於跨境支付。"
+    }
+  ],
+  "projectCompete": [
+    {
+      "projectId": "1",
+      "id": "compete1",
+      "competeDescription": "當地其他中式餐館，特別是連鎖品牌，如鼎泰豐、永和豆漿等。"
+    },
+    {
+      "projectId": "2",
+      "id": "compete2",
+      "competeDescription": "國際太陽能公司如 Tesla Energy、First Solar，技術領先且資金雄厚。"
+    },
+    {
+      "projectId": "3",
+      "id": "compete3",
+      "competeDescription": "全球快時尚品牌，如 ZARA、H&M，具備強大供應鏈與品牌影響力。"
+    },
+    {
+      "projectId": "4",
+      "id": "compete4",
+      "competeDescription": "醫療 AI 領域競爭對手，如 Google DeepMind Health、IBM Watson Health。"
+    },
+    {
+      "projectId": "5",
+      "id": "compete5",
+      "competeDescription": "遊戲市場競爭者包括 Ubisoft、Blizzard，及熱門獨立遊戲開發者。"
+    },
+    {
+      "projectId": "6",
+      "id": "compete6",
+      "competeDescription": "主要競爭對手為有機食品超市，如 Whole Foods、台灣的里仁等。"
+    },
+    {
+      "projectId": "7",
+      "id": "compete7",
+      "competeDescription": "智慧城市競爭對手如 Google Sidewalk Labs，及政府主導的都市 IoT 計畫。"
+    },
+    {
+      "projectId": "8",
+      "id": "compete8",
+      "competeDescription": "機器人市場主要競爭對手為 Boston Dynamics、iRobot、ABB。"
+    },
+    {
+      "projectId": "9",
+      "id": "compete9",
+      "competeDescription": "線上教育競爭對手包括 Udemy、Coursera 及台灣的 Hahow。"
+    },
+    {
+      "projectId": "10",
+      "id": "compete10",
+      "competeDescription": "區塊鏈金融競爭對手如 Binance、Ethereum，及傳統銀行數位支付。"
+    }
+  ],
+  "founderInfo": [
+    {
+      "projectId": "1",
+      "id": "3628",
+      "entrepreneurDescription": "提供傳統中式料理，家庭經營的老字號餐廳，專注於地道的家庭味道與優質服務。"
+    },
+    {
+      "projectId": "2",
+      "id": "3650",
+      "entrepreneurDescription": "專注於開發綠能產品，提供可再生能源解決方案，致力於改善全球環境問題。"
+    },
+    {
+      "projectId": "3",
+      "id": "3672",
+      "entrepreneurDescription": "提供年輕人設計感十足的時尚服飾，並將流行元素融入每季新品中。"
+    },
+    {
+      "projectId": "4",
+      "id": "3685",
+      "entrepreneurDescription": "開發 AI 醫療診斷系統，提升醫療服務的速度與準確性，降低誤診風險。"
+    },
+    {
+      "projectId": "5",
+      "id": "3701",
+      "entrepreneurDescription": "專注於開發跨平台遊戲，提供玩家全方位的娛樂體驗與深度互動。"
+    },
+    {
+      "projectId": "6",
+      "id": "3723",
+      "entrepreneurDescription": "推動永續農業發展，生產無毒的有機食品，關注土地的永續與環保。"
+    },
+    {
+      "projectId": "7",
+      "id": "3745",
+      "entrepreneurDescription": "開發智慧交通與智慧家居系統，創造便捷且高效的城市生活。"
+    },
+    {
+      "projectId": "8",
+      "id": "3768",
+      "entrepreneurDescription": "專注於機器人技術的研究與應用，致力於提供行業解決方案及智能化生產系統。"
+    },
+    {
+      "projectId": "9",
+      "id": "3790",
+      "entrepreneurDescription": "提供 AI 輔助學習平台，提升學生學習效率，並根據個別需求定制學習計劃。"
+    },
+    {
+      "projectId": "10",
+      "id": "3812",
+      "entrepreneurDescription": "專注於區塊鏈金融解決方案，為全球金融交易提供安全、透明的支付系統。"
+    }
+  ]
+}

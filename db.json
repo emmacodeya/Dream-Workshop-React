@@ -370,35 +370,6 @@
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/mamacook.png",
       "companyImage": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJQAAAA8CAYAAACAc5NXAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAqGSURBVHgB7VyLUdtKFF3Iyz8zMRVEqSCkgpgKAhVgKgAqsFOBTQWYCmwqwFSAU4FFBTgz+ZGQ8M6x7yrXG31tWXHCnhmh32q1uzp7f3uNMR4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHquINVMSbm9va9++fTvA4StsJw8fPuybkoH6z9Tx4bNnz4bGw3z58qV+7969Jo/xHcYY+x23DMZrF7uGnA4fPHhwaJaA/0xJ+P79exu7+tra2gCd6qEDDTT6xJQI1Fu3xxi058bDIlBjE8YVwP0Au7ocm2WhNEKxQ9g6+NBH19fXIY67nz9/3njy5EnHeNwZLEQoR80F6+vrDYjfU5DqHUhlIIbb2Ndw3jIedwJzEwrECZRN08U2BMEaINUZ7m2RVNhf4vyY5PKkuhuYi1AkE4ljpsbdHuymsVw/gVTqWVI9fvy4i73xpLo7KEyojx8/boIgPRrfJJO+BwLRdtqCgX6mSQUykXDHsKnGd8Gmoinw9evXmj3/8eNH7enTp6GdeP8yChGKZLp///4ZBqbvksmCg0ZSQR0eK/XXB6l2Ib1emYrAj8p3og3bON7EpZq6HWJjyKFQeMPWiT5ucuO5uh3YA/SdUjm6weObm5s6Ds8T6uO9TV0HrtGECGWsS/WWXch3fWvPaa7kfZYhC/TvDY/R1jA3oeTBHg476GDqC4VUexjYEZ4ZiYQyP3/+fG0qAAcI76YUDRJc5EC2bZQbQILsUbom1ccPD6nbQtl91GmvmXlh40aor27ri3knCUbSbmP8Whi7rbQ2LgK0hd+npdp3jncNcj7blrayzd1chFI2Uysve0kqDBilQIhtgBlwWoXIV23V0oPvHXDPeAyli73PcAfLY/86rn1CpjM7aKq+vi0vMR4rYUJsXdQ5kOsTQEJd2mNOTEe6GXmO7Rvr9gmCtDYuChKVE8vGskASSqtB1nMcaz0uaGPX5AG9OcySY1MAfBmeGUmEthSgvlu74SO/SSgzUuWusG0nlGvq+pL6h/Z3dH2wjfZT2hfViefaJr0fVyzDfsSQy3rRx7qNSXWibEOVG2W1DX04S7vPtpkc4FhkvXcG7Og8xJD41EXehuVFFqFInjyks8CAHOjy7ocVG0d/0MwxcD5M070v49mMI1FCfT39oRPItzChpF1RX6mWTQbkG89MyPWkwhxsawOZaWg/MDmgVAQ7TrV3kXfwFgXUwVvVDqrZ87Tyjx49oscZ2nMayPo+xmBGzeUxjlHmSJ0euH2neqHZkFd1oZw2MWqfPn0KzBLAdtFzt+ei9hKRpO4SCYXKaWy1MEAbZmqwHdDYNRkvsQSiEcmNRHQ/1BKh25fLe6MXpY7d/gX2AP0Ymnz1kSihnC5MAIw/3ztW50vzlDkJ1fF2WlkQTqv+0E7e9ZRnQrCO7vFYDPEOHrpIEvvWGGZ565EI64fYKpFQesagw7kIAA/vvXo+MCWjpEXsSuJXjnQN0tSeJpyelIleHklBgtAgB5F2KHoZ7aZryDiLFv+aTCi7hXuTAUA5ur10jXN93FVGwUlReALJGHK8XmAfOJ5jJRDPPPL2JL40cMvJdw3UecSFREJRujAoSaKITbSlSYV9HaQ7x7Xn2Fry2FgixGOqR4prlNtBeXorNebgVBUtprpm1kNWuZRYFRGq40kgM6v9MtgRodCGD0llJbZH1VE3QkLGpW6XmF6SBXzTvgRaCUqhuDCR1lJDnZeWGodySYXjHZtJALQYhTZTcdxBQ05YDtuFBDIDLLUconwHzw1F2l3IckxolgyVH5RVLvEeg3vSl8nHxhjQa8tKTNOufRiXBEhpxDVPJ7alEZppJJ9xqaFM2ErMBnyvE4ZK5HQiMfH+S11GqzsKF30vM7CpSaUzCfBSLmn0nUDnSwTw3oJcNYpERlFR7orqkc/hfLIcA+m1U0G2ZWgKgksH7jX0gx5ZW47p+W7C7nqnI8mydrfJ6LcmspLcEax5oFUGxxHX+jAXWOcHVwqC1AemIkK5ao+JkkZJKVfd4fjUzAMVWxqpgFaqaymxjyvtHdp4CKTXgSmIHHGo3DGogu91g6A6cHqVcK8ZV5cTrLzK8pzl/aO0WFgZcSgNHbDUadfS/nZaPWle3gyswc1YBTbGVw4gnVLZKfGWLheUOTPtNTx7KNKrbZYESklTEqTNnACu/VQzjuQQ13snZYlqJrSxinnxVHv2WDJxa+o8UndxSy2Fsg1EFO8VeYaGONi8odJZQgYUMTMZeGTueR0qZKckuyo0v7wifrj5xLGC2DvH1lsFUblON3ZDDFSXVFmuveFCP6cDiSnlqRkqUXcWrtqTOOKRq+7w3X4LHJeWU54GML5BdalJxZnp2mYlkGpgfv2yg/vcaRhJ0MYz+rBXtUSRFOtKCUVob0+cL8aoInVLSRz3vXKrvEUh6nIsH2gyQGwQJBhX0GmUXuSxJ9JAT1OdBkVUKl34uECe9sTQh22ruheAVpsNk9Em7PbzSLKyEaf2stTd5LqpCCQTVZus9fX0dYlP0dYqlNHggp6XHnzaPRDXF0kRX5KDBigNT5GUz2PaPVCnTcnvGkkGBlV2W4xYkq1+m71uOVDtq+O5VsKidEvScPrmD0gofhfdd4aNjAqyxqk7ohKVZ6FDEPR2dNYnpAuXaQKzIJgsJx8ikEtMWT6T2BnfEYodEBnUNhZF2yihPk4ALT2jxXI+a5PkmJnJVQQJqA7Qp3euWpB4XUNdYqJdU3LHJrYZjgO5F7IO6U/l0GpPS+okdUfMEEqkB93doqpnCOmSawWdDWEcip4fBv6SP1zgzJaYTccsCEtaiQk1nNtJWROT4GxcdoLKk28rkR+aKRnj6jJynb8AqrsxN0pRSLRDG9uyiAlyhnZNVCZD5aDau5Z8MhU9T02km8k/lRgGB6pv8oPluYhMe2gr70OSx8yZH8ilzGxQHdvhTM8y4mX5ZxdlN50syLFs9GSGHLikycCoMcrsS3mmPx/pspyEzCjgIjDX+/CubYfITFd56dYr3mNTiGTJZCPjA/0eqlS7lghin7qOgc4JZ8YnvOijmPfN5H4XyVNnnIu/XLLnzEDJFB50CSWxKjAFwcbGJahlQSTiG4b3zQpCZ2sWSTCUZLWrIslqqwyd5Ady99LKRiqPP/WRX2oEc5Aq4B/J/cntVgvLz82KAkSPSFRkRkuOdmjVGCTRSk6YPBAuRN4dnae08hNCiZ6cpnAuYABShVW0Trd0yEDqCPGLrKBlEqiGzN+LujoeZ62OWAnVFrd9bqMY0mkDzx9gJtPYzG1LrSrEGNaZBn1mW2TZbaLGW9rIhl313vylgHTdVRkZmbb1xCiXxdTXi0oWkXQ9sLi0/zv1J8EYk6zhaXBQ+SNMGtBRrhMkO9VaYKbqQduSXYxHoeWqVYFkRkSLzfRas/L0IxsKTKyVEAX+p8BQCCba5u1sbhUJs83Y09pa+rwRqb+Uf+xVEerqOMwiExER6k8Fz1YZ4jRsidtMt7xusqPWIbYBYzV5PsAqg9m4ZvqfdfL/SIN/Ss4d+vAv/6tC2kg3Nze//fKE/b4r/xDDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8PDw8Pj78P/3qsosW6nyKwAAAAASUVORK5CYII=",
       "id": "1"
-    },
-    {
-      "id": "ab9e",
-      "useraccount": "happy1234",
-      "name": "測試編輯公司2",
-      "contactPerson": "林小姐編輯",
-      "contactPhone": "0912345678",
-      "website": "https://www.example.com",
-      "address": "測試地址編輯2",
-      "companyNumber": "",
-      "status": "notestablished",
-      "industry": "electronics",
-      "description": "測試編輯簡介2",
-      "size": "four",
-      "capital": "3000000",
-      "funding": "4000000",
-      "companyLogo": "data:image/png;base64,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",
-      "companyImage": "data:image/png;base64,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",
-      "liked": false,
-      "strengths": "測試編輯優勢2",
-      "weaknesses": "測試編輯劣勢",
-      "opportunities": "測試編輯機會",
-      "threats": "測試編輯威脅",
-      "content": "測試編輯市場規模2",
-      "teamDescription": "測試編輯團隊2",
-      "business_model": "測試編輯商業",
-      "productDescription": "測試編輯產品",
-      "competeDescription": "測試編輯競爭",
-      "entrepreneurDescription": "測試編輯資訊"
     }
   ],
   "swot": [
@@ -409,46 +380,6 @@
       "opportunities": "測試機會",
       "threats": "測試威脅",
       "id": "21fc"
-    },
-    {
-      "id": "932b",
-      "projectId": "df12",
-      "strengths": [
-        "測試優勢"
-      ],
-      "weaknesses": [
-        "測試劣勢"
-      ],
-      "opportunities": [
-        "測試機會"
-      ],
-      "threats": [
-        "測試威脅"
-      ]
-    },
-    {
-      "id": "328e",
-      "projectId": "2ce4",
-      "strengths": "這是優勢++",
-      "weaknesses": "這是劣勢++",
-      "opportunities": "這是機會++",
-      "threats": "這是威脅++"
-    },
-    {
-      "id": "6f34",
-      "projectId": "9b07",
-      "strengths": "測試編輯優勢",
-      "weaknesses": "測試編輯列是",
-      "opportunities": "測試編輯機會\n",
-      "threats": "測試編輯威脅"
-    },
-    {
-      "id": "0b47",
-      "projectId": "ab9e",
-      "strengths": "測試編輯優勢2",
-      "weaknesses": "測試編輯劣勢",
-      "opportunities": "測試編輯機會",
-      "threats": "測試編輯威脅"
     }
   ],
   "marketSize": [
@@ -456,26 +387,6 @@
       "projectId": "1",
       "id": "dbe1",
       "content": "測試市場規模"
-    },
-    {
-      "id": "a9a6",
-      "projectId": "df12",
-      "content": "測試市場規模"
-    },
-    {
-      "id": "a54d",
-      "projectId": "2ce4",
-      "content": "這是市場規模"
-    },
-    {
-      "id": "02ec",
-      "projectId": "9b07",
-      "content": "測試編輯市場規模"
-    },
-    {
-      "id": "a2b5",
-      "projectId": "ab9e",
-      "content": "測試編輯市場規模2"
     }
   ],
   "teams": [
@@ -483,26 +394,6 @@
       "projectId": "1",
       "id": "82a6",
       "teamDescription": "測試團隊"
-    },
-    {
-      "id": "91d4",
-      "projectId": "df12",
-      "teamDescription": "測試團隊"
-    },
-    {
-      "id": "af41",
-      "projectId": "2ce4",
-      "teamDescription": "這是說明"
-    },
-    {
-      "id": "aaba",
-      "projectId": "9b07",
-      "teamDescription": "測試編輯團隊"
-    },
-    {
-      "id": "6e25",
-      "projectId": "ab9e",
-      "teamDescription": "測試編輯團隊2"
     }
   ],
   "models": [
@@ -510,26 +401,6 @@
       "projectId": "1",
       "id": "ce27",
       "business_model": "測試商業模式"
-    },
-    {
-      "id": "81e9",
-      "projectId": "df12",
-      "business_model": "測試商業模式"
-    },
-    {
-      "id": "0187",
-      "projectId": "2ce4",
-      "business_model": "這是商業模式"
-    },
-    {
-      "id": "39d5",
-      "projectId": "9b07",
-      "business_model": "測試編輯商業模式"
-    },
-    {
-      "id": "8e4a",
-      "projectId": "ab9e",
-      "business_model": "測試編輯商業"
     }
   ],
   "products": [
@@ -537,53 +408,13 @@
       "projectId": "1",
       "id": "7dcb",
       "productDescription": "測試商業模式"
-    },
-    {
-      "id": "391e",
-      "projectId": "df12",
-      "productDescription": "測試產品"
-    },
-    {
-      "id": "a194",
-      "projectId": "2ce4",
-      "productDescription": "這是產品"
-    },
-    {
-      "id": "a6fa",
-      "projectId": "9b07",
-      "productDescription": "測試編輯產品"
-    },
-    {
-      "id": "684d",
-      "projectId": "ab9e",
-      "productDescription": "測試編輯產品"
-    }
+    }  
   ],
   "projectCompete": [
     {
       "projectId": "1",
       "id": "2b7d",
       "competeDescription": "測試競爭產品"
-    },
-    {
-      "id": "7518",
-      "projectId": "df12",
-      "competeDescription": "測試競爭產品"
-    },
-    {
-      "id": "02c9",
-      "projectId": "2ce4",
-      "competeDescription": "這是競爭產品"
-    },
-    {
-      "id": "a7af",
-      "projectId": "9b07",
-      "competeDescription": "測試編輯竟曾"
-    },
-    {
-      "id": "87e0",
-      "projectId": "ab9e",
-      "competeDescription": "測試編輯競爭"
     }
   ],
   "founderInfo": [
@@ -591,26 +422,6 @@
       "projectId": "1",
       "id": "3628",
       "entrepreneurDescription": "測是創業者資訊"
-    },
-    {
-      "id": "71fc",
-      "projectId": "df12",
-      "entrepreneurDescription": "測是創業者資訊"
-    },
-    {
-      "id": "7f8c",
-      "projectId": "2ce4",
-      "entrepreneurDescription": "這是創業者資訊"
-    },
-    {
-      "id": "afcc",
-      "projectId": "9b07",
-      "entrepreneurDescription": "測試編輯創業者資訊"
-    },
-    {
-      "id": "342e",
-      "projectId": "ab9e",
-      "entrepreneurDescription": "測試編輯資訊"
     }
   ],
   "industryOptions": [

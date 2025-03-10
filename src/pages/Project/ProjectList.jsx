@@ -224,7 +224,7 @@ const ProjectList = () => {
         {displayedIndustries.map((industry) => (
         <div className="col" key={industry.value}>
           <button
-            className={`card industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+            className={`industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
               width:250,
