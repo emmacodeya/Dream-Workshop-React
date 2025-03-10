@@ -1,0 +1,34 @@
+.about-us {
+  &__img {
+    width: 100%;
+    height: auto;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    object-fit: cover;
+
+    &:hover {
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.25);
+      transform: scale(1.1);
+    }
+
+    &-container {
+      border-radius: 15px;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+  }
+
+  &__img-banner {
+    width: 100%;
+  }
+}
+
+.privacy-section {
+  li {
+    list-style: disc;
+  }
+
+  h5 {
+    margin-top: 30px;
+  }
+}
