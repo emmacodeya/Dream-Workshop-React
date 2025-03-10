@@ -130,14 +130,12 @@ const MemberIdentity = () => {
           >
             <label
               htmlFor={key}
-              className="form-label text-white"
+              className="form-label text-white bg-gray-800 rounded-3"
               style={{
                 position: "absolute",
                 top: "10px",
                 right: "10px",
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
                 padding: "5px",
-                borderRadius: "5px",
               }}
             >
               {key === "frontId" ? "上傳身分證正面" : "上傳身分證背面"}
@@ -170,7 +168,13 @@ const MemberIdentity = () => {
             position: "relative",
           }}
         >
-          <label htmlFor="secondId" className="form-label text-white">
+          <label htmlFor="secondId" className="form-label text-white bg-gray-800 rounded-3"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            padding: "5px",
+          }}>
             上傳第二張證件
           </label>
           <input className="form-control" type="file" id="secondId" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileChange(e, "secondId")} />
