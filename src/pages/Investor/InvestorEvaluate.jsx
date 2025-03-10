@@ -26,16 +26,13 @@ const InvestorEvaluate = ({ investorId }) => {
       });
   }, [investorId]);
 
-  // ✅ 處理輸入變更
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewEvaluation({ ...newEvaluation, [name]: value });
 
-    // 如果使用者輸入後，清除錯誤訊息
     setErrors({ ...errors, [name]: "" });
   };
 
-  // ✅ 表單驗證
   const validateForm = () => {
     let newErrors = {};
     if (!newEvaluation.name.trim()) newErrors.name = "請填寫您的姓名";
@@ -44,7 +41,6 @@ const InvestorEvaluate = ({ investorId }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  // ✅ 提交評價
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -54,7 +50,7 @@ const InvestorEvaluate = ({ investorId }) => {
       ...newEvaluation,
       date: new Date().toLocaleDateString(),
       investorId,
-      replies: [] // 預設無回覆
+      replies: [] 
     };
 
     try {
@@ -71,7 +67,7 @@ const InvestorEvaluate = ({ investorId }) => {
 
   return (
     <div className="py-10">
-      {/* ✅ 顯示評價列表 */}
+      {/* 評價列表 */}
       <div className="mt-4">
         {evaluations.length === 0 ? (
           <p className="text-gray-400">目前沒有評價</p>
@@ -87,7 +83,6 @@ const InvestorEvaluate = ({ investorId }) => {
               </div>
               <p className="text-gray-200">{evaluation.comment}</p>
 
-              {/* ✅ 只顯示回覆，不提供回覆功能 */}
               {evaluation.replies && evaluation.replies.length > 0 && (
                 <div className="mt-3 border-top border-gray-600 pt-2">
                   <h6 className="text-white">回覆：</h6>
@@ -104,7 +99,7 @@ const InvestorEvaluate = ({ investorId }) => {
         )}
       </div>
 
-      {/* ✅ 新增評價 */}
+      {/* 新增評價 */}
       <form onSubmit={handleSubmit} className="mt-5">
         <h5 className="text-white">新增您的評價：</h5>
 

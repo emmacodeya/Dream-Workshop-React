@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="col-lg-3 community-wrap mb-5">
             <div className="community">
               <Link to="/">
-                <img className="mb-1" src="/assets/images/創夢工坊-logo.png" alt="創夢工坊" style={{ width: '60px' }} />
+                <img className="mb-1" src="https://dream-workshop-api.onrender.com/assets/images/創夢工坊-logo.png" alt="創夢工坊" style={{ width: '60px' }} />
               </Link>
               <h3 className="fw-bold mb-5">Dream Workshop</h3>
               <ul className="d-flex justify-content-center justify-content-sm-start">
