@@ -3,5 +3,20 @@
 @import './variables';
 @import 'bootstrap/scss/bootstrap';
 
+@import "../assets/scss/base/base.scss";
 
-@import "./base/base";
+// @import "../assets/scss/pages/index.scss";
+@import "../assets/scss/pages/activity.scss";
+@import "../assets/scss/pages/ProjectList-project.scss";
+@import "../assets/scss/pages/ProjectList-investor.scss";
+@import "../assets/scss/pages/_about-us.scss";
+@import "../assets/scss/pages/activity-casper.scss";
+@import "../assets/scss/pages/discuss.scss";
+@import "../assets/scss/pages/post-article.scss";
+@import "../assets/scss/pages/admin.scss";
+@import "../assets/scss/pages/login.scss";
+@import "../assets/scss/pages/article-content.scss";
+@import "../assets/scss/pages/member-pages.scss";
+@import "../assets/scss/pages/pay-plan.scss";
+@import "../assets/scss/pages/checkout.scss";
+@import '../assets/scss/pages/project-information';

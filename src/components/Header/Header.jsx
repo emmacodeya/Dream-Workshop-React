@@ -2,7 +2,33 @@ import { NavLink } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.scss'; 
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 const Header = () => {
+  const [currentUser, setCurrentUser] = useState(null);
+  const navigate = useNavigate();
+
+   // 取得登入狀態
+   useEffect(() => {
+    const userData = localStorage.getItem("currentUser");
+    if (userData) {
+      try {
+        const user = JSON.parse(userData);
+        setCurrentUser(user);
+      } catch (error) {
+        console.error("解析使用者資料失敗:", error);
+        setCurrentUser(null);
+      }
+    }
+  }, []);
+
+  // 登出功能
+  const handleLogout = () => {
+    localStorage.removeItem("currentUser");
+    setCurrentUser(null);
+    alert("已登出！");
+    navigate("/login");
+  };
   return (
     <nav className="header navbar navbar-expand-lg fixed-top">
       <div className="container d-flex justify-content-center">
@@ -45,9 +71,35 @@ const Header = () => {
           </ul>
         </div>
 
-        <NavLink to="/login" className="btn login-btn btn-primary-600 d-none d-lg-block">
-          註冊/登入
-        </NavLink>
+        {currentUser ? (
+          <>
+            <span className="me-5">👋 歡迎, {currentUser.name || "使用者"}</span>
+            <button
+              onClick={handleLogout}
+              className="btn btn-primary-600 px-3 py-1 rounded"
+            >
+              登出
+            </button>
+            
+            
+          </>
+        ) : (
+          <>
+            {/* <Link to="/login" className="mr-4 hover:underline">
+              登入
+            </Link>
+            <Link to="/register" className="hover:underline">
+              註冊
+            </Link> */}
+             <NavLink to="/login" className="btn login-btn btn-primary-600 d-none d-lg-block">
+              註冊/登入
+              </NavLink>
+          </>
+        )}
+
+       
+
+       
       </div>
     </nav>
   );

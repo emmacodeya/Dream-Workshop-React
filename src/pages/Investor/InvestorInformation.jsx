@@ -1,15 +1,45 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+<<<<<<< HEAD
 import axios from "axios";
 import InvestorSidebar from "../../components/InvestorSidebar";
 import InvestorEvaluate from "./InvestorEvaluate"; 
 
 
 const API_URL = import.meta.env.VITE_API_URL;
+=======
+import InvestorSidebar from "../../components/InvestorSidebar";
+import InvestorAutobiography from "./InvestorAutobiography";
+import InvestorExperience from "./InvestorExperience";
+import InvestorResource from "./InvestorResource";
+import InvestorPhoto from "./InvestorPhoto";
+import InvestorEvaluate from "./InvestorEvaluate";
+
+// **模擬投資人資料**
+// const investorsData = [
+//   {
+//     id: "1",
+//     name: "謝阿金",
+//     industry: "餐飲，一般服務，批發／零售",
+//     capital: "40,000,000",
+//     fundingStart: "2024/7/25",
+//     image: "/assets/images/海綿寶寶.png",
+//   },
+//   {
+//     id: "2",
+//     name: "王大華",
+//     industry: "科技、軟體開發",
+//     capital: "100,000,000",
+//     fundingStart: "2024/8/15",
+//     image: "/assets/images/海綿寶寶.png",
+//   },
+// ];
+>>>>>>> 1cb2e74 (進度更新)
 
 const InvestorInformation = () => {
   const { id } = useParams();
   const [investor, setInvestor] = useState(null);
+<<<<<<< HEAD
   const [industryMap, setIndustryMap] = useState({});
   const [activeSection, setActiveSection] = useState("autobiography");
 
@@ -33,6 +63,17 @@ const InvestorInformation = () => {
 
   
 
+=======
+  const [activeSection, setActiveSection] = useState("autobiography");
+
+  useEffect(() => {
+    fetch(`http://localhost:3000/investors/${id}`) // 向 JSON Server 請求投資人資料
+      .then((response) => response.json())
+      .then((data) => setInvestor(data))
+      .catch((error) => console.error("Error fetching investor data:", error));
+  }, [id]);
+
+>>>>>>> 1cb2e74 (進度更新)
   if (!investor) {
     return <h2 className="text-center text-white">找不到該投資人</h2>;
   }
@@ -46,12 +87,17 @@ const InvestorInformation = () => {
               {/* 投資人圖片 */}
               <div className="col-lg-4 d-flex justify-content-center align-items-center mt-4">
                 <img
+<<<<<<< HEAD
                   src={investor.avatar}
+=======
+                  src={investor.image}
+>>>>>>> 1cb2e74 (進度更新)
                   className="img-fluid rounded"
                   alt={investor.name}
                 />
               </div>
 
+<<<<<<< HEAD
               {/* 右側投資人資訊 */}
               <div className="col-lg-8">
                 <div className="card-body ps-5">
@@ -75,6 +121,24 @@ const InvestorInformation = () => {
                   </h2>
                   <p className="m-1 fs-6 text-gray-400">
                     聯絡方式：{investor.email} | {investor.mobile}
+=======
+              {/* 投資人資訊 */}
+              <div className="col-lg-8">
+                <div className="card-body ps-5">
+                  <div className="d-flex align-items-center">
+                    <h1 className="fs-1 text-primary-600 fw-bold m-1">
+                      {investor.name} <i className="bi bi-clipboard-check fs-3"></i>
+                    </h1>
+                  </div>
+                  <h5 className="fs-5 text-light m-1">
+                    偏好領域：{investor.industry}
+                  </h5>
+                  <h2 className="fs-2 m-1 text-light">
+                    資金規模：NT$ {investor.capital.toLocaleString()}
+                  </h2>
+                  <p className="m-1 fs-6 text-gray-400">
+                    開始募資時間：{investor.fundingStart}
+>>>>>>> 1cb2e74 (進度更新)
                   </p>
                 </div>
               </div>
@@ -98,6 +162,7 @@ const InvestorInformation = () => {
         {/* 內容區塊 */}
         <div className="row">
           <div className="col">
+<<<<<<< HEAD
             {/* 自傳 */}
             {activeSection === "autobiography" && (
               <div className="py-10">
@@ -130,6 +195,13 @@ const InvestorInformation = () => {
 
             {/* 投資人評價 */}
             {activeSection === "evaluate" && <InvestorEvaluate investorId={id} />}
+=======
+            {activeSection === "autobiography" && <InvestorAutobiography />}
+            {activeSection === "experience" && <InvestorExperience />}
+            {activeSection === "resource" && <InvestorResource />}
+            {activeSection === "photo" && <InvestorPhoto />}
+            {activeSection === "evaluate" && <InvestorEvaluate />}
+>>>>>>> 1cb2e74 (進度更新)
           </div>
         </div>
       </div>

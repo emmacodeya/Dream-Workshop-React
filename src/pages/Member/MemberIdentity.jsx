@@ -62,7 +62,6 @@ const MemberIdentity = () => {
     reader.readAsDataURL(file);
   };
 
-
   const handleSaveChanges = async () => {
     if (!images.frontId || !images.backId || !images.secondId) {
       alert("請上傳所有身份驗證圖片");
@@ -96,7 +95,6 @@ const MemberIdentity = () => {
     }
     setIsUploading(false);
   };
-
 
   return (
     <div className="container my-8">

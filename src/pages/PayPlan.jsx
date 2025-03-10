@@ -2,15 +2,17 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL; 
 
 const PayPlan = () => {
   const [stores, setStores] = useState([]);
 
   const getProduct = async () => {
+    
     try {
-      const res = await axios.get( `${API_URL}/stores`);
+      const res = await axios.get(`${API_URL}stores`); 
       setStores(res.data); 
+      console.log(res.data);
     } catch (error) {
       console.error("取得產品失敗", error);
     }
@@ -44,7 +46,7 @@ const PayPlan = () => {
           {stores.length > 0 ? (
             stores.map((store) => (
               <div className="col mb-5" key={store.id || store.coinPoint}>
-                <NavLink className="card points-card mb-2" to="#">
+                <NavLink className="card points-card mb-2" to="/checkout">
                   <img src={store.coinImg} className="coin-img mb-2" alt="coin" />
                   <h4>{store.coinPoint}</h4>
                 </NavLink>
