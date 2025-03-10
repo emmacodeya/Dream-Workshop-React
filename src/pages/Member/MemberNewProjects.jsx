@@ -126,14 +126,12 @@ const MemberNewProjects = () => {
             >
               <label
                 htmlFor={key}
-                className="form-label text-white"
+                className="form-label text-white bg-gray-800 rounded-3"
                 style={{
                   position: "absolute",
                   top: "10px",
                   right: "10px",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
                   padding: "5px",
-                  borderRadius: "5px",
                 }}
               >
                 上傳圖片

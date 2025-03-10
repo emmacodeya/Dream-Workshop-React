@@ -44,7 +44,7 @@ const InvestorList = () => {
       setInvestors(res.data);
     });
     
-    // 檢查是否有登入的會員
+  
     const storedUser = localStorage.getItem("useraccount");
     if (!storedUser) {
       return;
@@ -59,7 +59,6 @@ const InvestorList = () => {
 
 
   useEffect(() => {
-    // 獲取投資人資料
     axios.get(`${API_URL}/investors`)
       .then((response) => {
         setInvestors(response.data);
@@ -67,7 +66,7 @@ const InvestorList = () => {
       })
       .catch((error) => console.error("Error fetching investors:", error));
 
-    // 獲取產業分類
+
     axios.get(`${API_URL}/industryOptions`)
       .then((response) => {
         const updatedIndustries = [
@@ -79,7 +78,7 @@ const InvestorList = () => {
       .catch((error) => console.error("Error fetching industry options:", error));
   }, []);
 
-  // 產業篩選
+
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
     setCurrentPage(1); 
@@ -93,7 +92,7 @@ const InvestorList = () => {
         : investors
     );
   };
- // 排序功能
+
  const handleSortChange = (order) => {
   setSortOrder(order);
   setIsDropdownOpen(false); 
@@ -113,17 +112,17 @@ const InvestorList = () => {
   setFilteredInvestors(sortedInvestors);
 };
 
- // 切換排序選單開關
+
  const toggleDropdown = () => {
   setIsDropdownOpen(!isDropdownOpen);
 };
 
-// 簡化介紹文字
+
 const truncateText = (text, maxLength = 20) => {
   return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
 };
 
-// 切換投資人收藏狀態
+
 const toggleFavorite = async (investorId) => {
   if (!user) {
     alert("請先登入會員帳號");
@@ -219,7 +218,7 @@ const toggleFavorite = async (investorId) => {
         {industries.map((industry) => (
             <div className="col" key={industry.value}>
               <button
-                className={`card industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+                className={` industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
                 onClick={() => handleIndustryChange(industry.value)}
                 style={{ 
                   width:250,

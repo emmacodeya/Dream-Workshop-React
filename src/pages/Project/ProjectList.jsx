@@ -52,6 +52,11 @@ const sortOptions = [
   
   const API_URL = import.meta.env.VITE_API_URL;
 
+const truncateText = (text, maxLength = 20) => {
+  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+};
+
+
 const ProjectList = () => {
   const [projects, setProjects] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
@@ -229,16 +234,14 @@ const ProjectList = () => {
           <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
             <img
               className="favorite"
-              src={user?.collectedProjects.includes(project.id) ? 
-                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : 
-                   "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
           </button>
           <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
           <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
           <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
-          <p>{project.description}</p>
+          <p>{truncateText(project.description)}</p>
         </div>
         <a href="#" className="btn btn-gray-600 py-3">
           <p className="fs-5">資金規模</p>
@@ -256,7 +259,7 @@ const ProjectList = () => {
         {displayedIndustries.map((industry) => (
         <div className="col" key={industry.value}>
           <button
-            className={`card industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+            className={`industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
               width:250,

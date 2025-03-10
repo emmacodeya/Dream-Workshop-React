@@ -99,11 +99,7 @@ const paginatedProjects = projects.slice(
           "content", "teamDescription", "business_model",
           "productDescription", "competeDescription", "entrepreneurDescription"
         ];
-
-        
         fields.forEach(field => setValue(field, projectData[field] || ""));
-
-       
         const swotFields = ["strengths", "weaknesses", "opportunities", "threats"];
         swotFields.forEach(field => setValue(field, projectData.swot?.[field] || ""));
 
@@ -173,19 +169,25 @@ const paginatedProjects = projects.slice(
         alert("錯誤：無法找到要編輯的專案");
         return;
     }
+    console.log("發送 PATCH 請求，專案 ID:", selectedProject.id);
+    console.log("更新的數據:", data);
 
     try {
         const projectId = selectedProject.id;
         const projectRes = await axios.get(`${API_URL}/projects/${projectId}`);
         const originalData = projectRes.data;  
-        const updatedData = {
-            ...originalData,  
-            ...data,  
-            companyLogo: companyLogo || originalData.companyLogo, 
-            companyImage: companyImage || originalData.companyImage,  
-        };
+        const allowedProjectFields = [
+            "useraccount", "name", "contactPerson", "contactPhone", "website",
+            "address", "companyNumber", "status", "industry", "description",
+            "size", "capital", "funding", "companyLogo", "companyImage"
+        ];
+        const updatedProjectData = Object.keys(data)
+            .filter(key => allowedProjectFields.includes(key))
+            .reduce((obj, key) => ({ ...obj, [key]: data[key] || originalData[key] }), {});
 
-        await axios.patch(`${API_URL}/projects/${projectId}`, updatedData);
+        await axios.patch(`${API_URL}/projects/${projectId}`, updatedProjectData);
+
+        
         const endpoints = [
             { key: "swot", fields: ["strengths", "weaknesses", "opportunities", "threats"] },
             { key: "marketSize", fields: ["content"] },
@@ -201,13 +203,24 @@ const paginatedProjects = projects.slice(
                 const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
 
                 if (res.data.length > 0) {
-                    const updateData = {
-                        ...res.data[0], 
-                        ...fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || res.data[0][field] }), {}) 
-                    };
-                    await axios.patch(`${API_URL}/${key}/${res.data[0].id}`, updateData);
+                    const existingData = res.data[0];
+
+                    const updatedFields = fields.reduce((obj, field) => {
+                        if (data[field] !== undefined && data[field] !== existingData[field]) {
+                            obj[field] = data[field]; 
+                        }
+                        return obj;
+                    }, {});
+
+                    if (Object.keys(updatedFields).length > 0) {
+                        await axios.patch(`${API_URL}/${key}/${existingData.id}`, updatedFields);
+                    }
                 } else {
-                    const newData = fields.reduce((obj, field) => ({ ...obj, [field]: data[field] || "" }), {});
+                    const newData = fields.reduce((obj, field) => ({
+                        ...obj,
+                        [field]: data[field] || ""
+                    }), {});
+
                     await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
                 }
             } catch (error) {
@@ -223,7 +236,6 @@ const paginatedProjects = projects.slice(
     }
 };
 
-  
 
   const handleViewDetails = (projectId) => {
     navigate(`/project/${projectId}`);

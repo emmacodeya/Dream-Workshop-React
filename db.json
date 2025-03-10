@@ -363,254 +363,571 @@
       "companyNumber": "12345678",
       "status": "notestablished",
       "industry": "food",
-      "description": "測試簡介",
+      "description": "提供傳統中式料理，家庭經營的老字號餐廳。",
       "size": "five",
       "capital": "90000000",
       "funding": "50000000",
-      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/mamacook.png",
-      "companyImage": "data:image/png;base64,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",
+      "companyLogo": "...",
+      "companyImage": "...",
       "id": "1"
     },
     {
-      "id": "ab9e",
-      "useraccount": "happy1234",
-      "name": "測試編輯公司2",
-      "contactPerson": "林小姐編輯",
-      "contactPhone": "0912345678",
-      "website": "https://www.example.com",
-      "address": "測試地址編輯2",
-      "companyNumber": "",
+      "useraccount": "user2020",
+      "name": "綠能科技有限公司",
+      "contactPerson": "王先生",
+      "contactPhone": "0922333444",
+      "website": "https://www.green-tech.com",
+      "address": "新北市板橋區文化路二段345號",
+      "companyNumber": "87654321",
+      "status": "established",
+      "industry": "tech",
+      "description": "專注於開發綠能產品，提供可再生能源解決方案。",
+      "size": "fifty",
+      "capital": "200000000",
+      "funding": "80000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "2"
+    },
+    {
+      "useraccount": "user3030",
+      "name": "時尚服飾品牌",
+      "contactPerson": "陳小姐",
+      "contactPhone": "0933555666",
+      "website": "https://www.fashionstyle.com",
+      "address": "台中市西屯區台灣大道三段789號",
+      "companyNumber": "56781234",
       "status": "notestablished",
-      "industry": "electronics",
-      "description": "測試編輯簡介2",
-      "size": "four",
-      "capital": "3000000",
-      "funding": "4000000",
-      "companyLogo": "data:image/png;base64,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",
-      "companyImage": "data:image/png;base64,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",
-      "liked": false,
-      "strengths": "測試編輯優勢2",
-      "weaknesses": "測試編輯劣勢",
-      "opportunities": "測試編輯機會",
-      "threats": "測試編輯威脅",
-      "content": "測試編輯市場規模2",
-      "teamDescription": "測試編輯團隊2",
-      "business_model": "測試編輯商業",
-      "productDescription": "測試編輯產品",
-      "competeDescription": "測試編輯競爭",
-      "entrepreneurDescription": "測試編輯資訊"
+      "industry": "fashion",
+      "description": "獨特設計，專為年輕族群提供潮流服飾。",
+      "size": "twenty",
+      "capital": "50000000",
+      "funding": "20000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "3"
+    },
+    {
+      "useraccount": "user4040",
+      "name": "健康醫療科技",
+      "contactPerson": "張博士",
+      "contactPhone": "0955667788",
+      "website": "https://www.medtech.com",
+      "address": "台北市信義區松壽路99號",
+      "companyNumber": "99887766",
+      "status": "established",
+      "industry": "healthcare",
+      "description": "開發 AI 醫療診斷系統，提高醫療效率。",
+      "size": "hundred",
+      "capital": "300000000",
+      "funding": "120000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "4"
+    },
+    {
+      "useraccount": "user5050",
+      "name": "創新遊戲開發",
+      "contactPerson": "劉先生",
+      "contactPhone": "0988777666",
+      "website": "https://www.innovgame.com",
+      "address": "台南市東區長榮路二段456號",
+      "companyNumber": "11223344",
+      "status": "notestablished",
+      "industry": "gaming",
+      "description": "專注於開發跨平台遊戲，提供沉浸式體驗。",
+      "size": "thirty",
+      "capital": "100000000",
+      "funding": "40000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "5"
+    },
+    {
+      "useraccount": "user6060",
+      "name": "有機農業發展",
+      "contactPerson": "黃先生",
+      "contactPhone": "0933222111",
+      "website": "https://www.organicfarm.com",
+      "address": "嘉義縣民雄鄉農業路789號",
+      "companyNumber": "33445566",
+      "status": "established",
+      "industry": "agriculture",
+      "description": "推動永續農業，提供無毒有機食品。",
+      "size": "forty",
+      "capital": "150000000",
+      "funding": "60000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "6"
+    },
+    {
+      "useraccount": "user7070",
+      "name": "智慧城市科技",
+      "contactPerson": "曾小姐",
+      "contactPhone": "0922111333",
+      "website": "https://www.smartcity.com",
+      "address": "高雄市鼓山區蓮池潭路101號",
+      "companyNumber": "66778899",
+      "status": "notestablished",
+      "industry": "iot",
+      "description": "開發智慧交通與智慧家居系統，提升城市效率。",
+      "size": "sixty",
+      "capital": "250000000",
+      "funding": "100000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "7"
+    },
+    {
+      "useraccount": "user8080",
+      "name": "AI 機器人科技",
+      "contactPerson": "楊博士",
+      "contactPhone": "0911999222",
+      "website": "https://www.airobotics.com",
+      "address": "新竹市科學園區創新路500號",
+      "companyNumber": "88990011",
+      "status": "established",
+      "industry": "robotics",
+      "description": "研發 AI 機器人，應用於工業與醫療領域。",
+      "size": "eighty",
+      "capital": "400000000",
+      "funding": "180000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "8"
+    },
+    {
+      "useraccount": "user9090",
+      "name": "線上教育平台",
+      "contactPerson": "林教授",
+      "contactPhone": "0977665544",
+      "website": "https://www.edtech.com",
+      "address": "台中市南屯區教育路200號",
+      "companyNumber": "77889900",
+      "status": "notestablished",
+      "industry": "education",
+      "description": "提供 AI 輔助學習，提高學生學習效率。",
+      "size": "thirty",
+      "capital": "70000000",
+      "funding": "25000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "9"
+    },
+    {
+      "useraccount": "user1010",
+      "name": "區塊鏈金融科技",
+      "contactPerson": "趙先生",
+      "contactPhone": "0966555444",
+      "website": "https://www.blockchainfinance.com",
+      "address": "台北市中正區信義路一段888號",
+      "companyNumber": "44556677",
+      "status": "established",
+      "industry": "blockchain",
+      "description": "提供區塊鏈支付解決方案，提高金融交易安全性。",
+      "size": "hundred",
+      "capital": "500000000",
+      "funding": "200000000",
+      "companyLogo": "...",
+      "companyImage": "...",
+      "id": "10"
     }
   ],
   "swot": [
     {
       "projectId": "1",
-      "strengths": "測試優勢",
-      "weaknesses": "測試劣勢",
-      "opportunities": "測試機會",
-      "threats": "測試威脅",
-      "id": "21fc"
+      "strengths": "品牌歷史悠久，擁有忠實顧客",
+      "weaknesses": "市場行銷預算有限",
+      "opportunities": "線上外送市場持續增長",
+      "threats": "餐飲競爭激烈，新品牌不斷出現",
+      "id": "swot1"
     },
     {
-      "id": "932b",
-      "projectId": "df12",
-      "strengths": [
-        "測試優勢"
-      ],
-      "weaknesses": [
-        "測試劣勢"
-      ],
-      "opportunities": [
-        "測試機會"
-      ],
-      "threats": [
-        "測試威脅"
-      ]
+      "projectId": "2",
+      "strengths": "技術創新領先，獲得多項專利",
+      "weaknesses": "生產成本較高",
+      "opportunities": "政府支持綠能發展",
+      "threats": "國際競爭對手強大",
+      "id": "swot2"
     },
     {
-      "id": "328e",
-      "projectId": "2ce4",
-      "strengths": "這是優勢++",
-      "weaknesses": "這是劣勢++",
-      "opportunities": "這是機會++",
-      "threats": "這是威脅++"
+      "projectId": "3",
+      "strengths": "設計新穎，符合潮流趨勢",
+      "weaknesses": "供應鏈尚未穩定",
+      "opportunities": "社群行銷影響力大",
+      "threats": "國際快時尚品牌競爭",
+      "id": "swot3"
     },
     {
-      "id": "6f34",
-      "projectId": "9b07",
-      "strengths": "測試編輯優勢",
-      "weaknesses": "測試編輯列是",
-      "opportunities": "測試編輯機會\n",
-      "threats": "測試編輯威脅"
+      "projectId": "4",
+      "strengths": "醫療團隊專業，技術領先",
+      "weaknesses": "醫療法規限制多",
+      "opportunities": "高齡化社會需求增加",
+      "threats": "大型醫療機構已有既有市場",
+      "id": "swot4"
     },
     {
-      "id": "0b47",
-      "projectId": "ab9e",
-      "strengths": "測試編輯優勢2",
-      "weaknesses": "測試編輯劣勢",
-      "opportunities": "測試編輯機會",
-      "threats": "測試編輯威脅"
+      "projectId": "5",
+      "strengths": "遊戲畫面精美，玩法創新",
+      "weaknesses": "研發成本高，資金需求大",
+      "opportunities": "全球遊戲市場持續成長",
+      "threats": "競爭遊戲公司眾多",
+      "id": "swot5"
+    },
+    {
+      "projectId": "6",
+      "strengths": "有機產品品質優良，獲得認證",
+      "weaknesses": "生產成本較高",
+      "opportunities": "消費者對健康食品需求增加",
+      "threats": "價格競爭激烈",
+      "id": "swot6"
+    },
+    {
+      "projectId": "7",
+      "strengths": "智慧家居產品整合性高",
+      "weaknesses": "市場接受度尚未成熟",
+      "opportunities": "5G 和 AI 技術發展迅速",
+      "threats": "國際科技公司競爭強",
+      "id": "swot7"
+    },
+    {
+      "projectId": "8",
+      "strengths": "機器人 AI 技術領先",
+      "weaknesses": "製造成本高，研發周期長",
+      "opportunities": "工業自動化需求提升",
+      "threats": "國際機器人大廠壟斷市場",
+      "id": "swot8"
+    },
+    {
+      "projectId": "9",
+      "strengths": "線上教育系統功能齊全",
+      "weaknesses": "缺乏品牌知名度",
+      "opportunities": "疫情後遠端學習趨勢增長",
+      "threats": "大型教育平台競爭",
+      "id": "swot9"
+    },
+    {
+      "projectId": "10",
+      "strengths": "區塊鏈支付技術安全性高",
+      "weaknesses": "法規監管風險高",
+      "opportunities": "數位貨幣市場持續擴張",
+      "threats": "傳統金融機構強力競爭",
+      "id": "swot10"
     }
-  ],
+  ],  
   "marketSize": [
     {
       "projectId": "1",
+      "id": "market1",
+      "content": "全球餐飲市場規模預計在 2025 年達到 500萬美元，外送市場成長迅速。"
+    },
+    {
+      "projectId": "2",
+      "id": "market2",
+      "content": "全球綠能市場預計在 2030 年突破 1 千萬美元，政府補助持續推動成長。"
+    },
+    {
+      "projectId": "3",
+      "id": "market3",
+      "content": "全球時尚產業規模約 25 萬美元，快時尚市場年增長 7%。"
+    },
+    {
+      "projectId": "4",
+      "id": "market4",
+      "content": "全球醫療科技市場預計 2026 年將達 6000 萬美元，AI 醫療診斷需求持續增加。"
+    },
+    {
+      "projectId": "5",
+      "id": "market5",
+      "content": "全球遊戲產業在 2024 年將達 3000 萬美元，行動遊戲市場佔比逐漸提升。"
+    },
+    {
+      "projectId": "6",
+      "id": "market6",
+      "content": "全球有機食品市場在 2025 年預計達 4500 萬美元，消費者對健康飲食需求上升。"
+    },
+    {
+      "projectId": "7",
+      "id": "market7",
+      "content": "智慧城市市場規模將於 2030 年達到 2.5 億美元，IoT 技術成長驅動發展。"
+    },
+    {
+      "projectId": "8",
+      "id": "market8",
+      "content": "全球機器人市場 2025 年預計突破 7000 萬美元，工業自動化需求快速增長。"
+    },
+    {
+      "projectId": "9",
+      "id": "market9",
+      "content": "全球線上教育市場 2026 年將達 4000 萬美元，遠端學習成為新趨勢。"
+    },
+    {
+      "projectId": "10",
+      "id": "market10",
+      "content": "全球區塊鏈市場規模 2025 年將達 4000 萬美元，金融科技應用擴展迅速。"
       "id": "dbe1",
       "content": "測試市場規模"
-    },
-    {
-      "id": "a9a6",
-      "projectId": "df12",
-      "content": "測試市場規模"
-    },
-    {
-      "id": "a54d",
-      "projectId": "2ce4",
-      "content": "這是市場規模"
-    },
-    {
-      "id": "02ec",
-      "projectId": "9b07",
-      "content": "測試編輯市場規模"
-    },
-    {
-      "id": "a2b5",
-      "projectId": "ab9e",
-      "content": "測試編輯市場規模2"
     }
   ],
   "teams": [
     {
       "projectId": "1",
-      "id": "82a6",
-      "teamDescription": "測試團隊"
+      "id": "team1",
+      "teamDescription": "由擁有 20 年經驗的廚師組成，專注於傳統中式料理的創新與發展。"
     },
     {
-      "id": "91d4",
-      "projectId": "df12",
-      "teamDescription": "測試團隊"
+      "projectId": "2",
+      "id": "team2",
+      "teamDescription": "核心團隊來自世界知名科技公司，專注於綠能技術與永續發展。"
     },
     {
-      "id": "af41",
-      "projectId": "2ce4",
-      "teamDescription": "這是說明"
+      "projectId": "3",
+      "id": "team3",
+      "teamDescription": "設計師與市場行銷專家組成，專注於年輕潮流服飾品牌的建立。"
     },
     {
-      "id": "aaba",
-      "projectId": "9b07",
-      "teamDescription": "測試編輯團隊"
+      "projectId": "4",
+      "id": "team4",
+      "teamDescription": "由醫學專家與 AI 工程師組成，致力於智慧醫療解決方案的開發。"
     },
     {
-      "id": "6e25",
-      "projectId": "ab9e",
-      "teamDescription": "測試編輯團隊2"
+      "projectId": "5",
+      "id": "team5",
+      "teamDescription": "國際遊戲開發團隊，成員擁有 10 年以上遊戲設計與程式開發經驗。"
+    },
+    {
+      "projectId": "6",
+      "id": "team6",
+      "teamDescription": "農業專家與食品科學家合作，推廣有機農業與健康食品。"
+    },
+    {
+      "projectId": "7",
+      "id": "team7",
+      "teamDescription": "由 IoT 工程師與智慧城市專家組成，致力於智慧交通與家居技術開發。"
+    },
+    {
+      "projectId": "8",
+      "id": "team8",
+      "teamDescription": "AI 機器人專家與工業自動化工程師，開發最新機器人技術應用。"
+    },
+    {
+      "projectId": "9",
+      "id": "team9",
+      "teamDescription": "教育科技專家與軟體工程師，專注於線上學習平台的開發與優化。"
+    },
+    {
+      "projectId": "10",
+      "id": "team10",
+      "teamDescription": "區塊鏈與金融科技專家組成，推動數位貨幣與智能合約技術。"
     }
   ],
   "models": [
     {
       "projectId": "1",
-      "id": "ce27",
-      "business_model": "測試商業模式"
+      "id": "model1",
+      "business_model": "實體餐廳 + 線上訂餐與外送服務，提供高品質中式料理。"
     },
     {
-      "id": "81e9",
-      "projectId": "df12",
-      "business_model": "測試商業模式"
+      "projectId": "2",
+      "id": "model2",
+      "business_model": "B2B 綠能解決方案 + B2C 太陽能產品銷售，結合政府補助推廣。"
     },
     {
-      "id": "0187",
-      "projectId": "2ce4",
-      "business_model": "這是商業模式"
+      "projectId": "3",
+      "id": "model3",
+      "business_model": "線上電商平台 + 快閃店，提供限量潮流服飾，主打年輕消費市場。"
     },
     {
-      "id": "39d5",
-      "projectId": "9b07",
-      "business_model": "測試編輯商業模式"
+      "projectId": "4",
+      "id": "model4",
+      "business_model": "B2B AI 醫療診斷 SaaS 平台，與醫院與診所合作提供精準醫療分析。"
     },
     {
-      "id": "8e4a",
-      "projectId": "ab9e",
-      "business_model": "測試編輯商業"
+      "projectId": "5",
+      "id": "model5",
+      "business_model": "免費遊戲 + 內購機制 + 遊戲廣告變現，提供跨平台遊戲體驗。"
+    },
+    {
+      "projectId": "6",
+      "id": "model6",
+      "business_model": "有機食品會員訂閱制 + 農場直銷，確保健康食材供應。"
+    },
+    {
+      "projectId": "7",
+      "id": "model7",
+      "business_model": "智慧城市 IoT 設備租賃 + 數據分析 SaaS 服務，提升都市管理效率。"
+    },
+    {
+      "projectId": "8",
+      "id": "model8",
+      "business_model": "AI 機器人硬體銷售 + 企業自動化解決方案，降低人力成本。"
+    },
+    {
+      "projectId": "9",
+      "id": "model9",
+      "business_model": "線上課程訂閱 + AI 學習輔助，提供個人化教育體驗。"
+    },
+    {
+      "projectId": "10",
+      "id": "model10",
+      "business_model": "區塊鏈金融交易平台 + DeFi 服務，提供安全透明的數位貨幣交易。"
     }
   ],
   "products": [
     {
       "projectId": "1",
-      "id": "7dcb",
-      "productDescription": "測試商業模式"
+      "id": "product1",
+      "productDescription": "招牌紅燒牛肉麵，使用新鮮牛骨熬製 8 小時湯頭，搭配手工拉麵。"
     },
     {
-      "id": "391e",
-      "projectId": "df12",
-      "productDescription": "測試產品"
+      "projectId": "2",
+      "id": "product2",
+      "productDescription": "高效能太陽能板，具備 AI 追蹤技術，提升發電效率 20%。"
     },
     {
-      "id": "a194",
-      "projectId": "2ce4",
-      "productDescription": "這是產品"
+      "projectId": "3",
+      "id": "product3",
+      "productDescription": "時尚潮流 T 恤系列，使用環保材質製成，主打年輕市場。"
     },
     {
-      "id": "a6fa",
-      "projectId": "9b07",
-      "productDescription": "測試編輯產品"
+      "projectId": "4",
+      "id": "product4",
+      "productDescription": "AI 醫療診斷軟體，能夠快速分析 X 光與 MRI 影像，提升醫療診斷效率。"
     },
     {
-      "id": "684d",
-      "projectId": "ab9e",
-      "productDescription": "測試編輯產品"
+      "projectId": "5",
+      "id": "product5",
+      "productDescription": "開放世界冒險遊戲，具備沉浸式劇情與多人連線模式。"
+    },
+    {
+      "projectId": "6",
+      "id": "product6",
+      "productDescription": "有機蔬菜禮盒，每週配送，確保新鮮健康，適合家庭與健身族群。"
+    },
+    {
+      "projectId": "7",
+      "id": "product7",
+      "productDescription": "智慧路燈系統，內建 AI 數據分析，優化都市能耗。"
+    },
+    {
+      "projectId": "8",
+      "id": "product8",
+      "productDescription": "AI 清潔機器人，具備自動規劃清潔路線與遠端控制功能。"
+    },
+    {
+      "projectId": "9",
+      "id": "product9",
+      "productDescription": "線上 AI 輔助學習平台，根據學生程度提供個人化教學內容。"
+    },
+    {
+      "projectId": "10",
+      "id": "product10",
+      "productDescription": "區塊鏈支付系統，支持即時交易並確保安全性，適用於跨境支付。"
     }
   ],
   "projectCompete": [
     {
       "projectId": "1",
-      "id": "2b7d",
-      "competeDescription": "測試競爭產品"
+      "id": "compete1",
+      "competeDescription": "當地其他中式餐館，特別是連鎖品牌，如鼎泰豐、永和豆漿等。"
     },
     {
-      "id": "7518",
-      "projectId": "df12",
-      "competeDescription": "測試競爭產品"
+      "projectId": "2",
+      "id": "compete2",
+      "competeDescription": "國際太陽能公司如 Tesla Energy、First Solar，技術領先且資金雄厚。"
     },
     {
-      "id": "02c9",
-      "projectId": "2ce4",
-      "competeDescription": "這是競爭產品"
+      "projectId": "3",
+      "id": "compete3",
+      "competeDescription": "全球快時尚品牌，如 ZARA、H&M，具備強大供應鏈與品牌影響力。"
     },
     {
-      "id": "a7af",
-      "projectId": "9b07",
-      "competeDescription": "測試編輯竟曾"
+      "projectId": "4",
+      "id": "compete4",
+      "competeDescription": "醫療 AI 領域競爭對手，如 Google DeepMind Health、IBM Watson Health。"
     },
     {
-      "id": "87e0",
-      "projectId": "ab9e",
-      "competeDescription": "測試編輯競爭"
+      "projectId": "5",
+      "id": "compete5",
+      "competeDescription": "遊戲市場競爭者包括 Ubisoft、Blizzard，及熱門獨立遊戲開發者。"
+    },
+    {
+      "projectId": "6",
+      "id": "compete6",
+      "competeDescription": "主要競爭對手為有機食品超市，如 Whole Foods、台灣的里仁等。"
+    },
+    {
+      "projectId": "7",
+      "id": "compete7",
+      "competeDescription": "智慧城市競爭對手如 Google Sidewalk Labs，及政府主導的都市 IoT 計畫。"
+    },
+    {
+      "projectId": "8",
+      "id": "compete8",
+      "competeDescription": "機器人市場主要競爭對手為 Boston Dynamics、iRobot、ABB。"
+    },
+    {
+      "projectId": "9",
+      "id": "compete9",
+      "competeDescription": "線上教育競爭對手包括 Udemy、Coursera 及台灣的 Hahow。"
+    },
+    {
+      "projectId": "10",
+      "id": "compete10",
+      "competeDescription": "區塊鏈金融競爭對手如 Binance、Ethereum，及傳統銀行數位支付。"
     }
   ],
   "founderInfo": [
     {
       "projectId": "1",
       "id": "3628",
-      "entrepreneurDescription": "測是創業者資訊"
+      "entrepreneurDescription": "提供傳統中式料理，家庭經營的老字號餐廳，專注於地道的家庭味道與優質服務。"
     },
     {
-      "id": "71fc",
-      "projectId": "df12",
-      "entrepreneurDescription": "測是創業者資訊"
+      "projectId": "2",
+      "id": "3650",
+      "entrepreneurDescription": "專注於開發綠能產品，提供可再生能源解決方案，致力於改善全球環境問題。"
     },
     {
-      "id": "7f8c",
-      "projectId": "2ce4",
-      "entrepreneurDescription": "這是創業者資訊"
+      "projectId": "3",
+      "id": "3672",
+      "entrepreneurDescription": "提供年輕人設計感十足的時尚服飾，並將流行元素融入每季新品中。"
     },
     {
-      "id": "afcc",
-      "projectId": "9b07",
-      "entrepreneurDescription": "測試編輯創業者資訊"
+      "projectId": "4",
+      "id": "3685",
+      "entrepreneurDescription": "開發 AI 醫療診斷系統，提升醫療服務的速度與準確性，降低誤診風險。"
     },
     {
-      "id": "342e",
-      "projectId": "ab9e",
-      "entrepreneurDescription": "測試編輯資訊"
+      "projectId": "5",
+      "id": "3701",
+      "entrepreneurDescription": "專注於開發跨平台遊戲，提供玩家全方位的娛樂體驗與深度互動。"
+    },
+    {
+      "projectId": "6",
+      "id": "3723",
+      "entrepreneurDescription": "推動永續農業發展，生產無毒的有機食品，關注土地的永續與環保。"
+    },
+    {
+      "projectId": "7",
+      "id": "3745",
+      "entrepreneurDescription": "開發智慧交通與智慧家居系統，創造便捷且高效的城市生活。"
+    },
+    {
+      "projectId": "8",
+      "id": "3768",
+      "entrepreneurDescription": "專注於機器人技術的研究與應用，致力於提供行業解決方案及智能化生產系統。"
+    },
+    {
+      "projectId": "9",
+      "id": "3790",
+      "entrepreneurDescription": "提供 AI 輔助學習平台，提升學生學習效率，並根據個別需求定制學習計劃。"
+    },
+    {
+      "projectId": "10",
+      "id": "3812",
+      "entrepreneurDescription": "專注於區塊鏈金融解決方案，為全球金融交易提供安全、透明的支付系統。"
     }
   ],
   "industryOptions": [
@@ -1056,7 +1373,7 @@
       "maxParticipants": 5,
       "remainingSlots": 6,
       "image": "https://dream-workshop-api.onrender.com/assets/images/activity1.jpg",
-      "carouselImage": "/assets/images/carousel1.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel1.jpg",
       "status": "open",
       "description": "卡斯柏創意分享會邀請了多位創業家，分享他們的創業故事與成功經驗。",
       "schedule": [

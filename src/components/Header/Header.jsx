@@ -34,7 +34,7 @@ const Header = () => {
       <div className="container d-flex justify-content-center">
         <div className="d-flex justify-content-between align-items-center me-auto">
           <NavLink className="navbar-brand"  to="/">
-            <img src="/assets/images/創夢工坊-logo.png" alt="創夢工坊" style={{ width: '56px' }} />
+            <img src="https://dream-workshop-api.onrender.com/assets/images/創夢工坊-logo.png" alt="創夢工坊" style={{ width: '56px' }} />
           </NavLink>
         </div>
         <button
