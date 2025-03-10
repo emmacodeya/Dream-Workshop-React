@@ -15,8 +15,6 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Activity from "./pages/Activity";
 import ActivityDetail from "./pages/ActivityDetail";
 import ArticleContent from "./pages/ArticleContent";
-import ActivityCasper from "./pages/ActivityCasper";
-import ArticleContent from "./pages/ArticleContent";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import EmailVerify from "./pages/EmailVerify";
