@@ -135,7 +135,16 @@ const MemberNewInvestor = ({ useraccount }) => {
                 backgroundRepeat: "no-repeat",
                 position: "relative",
               }}>
-              <label htmlFor="avatarUpload" className="form-label text-white">上傳圖片</label>
+              <label 
+              htmlFor="avatarUpload" 
+              className="form-label text-white bg-gray-800 rounded-3"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                padding: "5px",
+              }}>
+                上傳圖片</label>
               <input type="file" id="avatarUpload" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileChange(e, "avatar")} />
             </div>
           </div>
@@ -192,8 +201,28 @@ const MemberNewInvestor = ({ useraccount }) => {
         <h5 className="text-white py-4">上傳照片參考</h5>
         <div className="d-flex flex-md-row flex-column align-items-center">
           {["referencePhoto1", "referencePhoto2"].map((key, index) => (
-            <div key={index} className="custom-upload-image me-3" style={{ width: "250px", height: "250px", border: "2px solid #ccc", backgroundImage: `url(${images[key]})` }}>
-              <label htmlFor={key} className="form-label text-white">上傳圖片</label>
+            <div key={index} 
+            className="custom-upload-image me-3" 
+            style={{ 
+              width: "250px", 
+              height: "250px", 
+              border: "2px solid #ccc",
+              backgroundImage: `url(${images[key]})`,
+              backgroundSize: "contain",
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              position: "relative",
+                }}>
+              <label 
+              htmlFor={key} 
+              className="form-label text-white bg-gray-800 rounded-3"
+              style={{
+                position: "absolute",
+                top: "10px",
+                right: "10px",
+                padding: "5px",
+              }}
+              >上傳圖片</label>
               <input type="file" id={key} accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileChange(e, key)} />
             </div>
           ))}

@@ -17,9 +17,11 @@ import ActivityDetail from "./pages/ActivityDetail";
 import ArticleContent from "./pages/ArticleContent";
 import PayPlan from "./pages/PayPlan";
 
+const basename = import.meta.env.MODE === "development" ? "/" : "/Dream-Workshop-React";
+
 function App() {
   return (
-    <Router >
+    <Router  basename={basename} >
       <Header />
       <ScrollToTop />
       <Routes>
