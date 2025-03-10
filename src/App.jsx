@@ -15,11 +15,23 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import Activity from "./pages/Activity";
 import ActivityDetail from "./pages/ActivityDetail";
 import ArticleContent from "./pages/ArticleContent";
-import PayPlan from "./pages/PayPlan";
+import ActivityCasper from "./pages/ActivityCasper";
+import ArticleContent from "./pages/ArticleContent";
+import Login from "./pages/Login";
+import CreateAccount from "./pages/CreateAccount";
+import EmailVerify from "./pages/EmailVerify";
+import FillInfo from "./pages/FillInfo";
+import FotgetPasswordStep1 from "./pages/FotgetPasswordStep1"
+import FotgetPasswordStep2 from "./pages/FotgetPasswordStep2"
+import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3"
+import PayPlan from "./pages/PayPlan"
+import CheckOutPage from "./pages/Checkout/CheckOutPage";
+
+
 
 function App() {
   return (
-    <Router >
+    <Router>
       <Header />
       <ScrollToTop />
       <Routes>
@@ -37,7 +49,15 @@ function App() {
         <Route path="/activity" element={<Activity />} />
         <Route path="/activity/:id" element={<ActivityDetail />} />
         <Route path="/article-content" element={<ArticleContent />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/create-account" element={<CreateAccount />} />
+        <Route path="/email-verify" element={<EmailVerify />} />
+        <Route path="/fill-info" element={<FillInfo />} />
+        <Route path="/fotget-password-step1" element={<FotgetPasswordStep1 />} />
+        <Route path="/fotget-password-step2" element={<FotgetPasswordStep2 />} />
+        <Route path="/fotget-password-step3" element={<FotgetPasswordStep3 />} />
         <Route path="/pay-plan" element={<PayPlan />} />
+        <Route path="/checkout" element={<CheckOutPage />} />
       </Routes>
       <Footer />
     </Router>
