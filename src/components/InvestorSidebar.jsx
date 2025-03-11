@@ -68,7 +68,7 @@ const InvestorSidebar = ({ activeSection, setActiveSection, investorName }) => {
           aria-controls="offcanvasSidebar"
         >
           <div className="d-flex align-items-center text-gray-100 fs-5">
-            <img src="/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
+            <img src="https://dream-workshop-api.onrender.com/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
             <p className="ps-1 fw-bold">{sectionTitles[activeSection] || "選擇分類"}</p>
           </div>
         </button>
