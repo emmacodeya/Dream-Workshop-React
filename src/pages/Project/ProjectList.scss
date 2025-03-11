@@ -1,4 +1,4 @@
-@import "../../styles/all";
+@import "../../styles/all.scss";
 
 .project-title {
     margin: 28px 28px 16px 28px;;
@@ -7,11 +7,6 @@
       }
 }
 
-<<<<<<< HEAD
-=======
-
-
->>>>>>> 1cb2e74 (進度更新)
 .created-form ul {
     width: 280px;
 }
@@ -200,7 +195,7 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url(/assets/images/bg-halo.png);
+    background-image: url(https://dream-workshop-api.onrender.com/assets/images/bg-halo.png);
     background-repeat: no-repeat;
     background-size: cover;
     opacity: 0.3; 
