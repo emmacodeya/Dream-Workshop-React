@@ -179,7 +179,7 @@ const toggleFavorite = async (investorId) => {
                 >
                   <img
                     className="favorite"
-                    src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>
@@ -210,7 +210,7 @@ const toggleFavorite = async (investorId) => {
         {industries.map((industry) => (
             <div className="col" key={industry.value}>
               <button
-                className={` industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+                className={`industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
                 onClick={() => handleIndustryChange(industry.value)}
                 style={{ 
                   width:224,
@@ -274,7 +274,7 @@ const toggleFavorite = async (investorId) => {
               </div>
               <div className="row g-0 created-body">
                 <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
-                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar"
+                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar "
                   alt={investor.name} />
                 </div>
                 <div className="col-md-8">

@@ -100,9 +100,9 @@ const IndustryList = () => {
       {paginatedProjects.length > 0 ? (
         <div className="row">
           {paginatedProjects.map((project) => (
-        <div key={project.id} className="card bg-gray-800 mt-8">
+        <div key={project.id} className="card bg-gray-800">
             {/* 頁面標題 */}
-            <div className="d-flex justify-content-between project-title p-3">
+            <div className="d-flex justify-content-between project-title">
             <h3 className="text-white fs-3 fw-bold">
             <Link to={`/project/${project.id}`} className="text-white" onClick={() => window.scrollTo(0, 0)}>{project.name}
             </Link>
@@ -119,8 +119,8 @@ const IndustryList = () => {
 
             <div className="row g-0 created-body">
             {/* 左側圖片 */}
-            <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
-                <img src={project.companyLogo} className="img-fluid rounded-start" alt={project.name} />
+            <div className="col-md-4 d-flex align-items-center justify-content-center">
+                <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
             </div>
             <div className="col-md-8">
                 {/* 電腦版 */}
@@ -152,7 +152,7 @@ const IndustryList = () => {
                 </div>
 
                 {/* 手機版 */}
-                <div className="card-body created-form d-lg-none d-block p-4">
+                <div className="card-body created-form d-lg-none d-block">
                 <div className="d-flex pb-2">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">公司成立狀態</li>
@@ -197,8 +197,8 @@ const IndustryList = () => {
       {paginatedInvestors.length > 0 ? (
         <div className="row">
            {paginatedInvestors.map((investor) => (
-            <div key={investor.id} className="card bg-gray-800 mt-8">
-              <div className="d-flex justify-content-between project-title p-3">
+            <div key={investor.id} className="card bg-gray-800">
+              <div className="d-flex justify-content-between project-title">
                 <h3 className="text-white fs-3 fw-bold">
                   <Link to={`/investor/${investor.id}`} className="text-white">{investor.name}</Link>
                 </h3>
@@ -211,7 +211,7 @@ const IndustryList = () => {
                 </button>
               </div>
               <div className="row g-0 created-body">
-                <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
+                <div className="col-md-4 d-flex align-items-center justify-content-center">
                   <img src={investor.avatar} className="img-fluid rounded-start investor-avatar"
                   alt={investor.name} />
                 </div>

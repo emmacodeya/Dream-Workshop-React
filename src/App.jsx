@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -28,11 +28,9 @@ import IndustryList from "./pages/Home/IndustryList";
 
 
 
-const basename = import.meta.env.MODE === "development" ? "/" : "/Dream-Workshop-React";
-
 function App() {
   return (
-    <Router  basename={basename} >
+    <Router >
       <Header />
       <ScrollToTop />
       <Routes>
