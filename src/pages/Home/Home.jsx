@@ -123,7 +123,7 @@ const truncateText = (text, maxLength = 20) => {
           <div className="col-lg-4 mb-6">
             <div className="text-center">
               <div className="feature-icon mb-lg-3 mb-1">
-                <img src="/assets/images/icons/search.png" alt="icon" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/icons/search.png" alt="icon" />
               </div>
               <h4 className="text-gray-100 mb-lg-3 mb-1">精準搜尋</h4>
               <p className="feature-content">利用我們的搜尋系統,你可以輕鬆篩選並找到符合您創業需求的合適夥伴和機會。高效、快捷,讓您的創業之路更加順利。</p>
@@ -132,7 +132,7 @@ const truncateText = (text, maxLength = 20) => {
           <div className="col-lg-4 mb-6">
             <div className="text-center">
               <div className="feature-icon mb-lg-3 mb-1">
-                <img src="/assets/images/icons/start.png" alt="icon" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/icons/start.png" alt="icon" />
               </div>
               <h4 className="text-gray-100 mb-lg-3 mb-1">真實評價</h4>
               <p className="feature-content">合作更安心!我們的真實評價系統讓你在選擇創業夥伴時更加有依據。每一位用戶都可以留下真實評價,讓你了解對方的合作表現和口碑,確保每一次合作都更有保障。</p>
@@ -141,7 +141,7 @@ const truncateText = (text, maxLength = 20) => {
           <div className="col-lg-4 mb-6">
             <div className="text-center">
               <div className="feature-icon mb-lg-3 mb-1">
-                <img src="assets/images/icons/chat-message.png" alt="icon" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/icons/chat-message.png" alt="icon" />
               </div>
               <h4 className="text-gray-100 mb-lg-3 mb-1">創業分享討論區</h4>
               <p className="feature-content">創業路上不孤單!我們的討論區是你尋求建議和分享創業心得的理想場所。來自各行各業的創業者在這裡匯聚,交流心得、討論問題,共同助力彼此的創業夢想成真。</p>
@@ -176,7 +176,7 @@ const truncateText = (text, maxLength = 20) => {
                       alt="heart"
                     />
                   </button>
-                  <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
+                  <img className="company-logo mb-3 w-25" src={project.companyLogo} alt={project.name} />
                   <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
                   <h5 className="fs-5 me-2 text-gray-200">{translate(industryMap, project.industry)}</h5>
                   <p>{truncateText(project.description)}</p>
@@ -216,7 +216,7 @@ const truncateText = (text, maxLength = 20) => {
                 >
                   <img
                     className="favorite"
-                    src={user?.collectedInvestors.includes(investor.id) ? "/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>

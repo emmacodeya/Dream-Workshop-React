@@ -299,7 +299,7 @@ const handleImageUpload = async (e) => {
 
           <div className="row g-0 created-bady">
             <div className="col-md-6 d-flex align-items-center justify-content-center">
-            <img src={project.companyLogo} className="img-fluid rounded-start" alt={project.name} />
+            <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
             </div>
             <div className="col-md-6">
               <div className="card-body created-form">
