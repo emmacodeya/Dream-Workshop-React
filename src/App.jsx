@@ -24,6 +24,7 @@ import FotgetPasswordStep2 from "./pages/FotgetPasswordStep2"
 import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3"
 import PayPlan from "./pages/PayPlan"
 import CheckOutPage from "./pages/Checkout/CheckOutPage";
+import IndustryList from "./pages/Home/IndustryList";
 
 
 
@@ -36,6 +37,7 @@ function App() {
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/industry-list" element={<IndustryList />} />
         <Route path="/member/*" element={<MemberHome />} />
         <Route path="/projects" element={<ProjectList />} /> 
         <Route path="/investor" element={<InvestorList />} />
