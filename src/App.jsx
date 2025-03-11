@@ -1,4 +1,6 @@
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { UserContext } from "./context/UserContext";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop";
@@ -27,9 +29,17 @@ import CheckOutPage from "./pages/Checkout/CheckOutPage";
 import IndustryList from "./pages/Home/IndustryList";
 
 
-
 function App() {
+  const [currentUser, setCurrentUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    }
+  }, []);
   return (
+    <UserContext.Provider value={{ currentUser, setCurrentUser }}>
     <Router >
       <Header />
       <ScrollToTop />
@@ -61,6 +71,7 @@ function App() {
       </Routes>
       <Footer />
     </Router>
+    </UserContext.Provider>
   );
 }
 

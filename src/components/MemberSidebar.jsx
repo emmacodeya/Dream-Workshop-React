@@ -215,7 +215,7 @@ const MemberSidebar = () => {
       <div className="d-block d-lg-none">
         <a className="btn border-bottom w-100 px-0" data-bs-toggle="offcanvas" href="#offcanvasSidebar" role="button">
           <div className="d-flex align-items-center text-gray-100 fs-5">
-            <img src="/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
+            <img src="https://dream-workshop-api.onrender.com/assets/images/icons/sidebar.png" alt="sidebar" style={{ width: "40px", height: "40px" }} />
             <p className="ps-1 fw-bold">{mobileTitle}</p>
           </div>
         </a>

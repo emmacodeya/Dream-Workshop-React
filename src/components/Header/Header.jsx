@@ -1,55 +1,44 @@
 import './Header.scss'; 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../../context/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
 
-const API_URL = import.meta.env.VITE_API_URL; 
 
 const Header = () => {
-  const [currentUser, setCurrentUser] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(UserContext); 
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // 取得登入會員資訊
   useEffect(() => {
     const storedUser = localStorage.getItem("currentUser");
-
     if (storedUser) {
       try {
-        const userData = JSON.parse(storedUser);
-
-        if (userData.useraccount) {
-          axios.get(`${API_URL}/members?useraccount=${userData.useraccount}`)
-            .then((response) => {
-              if (response.data.length > 0) {
-                setCurrentUser(response.data[0]); 
-              } else {
-                setCurrentUser(null);
-              }
-            })
-            .catch((error) => {
-              console.error("取得會員資料失敗:", error);
-              setCurrentUser(null);
-            });
-        }
+        setCurrentUser(JSON.parse(storedUser));
       } catch (error) {
         console.error("解析使用者資料失敗:", error);
         setCurrentUser(null);
       }
     }
-  }, []);
+  }, [setCurrentUser]); 
 
   // 登出功能
   const handleLogout = () => {
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
+    closeMenu();
     alert("已登出！");
     navigate("/login");
   };
 
-   // 切換會員選單
-   const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  // 切換會員選單
+  const toggleMenu = () => {
+    setIsMenuOpen((prev) => !prev);
+  };
+
+  // 關閉選單
+  const closeMenu = () => {
+    setIsMenuOpen(false);
   };
   
   return (
@@ -125,16 +114,16 @@ const Header = () => {
               {/* 會員中心選單 */}
               {isMenuOpen && (
                 <div className="dropdown-menu bg-gray-800 show p-3 shadow ">
-                  <NavLink className="dropdown-item text-white" end to="/member">會員中心</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/created-projects">創業項目</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/new-investor">投資人</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/evaluate-projects">創業項目評價</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/evaluate-investor">投資人評價</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/collect-projects">創業項目收藏</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/collect-investor">投資人收藏</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/activity-record">活動紀錄</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/member/site-news">站內消息</NavLink>
-                  <NavLink className="dropdown-item text-white" to="/discuss">討論區</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" end to="/member" >會員中心</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/created-projects">創業項目</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/new-investor">投資人</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/evaluate-projects">創業項目評價</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/evaluate-investor">投資人評價</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/collect-projects">創業項目收藏</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/collect-investor">投資人收藏</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/activity-record">活動紀錄</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/member/site-news">站內消息</NavLink>
+                  <NavLink onClick={closeMenu} className="dropdown-item text-white" to="/discuss">討論區</NavLink>
                   <button onClick={handleLogout} className="dropdown-item text-danger">會員登出</button>
                 </div>
               )}
