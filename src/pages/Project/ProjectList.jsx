@@ -230,8 +230,8 @@ const ProjectList = () => {
             className={`industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
-              width:250,
-              height:70,
+              width:224,
+              height:120,
               backgroundImage: `url(${industry.imgSrc})`, 
               backgroundSize: "cover", 
               backgroundRepeat: "no-repeat" 
