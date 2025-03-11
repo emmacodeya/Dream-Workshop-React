@@ -115,12 +115,12 @@ const MemberPostList = () => {
               </th>
               <td>{new Date(post.createdAt).toLocaleString()}</td>
               <td>
-                <a href="#" onClick={() => handleOpenEditModal(post.id)}>
+              <a role="button" onClick={() => handleOpenEditModal(post.id)}>
                   <i className="bi bi-pencil-square fs-3 text-primary-600 pe-2"></i>
                 </a>
               </td>
               <td>
-                <a href="#" onClick={() => handleOpenDeleteModal(post.id)}>
+                <a  role="button" onClick={() => handleOpenDeleteModal(post.id)}>
                   <i className="bi bi-trash3 fs-3 text-danger"></i>
                 </a>
               </td>
