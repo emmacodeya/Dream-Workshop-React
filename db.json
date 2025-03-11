@@ -368,7 +368,7 @@
       "capital": "90000000",
       "funding": "50000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/LINMAMA.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "1"
     },
     {
@@ -386,7 +386,7 @@
       "capital": "200000000",
       "funding": "80000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/green.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "2"
     },
     {
@@ -404,7 +404,7 @@
       "capital": "50000000",
       "funding": "20000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/fashion.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "3"
     },
     {
@@ -422,7 +422,7 @@
       "capital": "300000000",
       "funding": "120000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/healthy.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "4"
     },
     {
@@ -440,7 +440,7 @@
       "capital": "100000000",
       "funding": "40000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/InnovGame.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "5"
     },
     {
@@ -458,7 +458,7 @@
       "capital": "150000000",
       "funding": "60000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/farm.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "6"
     },
     {
@@ -476,7 +476,7 @@
       "capital": "250000000",
       "funding": "100000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/smart.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "7"
     },
     {
@@ -494,7 +494,7 @@
       "capital": "400000000",
       "funding": "180000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/AI.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "8"
     },
     {
@@ -512,7 +512,7 @@
       "capital": "70000000",
       "funding": "25000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/mindlearn.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "9"
     },
     {
@@ -530,7 +530,7 @@
       "capital": "500000000",
       "funding": "200000000",
       "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/BlueChain.jpg",
-      "companyImage": "...",
+      "companyImage": "",
       "id": "10"
     }
   ],
