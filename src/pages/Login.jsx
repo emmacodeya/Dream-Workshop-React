@@ -53,7 +53,7 @@ const Login = () => {
     <>
       <div className="container">
         <div className="login">
-          <h1 className="mb-8">會員登入</h1>
+          <h1 className="mb-8 text-primary-600">會員登入</h1>
           <form 
           className="row needs-validation" 
           noValidate 
