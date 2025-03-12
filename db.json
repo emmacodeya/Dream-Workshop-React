@@ -1311,7 +1311,7 @@
       "time": "14:00-17:00",
       "location": "高雄市鹽埕區七賢三路123號7F",
       "maxParticipants": 5,
-      "remainingSlots": 6,
+      "remainingSlots": 5,
       "image": "https://dream-workshop-api.onrender.com/assets/images/activity1.jpg",
       "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel1.jpg",
       "status": "open",

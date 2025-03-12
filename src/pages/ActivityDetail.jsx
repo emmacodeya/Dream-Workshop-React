@@ -49,6 +49,7 @@ const ActivityDetail = () => {
   if (loading) return <p className="text-center text-white">載入中...</p>;
   if (!activity) return <p className="text-center text-danger">找不到活動</p>;
 
+  const isExpired = new Date(activity.date) < new Date();
 
   // 點擊報名按鈕
   const handleRegister = async () => {
@@ -150,11 +151,17 @@ const ActivityDetail = () => {
           <div className="text-center mt-4">
             {/* 報名按鈕 */}
             <button
-              className="btn btn-outline-danger px-4 py-2 fw-bold me-3"
-              onClick={handleRegister}
-              disabled={registering || hasRegistered || activity.remainingSlots <= 0}
+              className={`btn px-4 py-2 fw-bold me-3 ${isExpired ? "btn-secondary" : "btn-outline-danger"}`}
+              onClick={!isExpired ? handleRegister : undefined}
+              disabled={registering || hasRegistered || activity.remainingSlots <= 0 || isExpired}
             >
-              {hasRegistered ? "已報名" : registering ? "報名中..." : "立即報名"}
+              {isExpired
+                ? "活動已結束"
+                : hasRegistered
+                ? "已報名"
+                : registering
+                ? "報名中..."
+                : "立即報名"}
             </button>
             {/* 返回活動列表按鈕 */}
             <Link to="/Activity" className="btn btn-primary-600 px-4 py-2 fw-bold">返回活動列表</Link>
