@@ -4,7 +4,7 @@ import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const REGISTER_API_URL = "http://localhost:3000/registrations"; 
+const REGISTER_API_URL = `${API_URL}/registrations`;
 
 const ActivityDetail = () => {
   const { id } = useParams(); 
@@ -77,19 +77,21 @@ const ActivityDetail = () => {
         activityTitle: activity.title,
         date: activity.date,
       };
-
+  
       const response = await axios.post(REGISTER_API_URL, registrationData);
       if (response.status === 201) {
         alert("報名成功！");
         setHasRegistered(true);
-
+  
         const updatedSlots = activity.remainingSlots - 1;
         await axios.patch(`${API_URL}/activities/${activity.id}`, { remainingSlots: updatedSlots });
-
+  
         setActivity((prevActivity) => ({
           ...prevActivity,
           remainingSlots: updatedSlots,
         }));
+  
+        window.dispatchEvent(new Event("updateActivityRecords"));
       } else {
         alert("報名失敗，請稍後再試！");
       }

@@ -615,7 +615,7 @@
       "threats": "傳統金融機構強力競爭",
       "id": "swot10"
     }
-  ],  
+  ],
   "marketSize": [
     {
       "projectId": "1",
@@ -1275,34 +1275,10 @@
       "replies": [
         {
           "id": "r1",
-          "useraccount": "founder123",
+          "useraccount": "user2020",
           "name": "林媽媽",
           "date": "2024-09-23",
           "comment": "謝謝您的鼓勵！我們會努力做得更好！"
-        }
-      ]
-    },
-    {
-      "id": "b9ea",
-      "name": "在測試一次",
-      "rating": 5,
-      "comment": "測試第二次",
-      "date": "2025/3/5",
-      "projectId": "1",
-      "replies": [
-        {
-          "id": "r1741179979768",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "測試第二次回覆評價"
-        },
-        {
-          "id": "r1741180285933",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "我在測試一次"
         }
       ]
     }
@@ -1323,23 +1299,6 @@
           "name": "謝阿金",
           "date": "2024-09-11",
           "comment": "感謝您的支持！如果有任何問題歡迎交流！"
-        }
-      ]
-    },
-    {
-      "id": "a0cb",
-      "name": "測試投資人",
-      "rating": 5,
-      "comment": "感謝您提供",
-      "date": "2025/3/5",
-      "investorId": "1",
-      "replies": [
-        {
-          "id": "r1741180911166",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "測試回覆投資人"
         }
       ]
     }
@@ -1437,6 +1396,103 @@
           "activity": "閉幕感言與合影"
         }
       ]
+    },
+    {
+      "id": "4",
+      "title": "創業新秀交流會",
+      "date": "2025-05-10",
+      "time": "13:30-17:30",
+      "location": "台北市信義區創業大樓5樓",
+      "maxParticipants": 50,
+      "remainingSlots": 50,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity4.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel4.jpg",
+      "status": "open",
+      "description": "邀請初創企業創辦人與業界專家進行交流，學習如何提升創業競爭力。",
+      "schedule": [
+        {
+          "time": "13:30-14:00",
+          "activity": "報到與交流"
+        },
+        {
+          "time": "14:00-15:00",
+          "activity": "創業者經驗分享：如何從零開始打造成功企業"
+        },
+        {
+          "time": "15:00-16:00",
+          "activity": "成功案例解析與策略討論"
+        },
+        {
+          "time": "16:00-17:30",
+          "activity": "自由交流與投資媒合"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "投資人對談：如何選擇值得投資的創業項目？",
+      "date": "2025-06-22",
+      "time": "15:00-18:00",
+      "location": "新北市板橋區金融創業中心",
+      "maxParticipants": 30,
+      "remainingSlots": 30,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity5.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel5.jpg",
+      "status": "open",
+      "description": "投資人圓桌論壇，深度剖析市場趨勢，分享選擇投資標的的標準。",
+      "schedule": [
+        {
+          "time": "15:00-15:30",
+          "activity": "報到與開場"
+        },
+        {
+          "time": "15:30-16:30",
+          "activity": "投資人對談：評估新創企業價值的方法"
+        },
+        {
+          "time": "16:30-17:30",
+          "activity": "案例分享：成功投資背後的決策過程"
+        },
+        {
+          "time": "17:30-18:00",
+          "activity": "自由交流與投資機會探索"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "創業路演暨投資配對大會",
+      "date": "2025-07-18",
+      "time": "10:00-17:00",
+      "location": "台中市西屯區國際會展中心",
+      "maxParticipants": 100,
+      "remainingSlots": 100,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity6.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel6.jpg",
+      "status": "open",
+      "description": "創業者展示商業計畫，投資人評估與即時配對，打造最強創業與投資合作機會！",
+      "schedule": [
+        {
+          "time": "10:00-10:30",
+          "activity": "報到與開幕致詞"
+        },
+        {
+          "time": "10:30-12:00",
+          "activity": "創業項目路演（Pitch Deck）"
+        },
+        {
+          "time": "12:00-13:30",
+          "activity": "午餐與自由交流"
+        },
+        {
+          "time": "13:30-15:30",
+          "activity": "投資人 Q&A 及合作機會洽談"
+        },
+        {
+          "time": "15:30-17:00",
+          "activity": "創業者與投資人配對洽談"
+        }
+      ]
     }
   ],
   "registrations": [
@@ -1453,6 +1509,13 @@
       "activityId": "1",
       "activityTitle": "卡斯柏創意分享會",
       "date": "2025-04-15"
+    },
+    {
+      "id": "4a65",
+      "useraccount": "happy1234",
+      "activityId": "2",
+      "activityTitle": "創新資本對接會",
+      "date": "2024-09-20"
     }
   ],
   "stores": [
@@ -1511,7 +1574,7 @@
       "coinPrice": 2500
     }
   ],
-  "cart":[
+  "cart": [
     {
       "success": true,
       "data": {
@@ -1520,8 +1583,8 @@
             "final_total": 480,
             "id": "-LATwxc_bIJu-AR4AlNj",
             "product": {
-              "id":3,
-              "imageUrl":"https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
+              "id": 3,
+              "imageUrl": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
               "is_enabled": 1,
               "num": 1,
               "origin_price": 500,
@@ -1537,8 +1600,8 @@
         "total": 480,
         "final_total": 480
       },
-      "messages": []
+      "messages": [],
+      "id": "a050"
     }
   ]
-  
 }
