@@ -3,7 +3,7 @@ import axios from "axios";
 import Pagination from "../../components/Pagination"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
-const ACTIVITY_API_URL = "http://localhost:3000/activities";
+const ACTIVITY_API_URL = `${API_URL}/activities`;
 
 const MemberActivityRecord = () => {
   const [ongoingActivities, setOngoingActivities] = useState([]); 
