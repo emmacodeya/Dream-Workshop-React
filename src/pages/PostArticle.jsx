@@ -131,7 +131,7 @@ const PostArticle = () => {
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
           已發表文章
         </Modal.Body>
-        <Modal.Footer className="border-0 text-center">
+        <Modal.Footer className="border-0 d-flex justify-content-center bg-gray-1000">
           <Button variant="primary" className="btn-lg btn-primary-600 fw-bolder px-9" onClick={handleCloseModal}>
             確認
           </Button>
