@@ -70,6 +70,7 @@ const MemberPostList = () => {
       });
       setPosts(posts.map(post => post.id === editPost.id ? { ...post, title, content } : post));
       setShowEditModal(false);
+      alert("提交成功！");
     } catch (error) {
       console.error("更新文章失敗:", error);
     }

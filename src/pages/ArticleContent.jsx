@@ -1,18 +1,21 @@
-import { useState, useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { NavLink, useParams } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Modal, Button } from "react-bootstrap";
+import { UserContext } from "../context/UserContext"; 
 import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "swiper/css";
 import "swiper/css/navigation";
 
 
+
 const API_URL = import.meta.env.VITE_API_URL;
 
 const ArticleContent = () => {
   const { id } = useParams();
+  const { currentUser } = useContext(UserContext); 
   const [article, setArticle] = useState(null);
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -61,6 +64,10 @@ const ArticleContent = () => {
 
 
   const handleSubmit = async () => {
+    if (!currentUser) {
+      alert("請先登入再留言！");
+      return;
+    }
     if (!agree) {
       alert("請先同意討論區規則與條款");
       return;
@@ -77,8 +84,7 @@ const ArticleContent = () => {
 
       const newComment = {
         id: `cmt-${Date.now()}`,
-        author: "訪客",
-        authorAvatar: "",
+        author: currentUser.name, 
         content: message,
         createdAt: new Date().toISOString(),
         replies: []
@@ -97,6 +103,10 @@ const ArticleContent = () => {
 
   // **🔹 發表回覆**
   const handleReplySubmit = async () => {
+    if (!currentUser) {
+      alert("請先登入再回覆！");
+      return;
+    }
     if (!replyContent.trim()) {
       setReplyError(true);
       return;
@@ -104,7 +114,6 @@ const ArticleContent = () => {
     setReplyError(false);
     alert("回覆已送出！");
     setReplyContent("");
-
     try {
       const res = await axios.get(`${API_URL}/articles/${id}`);
       const article = res.data;
@@ -116,8 +125,7 @@ const ArticleContent = () => {
               ...(comment.replies || []),
               {
                 id: `reply-${Date.now()}`,
-                author: "訪客",
-                authorAvatar: "",
+                author: currentUser.name, 
                 content: replyContent,
                 createdAt: new Date().toISOString()
               }
@@ -127,12 +135,13 @@ const ArticleContent = () => {
         return comment;
       });
 
+
       await axios.patch(`${API_URL}/articles/${id}`, { comments: updatedComments });
 
       setComments(updatedComments);
       setReplyContent("");
       setShowModal(false);
-      alert("回覆成功！");
+
     } catch (error) {
       console.error("回覆失敗:", error);
       alert("回覆失敗！");
@@ -161,11 +170,11 @@ const ArticleContent = () => {
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
             <li className="breadcrumb-item text-white">
-              <Link to="/">首頁</Link>
+              <NavLink to="/">首頁</NavLink>
             </li>
             <i className="bi bi-caret-right-fill text-white"></i>
             <li className="breadcrumb-item text-white">
-              <Link to="/discuss">討論區</Link>
+              <NavLink to="/discuss">討論區</NavLink>
             </li>
             <i className="bi bi-caret-right-fill text-white"></i>
             <li className="breadcrumb-item text-white fw-bold active" aria-current="page">
@@ -193,9 +202,9 @@ const ArticleContent = () => {
               <div className="card bg-gray-800 text-white">
                 <div className="card-body">
                   <h5 className="card-title">{related.title}</h5>
-                  <Link to={`/article/${related.id}`} className="btn btn-primary-600">
+                  <NavLink to={`/article/${related.id}`} className="btn btn-primary-600">
                     閱讀更多
-                  </Link>
+                  </NavLink>
                 </div>
               </div>
             </SwiperSlide>
@@ -223,7 +232,7 @@ const ArticleContent = () => {
           
           {/* 回覆按鈕 */}
           <Button 
-            variant="link" 
+            variant="NavLink" 
             className="text-primary-600 p-0" 
             onClick={() => { setShowModal(true); setReplyTo(comment.id); }}
           >
@@ -250,7 +259,7 @@ const ArticleContent = () => {
                     
                     {/* 回覆按鈕 */}
                     <Button 
-                      variant="link" 
+                      variant="NavLink" 
                       className="text-primary-600 p-0" 
                       onClick={() => { setShowModal(true); setReplyTo(comment.id); }}
                     >

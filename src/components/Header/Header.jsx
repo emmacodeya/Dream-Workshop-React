@@ -20,7 +20,7 @@ const Header = () => {
         setCurrentUser(null);
       }
     }
-  }, [setCurrentUser]); 
+  }, [setCurrentUser]);
 
   // 登出功能
   const handleLogout = () => {

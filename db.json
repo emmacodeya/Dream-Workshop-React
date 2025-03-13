@@ -1574,34 +1574,6 @@
       "coinPrice": 2500
     }
   ],
-  "cart": [
-    {
-      "success": true,
-      "data": {
-        "carts": [
-          {
-            "final_total": 480,
-            "id": "-LATwxc_bIJu-AR4AlNj",
-            "product": {
-              "id": 3,
-              "imageUrl": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
-              "is_enabled": 1,
-              "num": 1,
-              "origin_price": 500,
-              "price": 480,
-              "title": "500點",
-              "unit": "點"
-            },
-            "product_id": "-L9tH8jxVb2Ka_DYPwng",
-            "qty": 1,
-            "total": 480
-          }
-        ],
-        "total": 480,
-        "final_total": 480
-      },
-      "messages": [],
-      "id": "a050"
-    }
-  ]
+  "cart": [],
+  "orders": []
 }
