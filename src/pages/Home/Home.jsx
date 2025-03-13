@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
@@ -7,6 +7,7 @@ import "swiper/css/navigation";
 import "./Home.scss";
 import axios from "axios";
 import { industryMap, translate } from "../../utils/mappings";
+import { UserContext } from "../../context/UserContext"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,9 +15,23 @@ const Home = () => {
   const [projects, setProjects] = useState([]);
   const [investors, setInvestors] = useState([]);
   const [industries, setIndustries] = useState([]);
-  const [user, setUser] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [selectedIndustry, setSelectedIndustry] = useState("");
+  const fetchUserData = useCallback(async () => {
+    const useraccount = localStorage.getItem("useraccount");
+    if (!currentUser && useraccount) {
+      try {
+        const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+        if (res.data.length > 0) {
+          setCurrentUser(res.data[0]);
+        }
+      } catch (error) {
+        console.error("取得會員資訊失敗", error);
+      }
+    }
+  }, [currentUser, setCurrentUser]);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,48 +50,57 @@ const Home = () => {
           ...industriesRes.data,
         ];
         setIndustries(updatedIndustries);
-
+        fetchUserData();
       } catch (error) {
         console.error("API 請求失敗:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [fetchUserData]);
+  
   
   
   const toggleFavorite = async (id, type) => {
-    if (!user) {
+    if (!currentUser) {
       alert("請先登入會員帳號");
       navigate("/login");
       return;
     }
 
     const key = type === "project" ? "collectedProjects" : "collectedInvestors";
-    const isFavorite = user[key].includes(id);
+    const storedFavorites = currentUser[key] || [];
+
+    const isFavorite = storedFavorites.includes(id);
     const updatedFavorites = isFavorite
-      ? user[key].filter((favId) => favId !== id)
-      : [...user[key], id];
+      ? storedFavorites.filter((favId) => favId !== id)
+      : [...storedFavorites, id];
 
     try {
-      await axios.patch(`${API_URL}/members/${user.id}`, { [key]: updatedFavorites });
-      setUser((prevUser) => ({ ...prevUser, [key]: updatedFavorites }));
+      await axios.patch(`${API_URL}/members/${currentUser.id}`, { [key]: updatedFavorites });
 
-      if (type === "investor") {
-        setInvestors((prev) =>
-          prev.map((i) => (i.id === id ? { ...i, liked: !isFavorite } : i))
-        );
-      } else {
+      setCurrentUser((prevUser) => {
+        if (!prevUser) return null;
+        return {
+          ...prevUser,
+          [key]: updatedFavorites,
+        };
+      });
+
+      if (type === "project") {
         setProjects((prev) =>
           prev.map((p) => (p.id === id ? { ...p, liked: !isFavorite } : p))
+        );
+      } else {
+        setInvestors((prev) =>
+          prev.map((i) => (i.id === id ? { ...i, liked: !isFavorite } : i))
         );
       }
     } catch (error) {
       console.error("更新收藏失敗", error);
     }
   };
-
-
+  
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
     navigate(industryValue ? `/industry-list?industry=${industryValue}` : "/industry-list");
@@ -172,7 +196,7 @@ const truncateText = (text, maxLength = 20) => {
                   <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id, "project")}>
                     <img
                       className="favorite"
-                      src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                      src={currentUser ?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                       alt="heart"
                     />
                   </button>
@@ -216,7 +240,7 @@ const truncateText = (text, maxLength = 20) => {
                 >
                   <img
                     className="favorite"
-                    src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    src={currentUser ?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>

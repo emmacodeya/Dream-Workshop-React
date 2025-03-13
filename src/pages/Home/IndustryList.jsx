@@ -96,11 +96,11 @@ const IndustryList = () => {
       <h2 className="fw-bold text-primary-600 my-5 text-center">篩選結果 - {industry ? translate(industryMap, industry) : "所有產業"}</h2>
 
       {/* 創業項目 */}
-      <h3 className="fw-bold text-center text-primary-600 mb-5 ">創業項目</h3>
+      <h3 className="fw-bold text-center text-primary-600  ">創業項目</h3>
       {paginatedProjects.length > 0 ? (
         <div className="row">
           {paginatedProjects.map((project) => (
-        <div key={project.id} className="card bg-gray-800">
+        <div key={project.id} className="card bg-gray-800 mt-8">
             {/* 頁面標題 */}
             <div className="d-flex justify-content-between project-title">
             <h3 className="text-white fs-3 fw-bold">
@@ -193,11 +193,11 @@ const IndustryList = () => {
 
 
       {/* 投資人 */}
-      <h3 className="fw-bold text-center text-primary-600 my-5 ">投資人</h3>
+      <h3 className="fw-bold text-center text-primary-600 mt-5 ">投資人</h3>
       {paginatedInvestors.length > 0 ? (
         <div className="row">
            {paginatedInvestors.map((investor) => (
-            <div key={investor.id} className="card bg-gray-800">
+            <div key={investor.id} className="card bg-gray-800 mt-8">
               <div className="d-flex justify-content-between project-title">
                 <h3 className="text-white fs-3 fw-bold">
                   <Link to={`/investor/${investor.id}`} className="text-white">{investor.name}</Link>
