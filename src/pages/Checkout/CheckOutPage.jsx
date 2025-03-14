@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const CheckOutPage = () => {
   const [cart, setCart] = useState([]);
-
+  // eslint-disable-next-line no-unused-vars
   const [showCheckout, setShowCheckout] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderData, setOrderData] = useState({
@@ -24,20 +24,11 @@ const CheckOutPage = () => {
   const [InstallmentMethod, setInstallmentMethod] = useState("");
   const [cardNumber, setCardNumber] = useState(["", "", "", ""]);
   const inputRefs = [useRef(), useRef(), useRef(), useRef()];
-  
-  const getCart = async () => {
-    
-    try {
-      const res = await axios.get(`${API_URL}cart`); 
-      setCart(res.data.data); 
-    } catch (error) {
-      console.error("取得產品失敗", error);
-    }
-  };
+
 
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
-    // getCart();
+    void setShowCheckout;
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
@@ -74,11 +65,7 @@ const CheckOutPage = () => {
       inputRefs[index - 1].current.focus();
     }
   };
- // console.log(register('email'))
-  // const handleCreditSubmit = () => {
-  //   const fullCardNumber = cardNumber.join(""); 值
-  //   console.log("信用卡號:", fullCardNumber);
-  // };
+
   const {
     register,
     handleSubmit,
@@ -120,7 +107,7 @@ const CheckOutPage = () => {
         setInstallmentMethod('');
         setCardNumber(['', '', '', '']); // 如果信用卡欄位是用陣列控制
         setCart([]); // 清空購物車
-        navigate("/payplan");
+        navigate("/pay-plan");
       }
       Swal.fire({
         title: 'success!',

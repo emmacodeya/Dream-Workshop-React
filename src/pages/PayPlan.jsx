@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const PayPlan = () => {
   const [stores, setStores] = useState([]);
-  const [cart, setCart] = useState(() => {
+  const [cart,setCart] = useState(() => {
     const savedCart = localStorage.getItem("cart");
     return savedCart ? JSON.parse(savedCart) : [];
   });
@@ -34,7 +34,7 @@ const PayPlan = () => {
     try {
       const res = await axios.get(`${API_URL}cart`); 
       setCart(res.data.data); 
-      
+      console.log(cart)
     } catch (error) {
       console.error("取得產品失敗", error);
     }
@@ -45,16 +45,8 @@ const PayPlan = () => {
     getCart();
   }, []);
 
-  // const addCartItem = (stores) => {
-    
-  //   setSelectedStore(stores);
-  //   setShowModal(true);
-  //   console.log("選擇的商品:", stores.coinPoint);
-  //   console.log("showModal:", showModal);
-  // };
 
-
-// 打開確認 Modal
+  // 打開確認 Modal
   const openModal = (store) => {
     setSelectedStore(store);
     setShowModal(true);
@@ -68,7 +60,7 @@ const PayPlan = () => {
     setSelectedStore(null);
   };
 
-  const confirmAddCart = async (stores) => {
+  const confirmAddCart = async () => {
 
     try {
       const newItem = {
@@ -76,8 +68,6 @@ const PayPlan = () => {
         quantity: 1,
       };
 
-      // setCart((prevCart) => ({...prevCart, newItem}));
-      // await axios.post(`${API_URL}cart`, newItem);
       // 更新 React 狀態
       setCart((prevCart = []) => {
       const updatedCart = [...prevCart, newItem];
@@ -87,9 +77,10 @@ const PayPlan = () => {
       
       return updatedCart;
       });
+
       // 發送資料到 json-server
       await axios.post(`${API_URL}cart`, newItem);
-      
+
       Swal.fire({
         title: 'success!',
         text: `${selectedStore.coinPoint} 已加入購物車！`,

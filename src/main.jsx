@@ -7,7 +7,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import App from './App.jsx'
 import 'bootstrap'
 import './styles/all.scss'
-import axios from 'axios';
+
 
 createRoot(document.getElementById('root')).render(
   // <StrictMode>
