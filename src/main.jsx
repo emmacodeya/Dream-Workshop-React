@@ -10,7 +10,7 @@ import './styles/all.scss'
 import axios from 'axios';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
+  // <StrictMode>
     <App />
-  </StrictMode>,
+  // </StrictMode>,
 )

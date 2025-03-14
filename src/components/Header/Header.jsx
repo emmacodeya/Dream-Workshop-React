@@ -73,7 +73,8 @@ const Header = () => {
 
         {currentUser ? (
           <>
-            <span className="me-5">👋 歡迎, {currentUser.name || "使用者"}</span>
+            <img className="member-avatar me-3" src={currentUser.avatar} alt="" />
+            <span className="me-5">{currentUser.name || "使用者"}</span>
             <button
               onClick={handleLogout}
               className="btn btn-primary-600 px-3 py-1 rounded"

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import DOMPurify from "dompurify";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
+// import DOMPurify from "dompurify";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
