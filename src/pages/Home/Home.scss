@@ -192,18 +192,18 @@
 //     }
 //   }
   
-//   .background-container {
-//     width: 229.5px;
-//     height: 120px;
-//     background-size: 100%;
-//     background-position: center;
-//     transition: background-size 0.3s ease;
-//     overflow: hidden;
-//   }
+  .background-container {
+    width: 229.5px;
+    height: 120px;
+    background-size: 100%;
+    background-position: center;
+    transition: background-size 0.3s ease;
+    overflow: hidden;
+  }
   
-//   .background-container:hover {
-//     background-size: 120%;
-//   }
+  .background-container:hover {
+    background-size: 120%;
+  }
   
 //   .industry-card {
 //     height: 120px;
@@ -241,3 +241,4 @@
 //       max-width: 33.333%;
 //   }
 //   }
+

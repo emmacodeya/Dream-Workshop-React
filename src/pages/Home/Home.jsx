@@ -1,17 +1,19 @@
-import  { React, useState, useRef, useEffect } from "react";
+
+/* eslint-disable no-undef */
+import  { React, useRef, useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 // import 'bootstrap/dist/css/bootstrap.min.css';
 // import 'bootstrap/dist/js/bootstrap.bundle.min.js';
-// import { Dropdown } from 'bootstrap';
+import { Dropdown } from 'bootstrap';
 import Header from "../../components/Header/Header";
-import Footer from "../../components/Footer/Footer";
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import './Home.scss'
+// import './Home.scss';
+
 
 // 熱門創業項目
 //Swiper輪播項目
@@ -170,7 +172,7 @@ const Home = () => {
                   id="address"
                   defaultValue="address"
                 >
-                  <option  selected>請選擇項目</option>
+                  <option selected>請選擇項目</option>
                   <option className="dropdown-item text-gray-100" value="1">找創業項目</option>
                   <option value="2">找投資</option>
                 </select>
@@ -224,21 +226,27 @@ const Home = () => {
       <div className="container py-8 py-lg-15">
         <h2 className="fw-bold text-center text-primary-600 mb-5 mb-lg-8">熱門創業項目</h2>
         {/* <!-- Swiper --> */}
-        <Swiper modules={[Navigation]} navigation slidesPerView={4} spaceBetween={16} breakpoints={{
+        <Swiper 
+        modules={[Navigation]} 
+        navigation 
+        slidesPerView={4} 
+        spaceBetween={16} 
+        className="h-full"
+        reakpoints={{
             1296: { slidesPerView: 4 },
             768: { slidesPerView: 2 },
             375: { slidesPerView: 1.5 }
         }}>
             {projects.map((project) => (
-            <SwiperSlide key={project.id}>
-                <div className="card bg-gray-800 text-center h-100">
+            <SwiperSlide key={project.id} className="h-full">
+                <div className="card bg-gray-800 text-center d-flex flex-column justify-content-between">
                 <div className="popular-card-body position-relative">
                     <a href="#">
-                    <img className="favorite" src={project.liked ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"} alt="heart" />
+                    <img className="favorite mb-3" src={project.liked ? "/assets/images/icons/heart.png" : "/assets/images/icons/heart-outline.png"} alt="heart" />
                     </a>
                     <img className="company-logo mb-3 w-50" src={project.logo} alt={project.name} />
                     <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
-                    <h5 className="fs-5 me-2 text-gray-200">{project.category}</h5>
+                    <h5 className="fs-5 me-2 text-gray-200 mb-2">{project.category}</h5>
                     <p>{project.description}</p>
                 </div>
                 <a href="#" className="btn btn-gray-600 py-3">
@@ -268,8 +276,8 @@ const Home = () => {
                 </button>
                 <img className="company-logo mb-3" src={investor.image} alt={investor.name} />
                 <h4 className="mb-3 popular-card-title text-primary-600">{investor.name}</h4>
-                <h6 className="text-gray-200">偏好投資領域</h6>
-                <h6 className="fw-bold text-gray-100">{investor.industry}</h6>
+                <h6 className="text-gray-200 mb-2">偏好投資領域</h6>
+                <h6 className="fw-bold text-gray-100 mb-2">{investor.industry}</h6>
                 <p>{investor.description}</p>
               </div>
               <button className="btn btn-gray-600 py-3">
@@ -301,12 +309,11 @@ const Home = () => {
             <div className="col-lg-9">
               <div className="row row-cols-lg-4 row-cols-md-2 row-cols-2 g-lg-3 g-1">
               {industries.map((industry, index) => (
-                <div className="col" key={index}>
+                <div className="col" key={index} style={{height:"120px"}}>
                   <button
                     className={`card industry-card background-container border-0 w-100`}
                     onClick={() => handleIndustrySelection(industry.name)}
-                    style={{ backgroundImage: `url(${industry.imgSrc})`, backgroundSize: "cover", backgroundRepeat: "no-repeat",
-                    height: "120px" }
+                    style={{ backgroundImage: `url(${industry.imgSrc})`}
                     }>
                     <h5>{industry.name}</h5>
                   </button>
@@ -319,7 +326,10 @@ const Home = () => {
       </section>
       
     </>
+    
   );
 };
+
+
 
 export default Home;

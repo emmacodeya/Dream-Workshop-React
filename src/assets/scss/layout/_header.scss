@@ -41,6 +41,11 @@
   }
 }
 
+.nav-link.active {
+  color: var(--primary-600);
+  font-weight: bold;
+}
+
 .login-btn {
   padding: 16px 24px;
   //styleName: Bold/text & button M;

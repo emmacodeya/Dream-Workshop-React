@@ -204,8 +204,8 @@
 }
 
 .industry-card {
-  height: 120px;
-  // padding: 12px;
+  height: 120px !important;
+  padding: 12px;
   font-weight: bolder;
   display: flex;
   justify-content: end;

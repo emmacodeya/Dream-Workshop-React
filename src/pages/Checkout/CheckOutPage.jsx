@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
@@ -8,7 +9,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 const CheckOutPage = () => {
   const [cart, setCart] = useState([]);
-  // eslint-disable-next-line no-unused-vars
+   
   const [showCheckout, setShowCheckout] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
   const [orderData, setOrderData] = useState({
@@ -91,7 +92,7 @@ const CheckOutPage = () => {
     checkout(userInfo);
   })
 
-  const checkout = async (e) => {
+  const checkout = async () => {
     // e.preventDefault();
 
     try {
@@ -291,7 +292,7 @@ const CheckOutPage = () => {
             <p>購物車是空的</p>
           )}
 
-          {showCheckout && <Checkout cart={cart} setCart={setCart} />}
+          {showCheckout && <CheckOutPage cart={cart} setCart={setCart} />}
           </div>
           <div className="form-check mb-2">
             <input

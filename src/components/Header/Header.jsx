@@ -1,9 +1,11 @@
-import { NavLink } from 'react-router-dom';
+/* eslint-disable react/react-in-jsx-scope */
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './Header.scss'; 
+
 import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate,NavLink } from "react-router-dom";
+
 const Header = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const navigate = useNavigate();
@@ -54,16 +56,37 @@ const Header = () => {
         <div className="collapse navbar-collapse justify-content-center" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink className="nav-link" to="/projects">找創業項目</NavLink>
+              <NavLink to="/projects"
+               className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-primary-600"
+                  : "nav-link"
+              } 
+              >找創業項 </NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/investor">找投資人</NavLink>
+              <NavLink to="/investor" 
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-primary-600"
+                  : "nav-link"
+              } >找投資人</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/pay-plan">付費方案</NavLink>
+              <NavLink to="/pay-plan" 
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-primary-600"
+                  : "nav-link"
+              } >付費方案</NavLink>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link" to="/discuss">討論區</NavLink>
+              <NavLink to="/discuss" 
+              className={({ isActive }) =>
+                isActive
+                  ? "nav-link text-primary-600"
+                  : "nav-link"
+              } >討論區</NavLink>
             </li>
             <li className="nav-item text-end d-lg-none mt-8 mt-lg">
               <NavLink to="/login" className="btn login-btn btn-primary-600">註冊/登入</NavLink>
