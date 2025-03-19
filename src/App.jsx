@@ -1,13 +1,17 @@
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { UserContext } from "./context/UserContext";
+
+// 全局元件
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
 import ScrollToTop from "./components/ScrollToTop";
+
+// 前台
 import Home from "./pages/Home/Home";
 import MemberHome from "./pages/Member/MemberHome";
-import ProjectList from "./pages/Project/ProjectList"; 
-import InvestorList from "./pages/Investor/InvestorList"; 
+import ProjectList from "./pages/Project/ProjectList";
+import InvestorList from "./pages/Investor/InvestorList";
 import InvestorInformation from "./pages/Investor/InvestorInformation";
 import ProjectInformation from "./pages/Project/ProjectInformation";
 import Discuss from "./pages/Discuss";
@@ -21,13 +25,15 @@ import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
 import EmailVerify from "./pages/EmailVerify";
 import FillInfo from "./pages/FillInfo";
-import FotgetPasswordStep1 from "./pages/FotgetPasswordStep1"
-import FotgetPasswordStep2 from "./pages/FotgetPasswordStep2"
-import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3"
-import PayPlan from "./pages/PayPlan"
+import FotgetPasswordStep1 from "./pages/FotgetPasswordStep1";
+import FotgetPasswordStep2 from "./pages/FotgetPasswordStep2";
+import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3";
+import PayPlan from "./pages/PayPlan";
 import CheckOutPage from "./pages/Checkout/CheckOutPage";
 import IndustryList from "./pages/Home/IndustryList";
 
+// 後台
+import AdminHome from './pages/Admin/AdminHome';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -38,16 +44,31 @@ function App() {
       setCurrentUser(JSON.parse(storedUser));
     }
   }, []);
+
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
-    <Router >
-      <Header />
+      <Router>
+        <Content />
+      </Router>
+    </UserContext.Provider>
+  );
+}
+
+export default App;
+
+const Content = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith("/admin");
+
+  return (
+    <>
+      {!isAdmin && <Header />}
       <ScrollToTop />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/industry-list" element={<IndustryList />} />
         <Route path="/member/*" element={<MemberHome />} />
-        <Route path="/projects" element={<ProjectList />} /> 
+        <Route path="/projects" element={<ProjectList />} />
         <Route path="/investor" element={<InvestorList />} />
         <Route path="/investor/:id" element={<InvestorInformation />} />
         <Route path="/project/:id" element={<ProjectInformation />} />
@@ -68,11 +89,11 @@ function App() {
         <Route path="/fotget-password-step3" element={<FotgetPasswordStep3 />} />
         <Route path="/pay-plan" element={<PayPlan />} />
         <Route path="/checkout" element={<CheckOutPage />} />
-      </Routes>
-      <Footer />
-    </Router>
-    </UserContext.Provider>
-  );
-}
 
-export default App;
+        {/* 後台路由 */}
+        <Route path="/admin" element={<AdminHome />} />
+      </Routes>
+      {!isAdmin && <Footer />}
+    </>
+  );
+};
