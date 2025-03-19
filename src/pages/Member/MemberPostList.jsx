@@ -23,13 +23,15 @@ const MemberPostList = () => {
     const fetchArticles = async () => {
       try {
         const res = await axios.get(`${API_URL}/articles`);
-        const userPosts = res.data.filter(article => article.author === useraccount);
+        const userPosts = res.data
+          .filter(article => article.author === useraccount)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
         setPosts(userPosts);
       } catch (error) {
         console.error("無法獲取文章列表:", error);
       }
     };
-
+  
     fetchArticles();
   }, [useraccount]);
 
