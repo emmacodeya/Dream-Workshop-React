@@ -1,5 +1,6 @@
 import { Routes, Route, useLocation, Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext  } from "react";
+import { UserContext } from "../../context/UserContext";
 import MemberSidebar from "../../components/MemberSidebar";
 import MemberInfo from "./MemberInfo";
 import MemberIdentity from "./MemberIdentity";
@@ -24,11 +25,12 @@ import "./MemberHome.scss";
 
 const MemberHome = () => {
   const location = useLocation();
+  const { currentUser } = useContext(UserContext);
   const [useraccount, setUseraccount] = useState("");
 
   useEffect(() => {
-    setUseraccount(localStorage.getItem("useraccount") || "");
-  }, []);
+    if (currentUser) setUseraccount(currentUser.useraccount);
+  }, [currentUser]);
 
   const pageTitles = {
     "/member": "個人資料",

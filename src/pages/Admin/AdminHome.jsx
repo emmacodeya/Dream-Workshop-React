@@ -1,6 +1,8 @@
 import { useState } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminAccount from "./AdminAccount";
+
 
 
 const AdminHome = () => {
@@ -22,7 +24,7 @@ const AdminHome = () => {
         <div className="col-10 py-5">
           <div className="container">
             <div className={`content-section text-white ${activeSection === "accounts" ? "d-block" : "d-none"}`}>
-              <h2>會員管理</h2>
+            <AdminAccount />
             </div>
             <div className={`content-section text-white ${activeSection === "startups" ? "d-block" : "d-none"}`}>
               <h2>創業項目管理</h2>
