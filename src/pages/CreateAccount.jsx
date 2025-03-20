@@ -1,24 +1,17 @@
 import { NavLink } from "react-router-dom";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { register } from "../services/authService";
 
 const API_URL = import.meta.env.VITE_API_URL; 
 
 const CreateAccount = () => {
   const [members, setMembers] = useState({
-    username: "",
     email: "",
     password: ""
-  })
+  });
   const navigate = useNavigate();
-  
-  // const handleChange = (e) => {
-  //   const { value, name } = e.target;
-  //   setMembers({ ...members,
-  //     [name]: value });
-  // };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMembers((prevData) => ({
@@ -26,40 +19,46 @@ const CreateAccount = () => {
       [name]: value,
     }));
   };
-  
-
-  const getData = async () => {
-    try {
-      const res = await axios.get(`${API_URL}members`); 
-      setMembers(res.data); 
-      console.log(res.data);
-    } catch (error) {
-      console.error("取得列表失敗", error);
-    }
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(`${API_URL}members`,members);
-      
+   
+      const res = await axios.get(`${API_URL}/members`);
+      const existing = res.data.find((m) => m.username === members.username);
+      if (existing) {
+        alert("帳號已存在，請重新輸入");
+        return;
+      }
+  
+      const newMember = {
+        ...members, 
+        useraccount: members.username,
+        name: members.name || "",
+        mobile: "",
+        gender: "",
+        collectedProjects: "",
+        collectedInvestors: "",
+        avatar: "",
+        identityVerification: {
+          frontId: "",
+          backId: "",
+          secondId: "",
+          status: ""
+        }
+      };
+  
+      const response = await axios.post(`${API_URL}/members`, newMember);
       if (response.status === 201) {
         alert("註冊成功！");
+        localStorage.setItem("currentUser", JSON.stringify(response.data)); 
         navigate("/");
-      } 
-  
+      }
     } catch (error) {
       console.error("註冊失敗:", error);
       alert("註冊失敗，請再試一次！");
     }  
   };
-
-  
-
-  useEffect(() => {
-    getData();
-    }, []);
-  
   return (
     <>
       <div className="container">
@@ -99,7 +98,7 @@ const CreateAccount = () => {
               3
             </button>
           </div> */}
-          <h2 className="mt-8 mb-8">創建帳號</h2>
+          <h2 className="mt-8 mb-8 text-white">創建帳號</h2>
           <form className="row needs-validation" 
           noValidate
           onSubmit={handleSubmit} 
