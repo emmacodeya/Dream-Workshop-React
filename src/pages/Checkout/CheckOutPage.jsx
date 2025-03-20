@@ -3,7 +3,6 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
 import Swal from 'sweetalert2'
 const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -34,7 +33,7 @@ const CheckOutPage = () => {
       try {
         const parsedCart = JSON.parse(savedCart);
         if (Array.isArray(parsedCart)) {
-          setCart(parsedCart); // 確保是陣列再設定
+          setCart(parsedCart); 
         } else {
           console.error("Cart data is not an array:", parsedCart);
         }
@@ -514,7 +513,11 @@ const CheckOutPage = () => {
               </label>
             </div>
           </div>
-          <button type="submit" className="mt-4 p-2 text-gray-100 btn btn-primary-600 rounded-md">提交</button>
+          <div className="text-end">
+            <button type="button" className="btn-line-hover me-5 text-gray-100 btn">取消回上一頁</button>
+            <button type="submit" className="py-1 px-5 fw-bold btn btn-primary-600">結帳</button>
+          </div>
+          
         </form>
       </div>
     </>

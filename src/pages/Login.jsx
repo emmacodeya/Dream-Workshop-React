@@ -1,43 +1,47 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../context/UserContext"; 
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const Login = () => {
+  const { setCurrentUser } = useContext(UserContext);
   const [members, setMembers] = useState({
-    // username: "",
     email: "",
     password: ""
-  })
+  });
+
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
     const { name, value } = e.target;
     setMembers((prevData) => ({
-    ...prevData,
-    [name]: value,
-  }));
+      ...prevData,
+      [name]: value,
+    }));
   };
 
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.get(`${API_URL}members`, {
+      const response = await axios.get(`${API_URL}/members`, {
         params: { 
-          username: members.username, 
-          password: members.password,
-          email: members.email
+          email: members.email,
+          password: members.password
         }
       });
+  
       if (response.data.length > 0) {
         const user = response.data[0];
-      
-      // 儲存登入狀態到 localStorage
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      
+  
+        localStorage.setItem("useraccount", user.useraccount);
+        localStorage.setItem("currentUser", JSON.stringify(user));
+  
+        setCurrentUser(user);
+  
         alert("登入成功！");
         navigate("/");
       } else {
@@ -49,17 +53,12 @@ const Login = () => {
     }
   };
 
-
   return (
     <>
       <div className="container">
         <div className="login">
-          <h1 className="mb-8">會員登入</h1>
-          <form 
-          className="row needs-validation" 
-          noValidate 
-          onSubmit={handleLoginSubmit}
-          >
+          <h1 className="mb-8 text-primary-600">會員登入</h1>
+          <form className="row needs-validation" noValidate onSubmit={handleLoginSubmit}>
             <div className="mx-auto mb-4">
               <label htmlFor="email" className="text-gray-100 fs-5 mb-2">
                 電子郵件
@@ -82,7 +81,7 @@ const Login = () => {
               <input
                 id="password"
                 name="password"
-                type="text"
+                type="password" 
                 className="login-input form-control me-lg-3 me-1 flex-grow-1"
                 placeholder="請輸入密碼"
                 onChange={handleLogin}
@@ -91,10 +90,7 @@ const Login = () => {
               />
             </div>
             <div className="text-end">
-              <NavLink
-                to="/fotget-password-step1"
-                className="text-gray-100 text-end mb-4"
-              >
+              <NavLink to="/fotget-password-step1" className="text-gray-100 text-end mb-4">
                 忘記密碼
               </NavLink>
             </div>

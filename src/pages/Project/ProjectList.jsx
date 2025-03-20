@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
@@ -206,7 +207,7 @@ const ProjectList = () => {
               alt="heart"
             />
           </button>
-          <img className="company-logo mb-3 w-50" src={project.companyLogo} alt={project.name} />
+          <img className="company-logo mb-3 w-25" src={project.companyLogo} alt={project.name} />
           <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
           <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
           <p>{truncateText(project.description)}</p>
@@ -227,11 +228,11 @@ const ProjectList = () => {
         {displayedIndustries.map((industry) => (
         <div className="col" key={industry.value}>
           <button
-            className={`industry-card border-0  ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
+            className={`industry-card border-0 w-100 ${selectedIndustry === industry.value ? "bg-primary-600 text-white" : ""}`}
             onClick={() => handleIndustryChange(industry.value)}
             style={{ 
-              width:250,
-              height:70,
+              width:224,
+              height:120,
               backgroundImage: `url(${industry.imgSrc})`, 
               backgroundSize: "cover", 
               backgroundRepeat: "no-repeat" 
@@ -281,8 +282,8 @@ const ProjectList = () => {
         {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-8">
             {/* 頁面標題 */}
-            <div className="d-flex justify-content-between project-title p-3">
-            <h3 className="text-white fs-3 fw-bold">
+            <div className="d-flex justify-content-between project-title  ">
+            <h3 className="text-white fs-3 fw-bold  ">
             <Link to={`/project/${project.id}`} className="text-white" onClick={() => window.scrollTo(0, 0)}>{project.name}
             </Link>
             </h3>
@@ -296,10 +297,10 @@ const ProjectList = () => {
             </button>
             </div>
 
-            <div className="row g-0 created-body">
+            <div className="row g-0 created-body ">
             {/* 左側圖片 */}
-            <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
-                <img src={project.companyLogo} className="img-fluid rounded-start" alt={project.name} />
+            <div className="col-md-4 d-flex align-items-center justify-content-center ">
+                <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
             </div>
             <div className="col-md-8">
                 {/* 電腦版 */}

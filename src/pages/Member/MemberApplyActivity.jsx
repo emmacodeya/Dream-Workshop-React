@@ -4,7 +4,8 @@ import { Modal, Button } from "react-bootstrap";
 import Pagination from "../../components/Pagination"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
-const ACTIVITY_API_URL = "http://localhost:3000/activities";
+const ACTIVITY_API_URL = `${API_URL}/activities`;
+
 
 const MemberApplyActivity = () => {
   const [activities, setActivities] = useState([]);
@@ -29,10 +30,8 @@ const MemberApplyActivity = () => {
           registrations.map((reg) => axios.get(`${ACTIVITY_API_URL}/${reg.activityId}`))
         );
 
-        // 取得今天的日期
         const today = new Date().toISOString().split("T")[0];
 
-        // 整合報名紀錄與活動資訊
         const sortedActivities = registrations.map((reg, index) => {
           const activity = activityDetails[index].data;
           return {
@@ -78,31 +77,29 @@ const MemberApplyActivity = () => {
   // 取消報名
   const handleCancelRegistration = async () => {
     if (!selectedRegistration) return;
-
+  
     try {
       const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
         params: { useraccount }
       });
       const registration = registrations.find((reg) => reg.activityId === selectedRegistration.activityId);
-
+  
       if (!registration) {
         alert("找不到該活動的報名記錄！");
         return;
       }
-
+  
       console.log("找到的報名記錄:", registration);
-
-      // 刪除該報名記錄
-      await axios.delete(`${API_URL}/${registration.id}`);
-
-      // 更新活動剩餘名額
+  
+      await axios.delete(`${API_URL}/registrations/${registration.id}`);
       await axios.patch(`${ACTIVITY_API_URL}/${selectedRegistration.activityId}`, {
         remainingSlots: selectedRegistration.remainingSlots + 1,
       });
-
-      // 更新前端狀態
-      setActivities((prev) => prev.filter((act) => act.id !== registration.id));
+  
+      setActivities((prev) => prev.filter((act) => act.activityId !== selectedRegistration.activityId));
       alert("報名已取消！");
+  
+      window.dispatchEvent(new Event("updateActivityRecords"));
     } catch (error) {
       console.error("取消報名失敗:", error);
       alert("取消報名時發生錯誤，請稍後再試！");
@@ -169,7 +166,7 @@ const MemberApplyActivity = () => {
         <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
           是否取消報名?
         </Modal.Body>
-        <Modal.Footer className="border-0 text-center">
+        <Modal.Footer className="d-flex justify-content-center border-0  bg-gray-1000">
           <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseModal}>
             取消
           </Button>

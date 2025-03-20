@@ -1,0 +1,15 @@
+.sidebar-item {
+    border-left: 4px solid transparent;
+    color: #ffffff;
+    transition: 0.3s;
+  }
+  
+  .sidebar-item.active {
+    color: #2bd29b;         
+    border-left: 4px solid #2bd29b;   
+  }
+  
+  .sidebar-item:hover {
+    color: #2bd29b;      
+  }
+  

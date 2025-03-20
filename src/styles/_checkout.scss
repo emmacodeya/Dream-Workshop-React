@@ -1,0 +1,59 @@
+.checkout-form {
+    border:0.5px solid $gray-400;
+    backdrop-filter: blur(10px);
+    color: $gray-200;
+    form {
+        @include mobile {
+            max-width: 100%;
+        }
+    }   
+}
+
+.pay-btn {
+    border: 2px solid $gray-100;
+    color: $primary-600;
+    &:hover {
+        border : 2px solid $primary-600;
+    }
+}
+
+.invoice-tab {
+    .nav-link {
+        color: $gray-100;
+        &:hover {
+            color: $gray-100;
+        }
+    }
+}
+
+.checkout-input {
+  background-color: #333333b2;
+  color: $gray-100;
+  padding: 13px 24px;
+  border: 2px solid $gray-100;
+  border-radius: 0%;
+}
+
+.btn-line-hover {
+    background: none;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    position: relative;
+}
+
+.btn-line-hover::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background: $gray-100;
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  .btn-line-hover:hover::after {
+    width: 80%;
+  }

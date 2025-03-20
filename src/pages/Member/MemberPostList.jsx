@@ -23,13 +23,15 @@ const MemberPostList = () => {
     const fetchArticles = async () => {
       try {
         const res = await axios.get(`${API_URL}/articles`);
-        const userPosts = res.data.filter(article => article.author === useraccount);
+        const userPosts = res.data
+          .filter(article => article.author === useraccount)
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); 
         setPosts(userPosts);
       } catch (error) {
         console.error("無法獲取文章列表:", error);
       }
     };
-
+  
     fetchArticles();
   }, [useraccount]);
 
@@ -70,6 +72,7 @@ const MemberPostList = () => {
       });
       setPosts(posts.map(post => post.id === editPost.id ? { ...post, title, content } : post));
       setShowEditModal(false);
+      alert("提交成功！");
     } catch (error) {
       console.error("更新文章失敗:", error);
     }
@@ -115,12 +118,12 @@ const MemberPostList = () => {
               </th>
               <td>{new Date(post.createdAt).toLocaleString()}</td>
               <td>
-                <a href="#" onClick={() => handleOpenEditModal(post.id)}>
+              <a role="button" onClick={() => handleOpenEditModal(post.id)}>
                   <i className="bi bi-pencil-square fs-3 text-primary-600 pe-2"></i>
                 </a>
               </td>
               <td>
-                <a href="#" onClick={() => handleOpenDeleteModal(post.id)}>
+                <a  role="button" onClick={() => handleOpenDeleteModal(post.id)}>
                   <i className="bi bi-trash3 fs-3 text-danger"></i>
                 </a>
               </td>

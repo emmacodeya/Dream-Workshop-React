@@ -367,44 +367,44 @@
       "size": "five",
       "capital": "90000000",
       "funding": "50000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/LINMAMA.jpg",
+      "companyImage": "",
       "id": "1"
     },
     {
       "useraccount": "user2020",
       "name": "綠能科技有限公司",
-      "contactPerson": "王先生",
+      "contactPerson": "王先生科技",
       "contactPhone": "0922333444",
       "website": "https://www.green-tech.com",
       "address": "新北市板橋區文化路二段345號",
       "companyNumber": "87654321",
       "status": "established",
-      "industry": "tech",
+      "industry": "electronics",
       "description": "專注於開發綠能產品，提供可再生能源解決方案。",
-      "size": "fifty",
+      "size": "four",
       "capital": "200000000",
       "funding": "80000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/green.jpg",
+      "companyImage": "",
       "id": "2"
     },
     {
       "useraccount": "user3030",
-      "name": "時尚服飾品牌",
+      "name": "城市時尚服飾品牌",
       "contactPerson": "陳小姐",
       "contactPhone": "0933555666",
       "website": "https://www.fashionstyle.com",
       "address": "台中市西屯區台灣大道三段789號",
       "companyNumber": "56781234",
       "status": "notestablished",
-      "industry": "fashion",
+      "industry": "design",
       "description": "獨特設計，專為年輕族群提供潮流服飾。",
-      "size": "twenty",
+      "size": "three",
       "capital": "50000000",
       "funding": "20000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/fashion.jpg",
+      "companyImage": "",
       "id": "3"
     },
     {
@@ -416,49 +416,49 @@
       "address": "台北市信義區松壽路99號",
       "companyNumber": "99887766",
       "status": "established",
-      "industry": "healthcare",
+      "industry": "electronics",
       "description": "開發 AI 醫療診斷系統，提高醫療效率。",
-      "size": "hundred",
+      "size": "seven",
       "capital": "300000000",
       "funding": "120000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/healthy.jpg",
+      "companyImage": "",
       "id": "4"
     },
     {
       "useraccount": "user5050",
-      "name": "創新遊戲開發",
+      "name": "橘子創新遊戲開發",
       "contactPerson": "劉先生",
       "contactPhone": "0988777666",
       "website": "https://www.innovgame.com",
       "address": "台南市東區長榮路二段456號",
       "companyNumber": "11223344",
       "status": "notestablished",
-      "industry": "gaming",
+      "industry": "internet",
       "description": "專注於開發跨平台遊戲，提供沉浸式體驗。",
-      "size": "thirty",
+      "size": "eight",
       "capital": "100000000",
       "funding": "40000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/InnovGame.jpg",
+      "companyImage": "",
       "id": "5"
     },
     {
       "useraccount": "user6060",
-      "name": "有機農業發展",
+      "name": "美濃有機農業發展",
       "contactPerson": "黃先生",
       "contactPhone": "0933222111",
       "website": "https://www.organicfarm.com",
       "address": "嘉義縣民雄鄉農業路789號",
       "companyNumber": "33445566",
       "status": "established",
-      "industry": "agriculture",
+      "industry": "wholesaleretail",
       "description": "推動永續農業，提供無毒有機食品。",
-      "size": "forty",
+      "size": "nine",
       "capital": "150000000",
       "funding": "60000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/farm.jpg",
+      "companyImage": "",
       "id": "6"
     },
     {
@@ -470,36 +470,36 @@
       "address": "高雄市鼓山區蓮池潭路101號",
       "companyNumber": "66778899",
       "status": "notestablished",
-      "industry": "iot",
+      "industry": "internet",
       "description": "開發智慧交通與智慧家居系統，提升城市效率。",
-      "size": "sixty",
+      "size": "one",
       "capital": "250000000",
       "funding": "100000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/smart.jpg",
+      "companyImage": "",
       "id": "7"
     },
     {
       "useraccount": "user8080",
-      "name": "AI 機器人科技",
+      "name": "未先AI 機器人科技",
       "contactPerson": "楊博士",
       "contactPhone": "0911999222",
       "website": "https://www.airobotics.com",
       "address": "新竹市科學園區創新路500號",
       "companyNumber": "88990011",
       "status": "established",
-      "industry": "robotics",
+      "industry": "biotechnology",
       "description": "研發 AI 機器人，應用於工業與醫療領域。",
-      "size": "eighty",
+      "size": "two",
       "capital": "400000000",
       "funding": "180000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/AI.jpg",
+      "companyImage": "",
       "id": "8"
     },
     {
       "useraccount": "user9090",
-      "name": "線上教育平台",
+      "name": "心想線上教育平台",
       "contactPerson": "林教授",
       "contactPhone": "0977665544",
       "website": "https://www.edtech.com",
@@ -508,29 +508,29 @@
       "status": "notestablished",
       "industry": "education",
       "description": "提供 AI 輔助學習，提高學生學習效率。",
-      "size": "thirty",
+      "size": "three",
       "capital": "70000000",
       "funding": "25000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/mindlearn.jpg",
+      "companyImage": "",
       "id": "9"
     },
     {
       "useraccount": "user1010",
-      "name": "區塊鏈金融科技",
+      "name": "藍色區塊鏈金融科技",
       "contactPerson": "趙先生",
       "contactPhone": "0966555444",
       "website": "https://www.blockchainfinance.com",
       "address": "台北市中正區信義路一段888號",
       "companyNumber": "44556677",
       "status": "established",
-      "industry": "blockchain",
+      "industry": "internet",
       "description": "提供區塊鏈支付解決方案，提高金融交易安全性。",
-      "size": "hundred",
+      "size": "six",
       "capital": "500000000",
       "funding": "200000000",
-      "companyLogo": "...",
-      "companyImage": "...",
+      "companyLogo": "https://dream-workshop-api.onrender.com/assets/images/logo/BlueChain.jpg",
+      "companyImage": "",
       "id": "10"
     }
   ],
@@ -615,7 +615,7 @@
       "threats": "傳統金融機構強力競爭",
       "id": "swot10"
     }
-  ],  
+  ],
   "marketSize": [
     {
       "projectId": "1",
@@ -991,7 +991,7 @@
     },
     {
       "value": "politics",
-      "label": "政治宗教及社福相關",
+      "label": "政治宗教及社會福利相關",
       "id": "e6fc",
       "imgSrc": "https://dream-workshop-api.onrender.com/assets/images/Map-item-11.png"
     },
@@ -1275,51 +1275,10 @@
       "replies": [
         {
           "id": "r1",
-          "useraccount": "founder123",
+          "useraccount": "user2020",
           "name": "林媽媽",
           "date": "2024-09-23",
           "comment": "謝謝您的鼓勵！我們會努力做得更好！"
-        }
-      ]
-    },
-    {
-      "id": "54e7",
-      "name": "測試評價",
-      "rating": 5,
-      "comment": "測試是否可以正常",
-      "date": "2025/3/5",
-      "projectId": "1",
-      "replies": [
-        {
-          "id": "r1741179766875",
-          "useraccount": "happy1234",
-          "name": "創辦人",
-          "date": "2025/3/5",
-          "comment": "測試回覆評價"
-        }
-      ]
-    },
-    {
-      "id": "b9ea",
-      "name": "在測試一次",
-      "rating": 5,
-      "comment": "測試第二次",
-      "date": "2025/3/5",
-      "projectId": "1",
-      "replies": [
-        {
-          "id": "r1741179979768",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "測試第二次回覆評價"
-        },
-        {
-          "id": "r1741180285933",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "我在測試一次"
         }
       ]
     }
@@ -1342,23 +1301,6 @@
           "comment": "感謝您的支持！如果有任何問題歡迎交流！"
         }
       ]
-    },
-    {
-      "id": "a0cb",
-      "name": "測試投資人",
-      "rating": 5,
-      "comment": "感謝您提供",
-      "date": "2025/3/5",
-      "investorId": "1",
-      "replies": [
-        {
-          "id": "r1741180911166",
-          "useraccount": "happy1234",
-          "name": "happy1234",
-          "date": "2025/3/5",
-          "comment": "測試回覆投資人"
-        }
-      ]
     }
   ],
   "activities": [
@@ -1369,7 +1311,7 @@
       "time": "14:00-17:00",
       "location": "高雄市鹽埕區七賢三路123號7F",
       "maxParticipants": 5,
-      "remainingSlots": 6,
+      "remainingSlots": 5,
       "image": "https://dream-workshop-api.onrender.com/assets/images/activity1.jpg",
       "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel1.jpg",
       "status": "open",
@@ -1454,6 +1396,103 @@
           "activity": "閉幕感言與合影"
         }
       ]
+    },
+    {
+      "id": "4",
+      "title": "創業新秀交流會",
+      "date": "2025-05-10",
+      "time": "13:30-17:30",
+      "location": "台北市信義區創業大樓5樓",
+      "maxParticipants": 50,
+      "remainingSlots": 50,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity4.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel4.jpg",
+      "status": "open",
+      "description": "邀請初創企業創辦人與業界專家進行交流，學習如何提升創業競爭力。",
+      "schedule": [
+        {
+          "time": "13:30-14:00",
+          "activity": "報到與交流"
+        },
+        {
+          "time": "14:00-15:00",
+          "activity": "創業者經驗分享：如何從零開始打造成功企業"
+        },
+        {
+          "time": "15:00-16:00",
+          "activity": "成功案例解析與策略討論"
+        },
+        {
+          "time": "16:00-17:30",
+          "activity": "自由交流與投資媒合"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "投資人對談：如何選擇值得投資的創業項目？",
+      "date": "2025-06-22",
+      "time": "15:00-18:00",
+      "location": "新北市板橋區金融創業中心",
+      "maxParticipants": 30,
+      "remainingSlots": 30,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity5.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel5.jpg",
+      "status": "open",
+      "description": "投資人圓桌論壇，深度剖析市場趨勢，分享選擇投資標的的標準。",
+      "schedule": [
+        {
+          "time": "15:00-15:30",
+          "activity": "報到與開場"
+        },
+        {
+          "time": "15:30-16:30",
+          "activity": "投資人對談：評估新創企業價值的方法"
+        },
+        {
+          "time": "16:30-17:30",
+          "activity": "案例分享：成功投資背後的決策過程"
+        },
+        {
+          "time": "17:30-18:00",
+          "activity": "自由交流與投資機會探索"
+        }
+      ]
+    },
+    {
+      "id": "6",
+      "title": "創業路演暨投資配對大會",
+      "date": "2025-07-18",
+      "time": "10:00-17:00",
+      "location": "台中市西屯區國際會展中心",
+      "maxParticipants": 100,
+      "remainingSlots": 100,
+      "image": "https://dream-workshop-api.onrender.com/assets/images/activity6.jpg",
+      "carouselImage": "https://dream-workshop-api.onrender.com/assets/images/carousel6.jpg",
+      "status": "open",
+      "description": "創業者展示商業計畫，投資人評估與即時配對，打造最強創業與投資合作機會！",
+      "schedule": [
+        {
+          "time": "10:00-10:30",
+          "activity": "報到與開幕致詞"
+        },
+        {
+          "time": "10:30-12:00",
+          "activity": "創業項目路演（Pitch Deck）"
+        },
+        {
+          "time": "12:00-13:30",
+          "activity": "午餐與自由交流"
+        },
+        {
+          "time": "13:30-15:30",
+          "activity": "投資人 Q&A 及合作機會洽談"
+        },
+        {
+          "time": "15:30-17:00",
+          "activity": "創業者與投資人配對洽談"
+        }
+      ]
     }
   ],
   "registrations": [
@@ -1470,6 +1509,13 @@
       "activityId": "1",
       "activityTitle": "卡斯柏創意分享會",
       "date": "2025-04-15"
+    },
+    {
+      "id": "4a65",
+      "useraccount": "happy1234",
+      "activityId": "2",
+      "activityTitle": "創新資本對接會",
+      "date": "2024-09-20"
     }
   ],
   "stores": [
@@ -1527,5 +1573,7 @@
       "coinPoint": "3000點",
       "coinPrice": 2500
     }
-  ]
+  ],
+  "cart": [],
+  "orders": []
 }

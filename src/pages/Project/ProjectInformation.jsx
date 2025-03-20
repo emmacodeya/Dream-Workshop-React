@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -85,7 +86,7 @@ const ProjectInformation = () => {
             <div className="d-lg-flex">
               {/* 左側圖片 */}
               <div className="col-lg-4 d-flex justify-content-center align-items-center mt-4">
-                <img src={project.companyLogo} className="img-fluid rounded" alt={project.name} />
+                <img src={project.companyLogo} className="img-fluid rounded w-50" alt={project.name} />
               </div>
 
               {/* 右側文字資訊 */}

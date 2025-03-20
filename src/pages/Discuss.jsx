@@ -16,8 +16,11 @@ const Discuss = () => {
   useEffect(() => {
     const fetchArticles = async () => {
       try {
-        const response = await axios.get(`${API_URL}/articles`); 
-        setArticles(response.data);
+        const response = await axios.get(`${API_URL}/articles`);
+        const sortedArticles = response.data.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt) 
+        );
+        setArticles(sortedArticles);
       } catch (err) {
         setError("無法獲取文章列表，請稍後再試！");
         console.error("API 取得文章列表失敗:", err);
@@ -25,10 +28,9 @@ const Discuss = () => {
         setLoading(false);
       }
     };
-
+  
     fetchArticles();
   }, []);
-
  
   const totalPages = Math.ceil(articles.length / itemsPerPage);
 

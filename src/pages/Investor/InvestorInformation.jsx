@@ -1,3 +1,4 @@
+/* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -47,7 +48,7 @@ const InvestorInformation = () => {
               <div className="col-lg-4 d-flex justify-content-center align-items-center mt-4">
                 <img
                   src={investor.avatar}
-                  className="img-fluid rounded"
+                  className="img-fluid rounded w-50"
                   alt={investor.name}
                 />
               </div>
@@ -123,7 +124,7 @@ const InvestorInformation = () => {
             {activeSection === "photo" && (
               <div className="py-10">
                 {investor.referencePhotos.map((photo, index) => (
-                  <img key={index} src={photo} alt={`投資人照片 ${index + 1}`} className="img-fluid rounded mb-2" />
+                  <img key={index} src={photo} alt={`投資人照片 ${index + 1}`} className="img-fluid rounded mb-2 w-50" />
                 ))}
               </div>
             )}
