@@ -11,6 +11,9 @@ const MemberIdentity = () => {
   const useraccount = localStorage.getItem("useraccount") || "";
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
+    const useraccount = storedUser?.useraccount;
+
     if (!useraccount) {
       console.error("請登入帳號");
       return;
@@ -104,7 +107,14 @@ const MemberIdentity = () => {
           姓名:
         </label>
         <div className="col-md-10 col-8">
-          <input type="text" readOnly className="form-control-plaintext text-white" id="name" value={userData.name} />
+          <input 
+          type="text" 
+          readOnly 
+          className="form-control-plaintext text-white" 
+          id="name" 
+          value={userData.name} 
+          autoComplete="off"
+          />
         </div>
       </form>
 
@@ -145,6 +155,7 @@ const MemberIdentity = () => {
               accept="image/*"
               style={{ display: "none" }}
               onChange={(e) => handleFileChange(e, key)}
+              autoComplete="off"
             />
           </div>
         ))}
@@ -175,7 +186,14 @@ const MemberIdentity = () => {
           }}>
             上傳第二張證件
           </label>
-          <input className="form-control" type="file" id="secondId" accept="image/*" style={{ display: "none" }} onChange={(e) => handleFileChange(e, "secondId")} />
+          <input 
+          className="form-control" 
+          type="file" 
+          id="secondId" 
+          accept="image/*" 
+          style={{ display: "none" }} 
+          onChange={(e) => handleFileChange(e, "secondId")} 
+          autoComplete="off"/>
         </div>
 
         {/* 身份驗證狀態按鈕 */}

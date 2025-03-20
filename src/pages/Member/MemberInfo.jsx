@@ -1,11 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext  } from "react";
+import { UserContext } from "../../context/UserContext";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberInfo = () => {
-  const [useraccount, setUseraccount] = useState(localStorage.getItem("useraccount") || "");
+  const { currentUser } = useContext(UserContext);
+  const [useraccount, setUseraccount] = useState(currentUser?.useraccount || "");
   const [preview, setPreview] = useState(null);
   const [gender, setGender] = useState(""); 
 
