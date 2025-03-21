@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
+import { Modal, Button } from "react-bootstrap";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const MySwal = withReactContent(Swal);
@@ -189,145 +190,112 @@ const AdminAccount = () => {
           )}
         </tbody>
               </table>
+   
+          {/* 詳細資料 */}
+          <Modal show={showViewModal} onHide={() => setShowViewModal(false)}  centered>
+          <Modal.Header closeButton className="bg-primary-600">
+            <Modal.Title className="fs-3 fw-bold">會員詳細資料</Modal.Title>
+          </Modal.Header>
+          <Modal.Body >
+            {selectedMember && (
+              <>
+                <h4 className="fs-4 fw-bold mb-3">基本資訊</h4>
+                <p className=" text-dark "><strong>會員帳號：</strong>{selectedMember.useraccount}</p>
+                <p className=" text-dark "><strong>姓名：</strong>{selectedMember.name}</p>
+                <p className=" text-dark "><strong>電子郵箱：</strong>{selectedMember.email}</p>
+                <p className=" text-dark "><strong>性別：</strong>{selectedMember.gender}</p>
+                <p className=" text-dark "><strong>聯絡電話：</strong>{selectedMember.mobile}</p>
 
-          {showViewModal && selectedMember && (
-            <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-              <div className="modal-dialog">
-                <div className="modal-content text-dark">
-                  <div className="modal-header bg-primary-600">
-                    <h5 className="fs-3 modal-title fw-bold">會員詳細資料</h5>
-                    <button className="btn-close" onClick={() => setShowViewModal(false)}></button>
-                  </div>
-                  <div className="modal-body ">
-                    <h4 className="fs-4 fw-bold mb-3">基本資訊</h4>
-                    <p className="text-gray-800"><strong>會員帳號：</strong>{selectedMember.useraccount}</p>
-                    <p className="text-gray-800"><strong>姓名：</strong>{selectedMember.name}</p>
-                    <p className="text-gray-800"><strong>電子郵箱：</strong>{selectedMember.email}</p>
-                    <p className="text-gray-800"><strong>性別：</strong>{selectedMember.gender}</p>
-                    <p className="text-gray-800"><strong>聯絡電話：</strong>{selectedMember.mobile}</p>
-                    <hr></hr>
-                    <h4 className="fs-4 fw-bold mb-3">查看權限</h4>
-                    <h5>創業項目</h5>
-                      <table className="table mt-4 mb-6">
-                        <thead>
-                          <tr>
-                            <th style={{ width: "100px" }}>項目</th>
-                            <th style={{ width: "120px" }}>權限</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {projects
-                            .filter(project => project.useraccount === selectedMember.useraccount)
-                            .map(project => (
-                              <tr key={project.id}>
-                                <td>{project.name}</td>
-                                <td>
-                                  <input type="checkbox" disabled /> 合作聯繫
-                                  <input type="checkbox" className="ms-2" disabled  /> 內容解鎖
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                      
-                      <h5>投資人</h5>
-                      <table className="table mt-4">
-                        <thead>
-                          <tr>
-                            <th style={{ width: "100px" }}>投資人</th>
-                            <th style={{ width: "120px" }}>權限</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {investors
-                            .filter(investor => investor.useraccount === selectedMember.useraccount)
-                            .map(investor => (
-                              <tr key={investor.id}>
-                                <td>{investor.name}</td>
-                                <td>
-                                  <input type="checkbox" disabled /> 合作聯繫
-                                  <input type="checkbox" className="ms-2" disabled /> 內容解鎖
-                                </td>
-                              </tr>
-                            ))}
-                        </tbody>
-                      </table>
-                  </div>
-                  <div className="modal-footer">
-                    <button className="btn btn-secondary" onClick={() => setShowViewModal(false)}>關閉</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-         
-         {showVerifyModal && selectedMember && (
-            <div className="modal d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-              <div className="modal-dialog">
-                <div className="modal-content ">
-                  <div className="modal-header bg-primary-600">
-                    <h5 className="fw-bold text-gray-800 fs-3">會員審核</h5>
-                    <button className="btn-close" onClick={() => setShowVerifyModal(false)}></button>
-                  </div>
+                <hr />
+                <h4 className="fs-4 fw-bold mb-3">查看權限</h4>
 
-                  <div className="modal-body text-center">
-                    <p className="text-gray-800 mb-3"><strong>目前審核狀態：</strong>{translateVerifyStatus(selectedMember.identityVerification?.status)}</p>
+                <h5>創業項目</h5>
+                <table className="table mb-6">
+                  <thead>
+                    <tr>
+                      <th style={{ width: "100px" }}>項目</th>
+                      <th style={{ width: "120px" }}>權限</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projects.filter(project => project.useraccount === selectedMember.useraccount).map(project => (
+                      <tr key={project.id}>
+                        <td>{project.name}</td>
+                        <td>
+                          <input type="checkbox" disabled /> 合作聯繫
+                          <input type="checkbox" className="ms-2" disabled /> 內容解鎖
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
 
-                    {/* 身分證圖片區塊 */}
-                    <div className="mb-3">
-                      <h6 className="fw-bold text-gray-800 mb-3">身分證圖片</h6>
-                      <div className=" gap-3">
-                        <div>
-                          <p className="mb-3">正面</p>
-                          <img
-                            src={selectedMember.identityVerification?.frontId}
-                            alt="身分證正面"
-                            className="mb-3"
-                            style={{ width: "300px", border: "1px solid #ccc" }}
-                          />
-                        </div>
-                        <div>
-                          <p  className="mb-3">反面</p>
-                          <img
-                            src={selectedMember.identityVerification?.backId}
-                            alt="身分證反面"
-                            className="mb-3"
-                            style={{ width: "300px", border: "1px solid #ccc" }}
-                          />
-                        </div>
-                        <div>
-                          <p  className="mb-3">第二證件</p>
-                          <img
-                            src={selectedMember.identityVerification?.secondId}
-                            alt="第二證件"
-                            className="mb-3"
-                            style={{ width: "300px", border: "1px solid #ccc" }}
-                          />
-                        </div>
-                      </div>
+                <h5 >投資人</h5>
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th style={{ width: "100px" }}>投資人</th>
+                      <th style={{ width: "120px" }}>權限</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {investors.filter(investor => investor.useraccount === selectedMember.useraccount).map(investor => (
+                      <tr key={investor.id}>
+                        <td>{investor.name}</td>
+                        <td>
+                          <input type="checkbox" disabled /> 合作聯繫
+                          <input type="checkbox" className="ms-2" disabled /> 內容解鎖
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="rounded" variant="secondary" onClick={() => setShowViewModal(false)}>關閉</Button>
+          </Modal.Footer>
+        </Modal>
+
+        {/* 會員審核        */}
+        <Modal show={showVerifyModal} onHide={() => setShowVerifyModal(false)}  centered>
+          <Modal.Header closeButton className="bg-primary-600">
+            <Modal.Title className="fw-bold text-gray-800 fs-3">會員審核</Modal.Title>
+          </Modal.Header>
+          <Modal.Body className="text-dark text-center">
+            {selectedMember && (
+              <>
+                <p className="text-gray-800 mb-3">
+                  <strong>目前審核狀態：</strong>{translateVerifyStatus(selectedMember.identityVerification?.status)}
+                </p>
+
+                <div className="mb-3">
+                  <h6 className="fw-bold text-gray-800 mb-3">身分證圖片</h6>
+                  <div className=" gap-3 ">
+                    <div>
+                      <p>正面</p>
+                      <img src={selectedMember.identityVerification?.frontId} alt="身分證正面" style={{ width: "300px", border: "1px solid #ccc" }} />
                     </div>
-
-                   
-                  </div>
-
-                  <div className="modal-footer">
-                    <button
-                      className="btn btn-primary-600 rounded me-2"
-                      onClick={() => handleVerifyUpdate("approved")}
-                    >
-                      通過審核
-                    </button>
-                    <button
-                      className="btn btn-secondary rounded"
-                      onClick={() => handleVerifyUpdate("rejected")}
-                    >
-                      未通過
-                    </button>
+                    <div>
+                      <p>反面</p>
+                      <img src={selectedMember.identityVerification?.backId} alt="身分證反面" style={{ width: "300px", border: "1px solid #ccc" }} />
+                    </div>
+                    <div>
+                      <p>第二證件</p>
+                      <img src={selectedMember.identityVerification?.secondId} alt="第二證件" style={{ width: "300px", border: "1px solid #ccc" }} />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
-          )}
+              </>
+            )}
+          </Modal.Body>
+          <Modal.Footer>
+            <Button className="btn btn-primary-600 rounded me-2" onClick={() => handleVerifyUpdate("approved")}>通過審核</Button>
+            <Button className="btn btn-secondary rounded" onClick={() => handleVerifyUpdate("rejected")}>未通過</Button>
+          </Modal.Footer>
+        </Modal>
+
 
 
     </div>

@@ -18,9 +18,9 @@
       ],
       "avatar": "https://dream-workshop-api.onrender.com/assets/images/memberavatar8.png",
       "identityVerification": {
-        "frontId": "https://dream-workshop-api.onrender.com/assets/images/身分證正面樣本.jpg",
-        "backId": "https://dream-workshop-api.onrender.com/assets/images/身分證背面樣本.jpg",
-        "secondId": "https://dream-workshop-api.onrender.com/assets/images/第二張證件樣本.jpg",
+        "frontId": "https://dream-workshop-api.onrender.com/assets/images/EthanCarter.jpg",
+        "backId": "https://dream-workshop-api.onrender.com/assets/images/EthanCarter背面.jpg",
+        "secondId": "https://dream-workshop-api.onrender.com/assets/images/EthanCarter健保卡.jpg",
         "status": "pending"
       }
     },
@@ -374,7 +374,7 @@
     {
       "useraccount": "user2020",
       "name": "綠能科技有限公司",
-      "contactPerson": "王先生科技",
+      "contactPerson": "王先生",
       "contactPhone": "0922333444",
       "website": "https://www.green-tech.com",
       "address": "新北市板橋區文化路二段345號",

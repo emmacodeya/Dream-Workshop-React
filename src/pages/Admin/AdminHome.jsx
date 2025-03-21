@@ -2,6 +2,7 @@ import { useState } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminAccount from "./AdminAccount";
+import AdminProjects from "./AdminProjects";
 
 
 
@@ -27,7 +28,7 @@ const AdminHome = () => {
             <AdminAccount />
             </div>
             <div className={`content-section text-white ${activeSection === "startups" ? "d-block" : "d-none"}`}>
-              <h2>創業項目管理</h2>
+            <AdminProjects />
             </div>
             <div className={`content-section text-white ${activeSection === "investors" ? "d-block" : "d-none"}`}>
               <h2>投資人管理</h2>
