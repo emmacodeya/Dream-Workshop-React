@@ -3,6 +3,7 @@ import AdminSidebar from "../../components/AdminSidebar";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminAccount from "./AdminAccount";
 import AdminProjects from "./AdminProjects";
+import AdminInvestors from "./AdminInvestors";
 
 
 
@@ -31,7 +32,7 @@ const AdminHome = () => {
             <AdminProjects />
             </div>
             <div className={`content-section text-white ${activeSection === "investors" ? "d-block" : "d-none"}`}>
-              <h2>投資人管理</h2>
+            <AdminInvestors />
             </div>
             <div className={`content-section text-white ${activeSection === "activities" ? "d-block" : "d-none"}`}>
               <h2>活動管理</h2>

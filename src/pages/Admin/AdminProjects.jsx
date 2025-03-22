@@ -227,9 +227,9 @@ const openDetailModal = async (project) => {
                 <p className="mb-2  text-dark fw-bold">項目照片：</p>
                 {targetProject.companyImage ? (
                   
-                  <img src={targetProject.companyImage} alt="公司環境照" className="img-fluid mt-2  " style={{ maxHeight: "300px", objectFit: "cover" }} />
+                  <img src={targetProject.companyImage} alt="公司環境照" className="img-fluid mt-2  " style={{ maxHeight: "150px", objectFit: "cover" }} />
                 ) : (
-                  <p className="text-gray-600">尚無公司環境照</p>
+                  <p className="text-gray-600">尚無照片</p>
                 )}
               </div>
             </>

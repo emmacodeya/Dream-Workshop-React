@@ -274,16 +274,16 @@ const AdminAccount = () => {
                   <h6 className="fw-bold text-gray-800 mb-3">身分證圖片</h6>
                   <div className=" gap-3 ">
                     <div>
-                      <p>正面</p>
-                      <img src={selectedMember.identityVerification?.frontId} alt="身分證正面" style={{ width: "300px", border: "1px solid #ccc" }} />
+                      <p className="mb-1 text-dark">正面</p>
+                      <img  className="mb-2" src={selectedMember.identityVerification?.frontId} alt="身分證正面" style={{ width: "300px", border: "1px solid #ccc" }} />
                     </div>
                     <div>
-                      <p>反面</p>
-                      <img src={selectedMember.identityVerification?.backId} alt="身分證反面" style={{ width: "300px", border: "1px solid #ccc" }} />
+                      <p className="mb-1 text-dark">反面</p>
+                      <img  className="mb-2" src={selectedMember.identityVerification?.backId} alt="身分證反面" style={{ width: "300px", border: "1px solid #ccc" }} />
                     </div>
                     <div>
-                      <p>第二證件</p>
-                      <img src={selectedMember.identityVerification?.secondId} alt="第二證件" style={{ width: "300px", border: "1px solid #ccc" }} />
+                      <p className="mb-1 text-dark">第二證件</p>
+                      <img  src={selectedMember.identityVerification?.secondId} alt="第二證件" style={{ width: "300px", border: "1px solid #ccc" }} />
                     </div>
                   </div>
                 </div>
