@@ -4,6 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import AdminAccount from "./AdminAccount";
 import AdminProjects from "./AdminProjects";
 import AdminInvestors from "./AdminInvestors";
+import AdminArticles from "./AdminArticles";
+
 
 
 
@@ -44,7 +46,7 @@ const AdminHome = () => {
               <h2>交易管理</h2>
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>
-              <h2>文章管理</h2>
+            <AdminArticles />
             </div>
           </div>
         </div>
