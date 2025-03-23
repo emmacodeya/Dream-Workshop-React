@@ -25,6 +25,13 @@ const CheckOutPage = () => {
   const [cardNumber, setCardNumber] = useState(["", "", "", ""]);
   const inputRefs = [useRef(), useRef(), useRef(), useRef()];
 
+  // 生成年份選項 (2025年起 10 年)
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
+
+  const [invoiceType, setInvoiceType] = useState("personal");
+  // eslint-disable-next-line no-unused-vars
+  const validateTaxId = (value) => /^[0-9]{8}$/.test(value) || "請輸入有效的 8 位數統一編號";
 
   useEffect(() => {
     const savedCart = localStorage.getItem("cart");
@@ -41,9 +48,13 @@ const CheckOutPage = () => {
         console.error("Failed to parse cart from localStorage:", error);
       }
     }
+        const storedCart = localStorage.getItem("cart");
+      if (storedCart) {
+        setCart(JSON.parse(storedCart));
+      } else {
+        setCart([]); // 避免重新載入舊的 cart
+      }
   }, []);
-
-
 
 
   const creditHandleChange = (index, value) => {
@@ -91,36 +102,58 @@ const CheckOutPage = () => {
     checkout(userInfo);
   })
 
-  const checkout = async () => {
-    // e.preventDefault();
+  const checkout = async (userInfo) => {
 
     try {
+      // 確保 orderData 包含最新的購物車資料
+      const order = {
+      ...orderData,
+      items: cart, // 這樣就確保 items 是最新的 cart
+      user: userInfo.data.user,
+      message: userInfo.data.message
+    };
       // 送出訂單
-      const response = await axios.post(`${API_URL}orders`, orderData);
+      const response = await axios.post(`${API_URL}/orders`, order);
       if (response.status === 201) {
 
         // 清空表單
         reset();
-
         // 如果還有其他狀態需要重置（例如 radio 狀態）
         setPaymentMethod('');
         setInstallmentMethod('');
         setCardNumber(['', '', '', '']); // 如果信用卡欄位是用陣列控制
         setCart([]); // 清空購物車
-        navigate("/pay-plan");
+        localStorage.removeItem("cart");
+
+        Swal.fire({
+          title: 'success!',
+          text: "訂單提交成功！",
+          icon: 'success',
+          confirmButtonText: '確定'
+        })
+
+        setTimeout(() => {
+          navigate("/pay-plan", { state: { fromCheckout: true } });
+        }, 500);
+        
+        console.log("目前訂單資料：", response.data);
       }
-      Swal.fire({
-        title: 'success!',
-        text: "訂單提交成功！",
-        icon: 'success',
-        confirmButtonText: '確定'
-      })
-      console.log("目前訂單資料：", response.data);
+      
     } catch (error) {
       console.error("提交訂單失敗:", error);
       alert("訂單提交失敗，請再試一次！");
     }
   }
+
+  
+  const handleBackToStore = async () => {
+    const cartItems = await axios.get(`${API_URL}/cart`);
+
+      await Promise.all(cartItems.data.map(item => axios.delete(`${API_URL}/cart/${item.id}`)));
+      setCart([]);
+      localStorage.removeItem("cart");
+      navigate("/pay-plan");
+  };
  
 
 
@@ -220,20 +253,7 @@ const CheckOutPage = () => {
                   <option value="Tainan">台南市</option>
                 </select>
               </div>
-              {/*<div className="col-md-2 mb-3">
-                <select
-                  className="form-select checkout-input"
-                  name="address"
-                  id="address"
-                  value={orderData.address}
-                  onChange={handleChange}
-                >
-                  <option value="">鄉鎮市區</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>*/}
+
               <div className="col-md-6 mb-3">
                 {/* <label htmlFor="address" className="form-label h4 fw-bold"></label> */}
                 <input
@@ -394,55 +414,190 @@ const CheckOutPage = () => {
                 </div>
               </div>
               {InstallmentMethod === "one_time_payment" && (
-                <div className="p-3 bg-green-100 rounded-lg">
+                <div className="p-3 rounded-lg text-gray-100">
                   
-                  <div className="d-flex align-items-center">
-                {cardNumber.map((num, index) => (
-                  <>
-                    <label htmlFor={num}></label>
+                  <div className="d-flex align-items-center mb-3">
+                    {cardNumber.map((num, index) => (
+                    <>
+                      <label htmlFor={num}></label>
+                      <input
+                      key={index}
+                      ref={inputRefs[index]}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength="4"
+                      value={num}
+                      onChange={(e) => creditHandleChange(index, e.target.value)}
+                      onKeyDown={(e) => handleKeyDown(index, e)}
+                      className="p-2 form-control checkout-input w-25"
+                      required/>
+                    {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
+                    </>  
+                    ))}
+                    <img src="/assets/images/VISA.png" className="ms-2" alt="VISA" />
+                  </div>
+
+                  {/* 到期年月日 */}
+                  <div className="d-flex">
+                    <div className="mb-3 me-3">
+                      <label className="form-label">到期月份</label>
+                      <select
+                        className={`form-select checkout-input ${errors.expMonth ? "is-invalid" : ""}`}
+                        {...register("expMonth", { required: "請選擇到期月份" })}
+                        name="expiry-month"
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">選擇月份</option>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <option key={i + 1} value={i + 1}>{i + 1} 月</option>
+                        ))}
+                      </select>
+                      {errors.expMonth && (
+                        <div className="invalid-feedback">{errors.expMonth.message}</div>
+                      )}
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label">到期年份</label>
+                      <select
+                        className={`form-select checkout-input ${errors.expYear ? "is-invalid" : ""}`}
+                        {...register("expYear", { required: "請選擇到期年份" })}
+                        name="expiry-year"
+                        onChange={handleChange}
+                        required
+                      >
+                        <option value="">選擇年份</option>
+                        {years.map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                      {errors.expYear && (
+                        <div className="invalid-feedback">{errors.expYear.message}</div>
+                      )}
+                    </div>
+                  </div>
+                  
+
+                  {/* CVC 欄位 */}
+                  <div className="mb-3">
+                    <label className="form-label">CVC</label>
                     <input
-                    key={index}
-                    ref={inputRefs[index]}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength="4"
-                    value={num}
-                    onChange={(e) => creditHandleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="p-2 form-control checkout-input w-25"
-                    required/>
-                  {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
-                  </>  
-                ))}
-                <img src="/assets/images/VISA.png" className="ms-2" alt="VISA" />
-              </div>
+                      type="text"
+                      className={`w-25 form-control checkout-input ${errors.cvc ? "is-invalid" : ""}`}
+                      maxLength="3"
+                      {...register("cvc", {
+                        required: "請輸入 CVC",
+                        pattern: {
+                          value: /^[0-9]{3}$/,
+                          message: "CVC 必須為 3 位數字"
+                        }
+                      })}
+                    />
+                    {errors.cvc && <div className="invalid-feedback">{errors.cvc.message}
+                    </div>}
+                  </div>
+
                 </div>
               )}
 
               {InstallmentMethod === "installment_payment" && (
-                <div className="p-3 bg-green-100 rounded-lg">
-                  <div className="d-flex align-items-center">
-                {cardNumber.map((num, index) => (
-                  <>
-                    <label htmlFor={num}></label>
+                <div className="p-3 rounded-lg text-gray-100">
+                  <div className="d-flex align-items-center mb-4">
+                    {cardNumber.map((num, index) => (
+                      <>
+                        <label htmlFor={num}></label>
+                        <input
+                        key={index}
+                        ref={inputRefs[index]}
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength="4"
+                        value={num}
+                        onChange={(e) => creditHandleChange(index, e.target.value)}
+                        onKeyDown={(e) => handleKeyDown(index, e)}
+                        className="p-2 form-control checkout-input w-25"
+                        required/>
+                      {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
+                      </>  
+                    ))}
+                    <img src="/assets/images/VISA.png" className="ms-2" alt="VISA" />
+                  </div>
+
+                  {/* 到期年月日 */}
+                  <div className="d-flex">
+                    <div className="mb-4 me-3">
+                      <label className="form-label">到期月份</label>
+                      <select
+                        className={`form-select custom-select ${errors.expMonth ? "is-invalid" : ""}`}
+                        {...register("expMonth", { required: "請選擇到期月份" })}
+                      >
+                        <option value="">選擇月份</option>
+                        {Array.from({ length: 12 }, (_, i) => (
+                          <option key={i + 1} value={i + 1}>{i + 1} 月</option>
+                        ))}
+                      </select>
+                      {errors.expMonth && (
+                        <div className="invalid-feedback">{errors.expMonth.message}</div>
+                      )}
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label">到期年份</label>
+                      <select
+                        className={`form-select custom-select ${errors.expYear ? "is-invalid" : ""}`}
+                        {...register("expYear", { required: "請選擇到期年份" })}
+                      >
+                        <option value="">選擇年份</option>
+                        {years.map((year) => (
+                          <option key={year} value={year}>{year}</option>
+                        ))}
+                      </select>
+                      {errors.expYear && (
+                        <div className="invalid-feedback">{errors.expYear.message}</div>
+                      )}
+                    </div>
+                  </div>
+                  
+
+                  {/* CVC 欄位 */}
+                  <div className="mb-3">
+                    <label className="form-label">CVC</label>
                     <input
-                    key={index}
-                    ref={inputRefs[index]}
-                    type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength="4"
-                    value={num}
-                    onChange={(e) => creditHandleChange(index, e.target.value)}
-                    onKeyDown={(e) => handleKeyDown(index, e)}
-                    className="p-2 form-control checkout-input w-25"
-                    required/>
-                  {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
-                  </>  
-                ))}
-                <img src="/assets/images/VISA.png" className="ms-2" alt="VISA" />
-              </div>
+                      type="text"
+                      className={`w-25 form-control checkout-input ${errors.cvc ? "is-invalid" : ""}`}
+                      maxLength="3"
+                      {...register("cvc", {
+                        required: "請輸入 CVC",
+                        pattern: {
+                          value: /^[0-9]{3}$/,
+                          message: "CVC 必須為 3 位數字"
+                        }
+                      })}
+                    />
+                    {errors.cvc && <div className="invalid-feedback">{errors.cvc.message}
+                    </div>}
+                  </div>
+
+                  {/* 分期選單 */}
+                  <div className="mb-3">
+                    <label className="form-label">分期數</label>
+                    <select
+                      className={`w-25 form-select checkout-input ${errors.installment ? "is-invalid" : ""}`}
+                      {...register("installment", { required: "請選擇分期數" })}
+                    >
+                      <option value="">選擇分期</option>
+                      {[3, 6, 9, 12, 24].map((term) => (
+                        <option key={term} value={term}>{term} 期</option>
+                      ))}
+                    </select>
+                    {errors.installment && (
+                      <div className="invalid-feedback">{errors.installment.message}</div>
+                    )}
+                  </div>
+
                 </div>
               )}
 
@@ -460,6 +615,8 @@ const CheckOutPage = () => {
                 transform: "scale(1.5)",
                 backgroundColor: "transparent",
               }}
+              checked={paymentMethod === "ATM"}
+              onChange={(e) => setPaymentMethod(e.target.value)}
               required
             />
             <label
@@ -468,7 +625,14 @@ const CheckOutPage = () => {
             >
               ATM轉帳
             </label>
+            {paymentMethod === "ATM" && (
+              <div className="p-3 bg-blue-100 rounded-lg text-gray-100">
+                📢銀行帳號將在訂單成立後顯示，敬請於期限內完成付款，逾時系統將取消訂單。
+              </div>
+            )}
           </div>
+
+
           <div className="mb-4">
             <h4 className="text-primary-600 fw-bold mb-2">發票類型</h4>
             <hr className="border-gray-600 border" />
@@ -482,7 +646,9 @@ const CheckOutPage = () => {
                 }}
                 id="cloudBill"
                 name="invoiceType"
-                value="cloudBill"
+                value="personal"
+                checked={invoiceType === "personal"}
+                onChange={() => setInvoiceType("personal")}
                 required
               />
               <label
@@ -491,6 +657,21 @@ const CheckOutPage = () => {
               >
                 個人雲端發票
               </label>
+              
+              {invoiceType === "personal" && (
+              <input
+                type="text"
+                className="form-control checkout-input mt-2"
+                placeholder="手機載具 (/開頭+7位數英數字)"
+                {...register("carrier", {
+                  required: "請輸入手機載具",
+                  pattern: {
+                    value: /^\/([A-Z0-9]{7})$/,
+                    message: "格式錯誤，須以 / 開頭，後接 7 位大寫英數字"
+                  }
+                })}
+              />
+            )}
             </div>
             <div className="form-check mb-2">
               <input
@@ -499,6 +680,8 @@ const CheckOutPage = () => {
                 id="companyBill"
                 name="invoiceType"
                 value="companyBill"
+                checked={invoiceType === "companyBill"}
+                onChange={() => setInvoiceType("companyBill")}
                 style={{
                   transform: "scale(1.5)",
                   backgroundColor: "transparent",
@@ -511,10 +694,27 @@ const CheckOutPage = () => {
               >
                 公司發票
               </label>
+
+              {invoiceType === "companyBill" && (
+              <>
+                <input
+                  type="text"
+                  className="form-control checkout-input mt-2"
+                  placeholder="公司名稱"
+                  {...register("companyName")}
+                />
+                <input
+                  type="text"
+                  className="form-control checkout-input mt-2"
+                  placeholder="公司統編"
+                  {...register("taxId", { validate: validateTaxId })}
+                />
+              </>
+              )}
             </div>
           </div>
           <div className="text-end">
-            <button type="button" className="btn-line-hover me-5 text-gray-100 btn">取消回上一頁</button>
+            <button onClick={handleBackToStore} type="button" className="btn-line-hover me-5 text-gray-100 btn">取消回上一頁</button>
             <button type="submit" className="py-1 px-5 fw-bold btn btn-primary-600">結帳</button>
           </div>
           

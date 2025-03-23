@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { UserContext } from "../context/UserContext";
-
+import { useLocation } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const PayPlan = () => {
@@ -14,22 +14,17 @@ const PayPlan = () => {
   const [cart, setCart] = useState([]);
 
   const navigate = useNavigate();
+  const location = useLocation();
+
   const { currentUser, setCurrentUser } = useContext(UserContext);
+  
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      const useraccount = localStorage.getItem("useraccount");
-      if (useraccount) {
-        try {
-          const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
-          if (res.data.length > 0) {
-            setCurrentUser(res.data[0]);
-          }
-        } catch (error) {
-          console.error("取得會員資訊失敗", error);
-        }
-      }
-    };
+    console.log("location.state:", location.state);
+    if (location.state?.fromCheckout) {
+      console.log("從結帳頁面返回，歸零點數");
+      fetchUserData();
+    }
 
     const fetchProducts = async () => {
       try {
@@ -42,17 +37,54 @@ const PayPlan = () => {
 
     const fetchCart = async () => {
       try {
+        const localCart = JSON.parse(localStorage.getItem("cart")) || [];
         const res = await axios.get(`${API_URL}/cart`);
-        setCart(res.data);
+         // 如果 localStorage 沒有購物車，就用 json-server 內的資料
+        setCart(localCart.length > 0 ? localCart : res.data);
       } catch (error) {
         console.error("取得購物車失敗", error);
       }
+      
     };
 
-    fetchUserData();
+    navigate(".", { replace: true, state: {} });
     fetchProducts();
     fetchCart();
+    fetchUserData();
   }, [setCurrentUser]);
+
+  const fetchUserData = async () => {
+    const useraccount = localStorage.getItem("useraccount");
+    if (!useraccount) return;
+
+      try {
+      //   const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+      //   if (res.data.length > 0) {
+      //     // setCurrentUser(res.data[0]);
+      //     const user = res.data[0];
+
+      //     // ** 將點數改為 0**
+      //     await axios.patch(`${API_URL}/members/${user.id}`, { points: 0 });
+
+      //   // ** 更新 currentUser，讓畫面同步變更**
+      //   setCurrentUser((prevUser) => {
+      //     const updatedUser = { ...prevUser, points: 0 };
+      //     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      //     return updatedUser; // 確保 React 重新渲染
+      //   });
+      // }
+      await axios.patch(`${API_URL}/members/${currentUser.id}`, { points: 0 });
+
+      setCurrentUser((prevUser) => {
+        const updatedUser = { ...prevUser, points: 0 };
+        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+        return updatedUser;
+      });
+      console.log("點數已歸零");
+      } catch (error) {
+        console.error("取得會員資訊失敗", error);
+      }
+  };
 
   const openModal = (store) => {
     console.log('點擊了:', store);
@@ -62,7 +94,7 @@ const PayPlan = () => {
 
   const closeModal = () => {
     setShowModal(false);
-    setSelectedStore(null);
+    setSelectedStore(null); 
   };
 
   const confirmPurchase = async () => {
@@ -73,24 +105,34 @@ const PayPlan = () => {
     }
 
     try {
+      // 先清空購物車
+      await axios.get(`${API_URL}/cart`).then(res => {
+        return Promise.all(res.data.map(item => axios.delete(`${API_URL}/cart/${item.id}`)));
+      });
+
+      // 計算新點數
       const newPoints = (currentUser.points || 0) + parseInt(selectedStore.coinPoint);
+      
+      // 更新用戶點數
       await axios.patch(`${API_URL}/members/${currentUser.id}`, { points: newPoints });
 
-      setCurrentUser((prevUser) => ({
-        ...prevUser,
-        points: newPoints,
-      }));
-
+      // 更新 localStorage 的 currentUser
+      const updatedUser = { ...currentUser, points: newPoints };
+      setCurrentUser(updatedUser);
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+      // 新增商品到購物車
       const cartItem = {
         ...selectedStore,
         quantity: 1,
       };
       await axios.post(`${API_URL}/cart`, cartItem);
       localStorage.setItem("cart", JSON.stringify([...cart, cartItem]));
+      // localStorage.setItem("currentUser", JSON.stringify([...cart, cartItem]));
 
       Swal.fire({
         title: "成功加入購物車並加點！",
-        text: `${selectedStore.coinPoint} 已加入，當前點數：${newPoints.toLocaleString()} 點`,
+        text: `${selectedStore.coinPoint} 已加入
+        ，當前點數：${newPoints.toLocaleString()} 點`,
         icon: "success",
         confirmButtonText: "前往結帳"
       }).then(() => navigate("/checkout"));

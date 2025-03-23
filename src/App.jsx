@@ -32,7 +32,7 @@ import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3";
 import PayPlan from "./pages/PayPlan";
 import CheckOutPage from "./pages/Checkout/CheckOutPage";
 import IndustryList from "./pages/Home/IndustryList";
-
+import CheckoutSuccessPage from "./pages/Checkout/CheckoutSuccessPage";
 // 後台
 import AdminHome from './pages/Admin/AdminHome';
 
@@ -90,7 +90,7 @@ const Content = () => {
         <Route path="/fotget-password-step3" element={<FotgetPasswordStep3 />} />
         <Route path="/pay-plan" element={<PayPlan />} />
         <Route path="/checkout" element={<CheckOutPage />} />
-
+        <Route path="/checkout-success" element={<CheckoutSuccessPage />} />
         {/* 後台路由 */}
         <Route path="/admin" element={<AdminHome />} />
       </Routes>

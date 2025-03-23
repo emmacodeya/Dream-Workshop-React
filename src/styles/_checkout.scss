@@ -1,5 +1,4 @@
 .checkout-form {
-    border:0.5px solid $gray-400;
     backdrop-filter: blur(10px);
     color: $gray-200;
     form {
@@ -7,7 +6,10 @@
             max-width: 100%;
         }
     }   
+    
 }
+
+
 
 .pay-btn {
     border: 2px solid $gray-100;
@@ -26,13 +28,56 @@
     }
 }
 
+/* CreditCardForm.css */
+.custom-select {
+    background-color: #333333b2;
+    color: $gray-100;
+    appearance: none; /* 隱藏原生箭頭 */
+    -webkit-appearance: none; /* Safari */
+    -moz-appearance: none; /* Firefox */
+  
+    /* 自定義箭頭 (SVG) */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='white'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+  
+    // padding: 13px 24px; 
+    padding-right: 3rem;
+    border: 2px solid $gray-100;
+    width: 100%;
+    height: 45px;
+    border-radius: 0%;
+    &:focus {
+        background-color: #333333b2;
+        color: $gray-100;
+        border: 2px solid $primary-600;
+      }
+      &::placeholder {
+        color: $gray-100;
+      }
+  }
+
 .checkout-input {
   background-color: #333333b2;
   color: $gray-100;
   padding: 13px 24px;
   border: 2px solid $gray-100;
   border-radius: 0%;
+  &:focus {
+           background-color: #333333b2;
+           color: $gray-100;
+           border: 2px solid $primary-600;
+         }
+         &::placeholder {
+           color: $gray-100;
+         }
 }
+
+.checkout-input::placeholder {
+    color: $gray-500;
+}
+
+
 
 .btn-line-hover {
     background: none;
@@ -41,6 +86,9 @@
     cursor: pointer;
     position: relative;
 }
+
+
+  
 
 .btn-line-hover::after {
     content: "";
