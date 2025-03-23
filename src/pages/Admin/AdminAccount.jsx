@@ -3,9 +3,11 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { Modal, Button } from "react-bootstrap";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const MySwal = withReactContent(Swal);
+const ITEMS_PER_PAGE = 8;
 
 const AdminAccount = () => {
   const [members, setMembers] = useState([]);
@@ -17,6 +19,7 @@ const AdminAccount = () => {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [projects, setProjects] = useState([]);
   const [investors, setInvestors] = useState([]);
+   const [currentPage, setCurrentPage] = useState(1);
 
  
 
@@ -55,6 +58,7 @@ const AdminAccount = () => {
         });
       
         setFilteredMembers(filtered);
+        setCurrentPage(1);
       }, [searchTerm, filterVerify, members]);
       
   
@@ -112,6 +116,12 @@ const AdminAccount = () => {
     }
   };
 
+  const totalPages = Math.ceil(filteredMembers.length / ITEMS_PER_PAGE);
+  const paginatedMembers = filteredMembers.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
   
   return (
     <div className="admin-account text-white">
@@ -149,8 +159,8 @@ const AdminAccount = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredMembers.length > 0 ? (
-            filteredMembers.map((member) => (
+          {paginatedMembers.length > 0 ? (
+            paginatedMembers.map((member) => (
               <tr key={member.id}>
                 <td>{member.useraccount}</td>
                 <td>{member.name}</td>
@@ -296,7 +306,12 @@ const AdminAccount = () => {
           </Modal.Footer>
         </Modal>
 
-
+       {/* 分頁功能 */}
+      <Pagination 
+        currentPage={currentPage} 
+        totalPages={totalPages} 
+        onPageChange={setCurrentPage} 
+      />
 
     </div>
   );
