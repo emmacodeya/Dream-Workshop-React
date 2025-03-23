@@ -3,8 +3,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 import { statusMap, industryMap, sizeMap, translate } from '../../utils/mappings';
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const ITEMS_PER_PAGE = 8;
 
 const AdminProjects = () => {
   const [projects, setProjects] = useState([]);
@@ -16,6 +18,7 @@ const AdminProjects = () => {
   const [selectedProject, setSelectedProject] = useState(null);
   const [showStatusModal, setShowStatusModal] = useState(false);
   const [targetProject, setTargetProject] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
 
   const [swot, setSwot] = useState([]);
   const [marketSize, setMarketSize] = useState([]);
@@ -75,7 +78,12 @@ const AdminProjects = () => {
   };
 
   const handleDeleteProject = (id) => {
-    Swal.fire({ title: "確定刪除這個專案？", icon: "warning", showCancelButton: true, confirmButtonText: "刪除" })
+    Swal.fire({ 
+      title: "確定刪除這個專案？",
+      text: "刪除後無法恢復！", 
+      icon: "warning", 
+      showCancelButton: true, 
+      confirmButtonText: "刪除" })
       .then(async (result) => {
         if (result.isConfirmed) {
           await axios.delete(`${API_URL}/projects/${id}`);
@@ -101,6 +109,12 @@ const AdminProjects = () => {
   
   const filteredProjects = projects.filter((p) => 
     p.name.includes(searchTerm) || String(p.id).includes(searchTerm)
+  );
+
+  const totalPages = Math.ceil(filteredProjects.length / ITEMS_PER_PAGE);
+  const paginatedProjects = filteredProjects.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
   );
 
 
@@ -140,7 +154,7 @@ const openDetailModal = async (project) => {
           </tr>
         </thead>
         <tbody>
-        {filteredProjects.map((p) => (
+        {paginatedProjects.map((p) => (
             <tr key={p.id}>
               <td>{p.id}</td>
               <td>{p.name}</td>
@@ -167,6 +181,8 @@ const openDetailModal = async (project) => {
 ))}
         </tbody>
       </table>
+
+       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
  
  {/* 詳情 */}
  <Modal show={showDetailModal} onHide={() => setShowDetailModal(false)} size="lg" centered>
@@ -220,20 +236,20 @@ const openDetailModal = async (project) => {
   </Modal.Header>
   <Modal.Body>
   {targetProject && (
-            <>             
-              <div>
-              <p className="mb-2  text-dark fw-bold"><strong>公司 LOGO：</strong></p>
-              <img src={targetProject.companyLogo} alt="公司LOGO" className="img-fluid mb-2" style={{ maxHeight: "150px", objectFit: "contain" }} />
-                <p className="mb-2  text-dark fw-bold">項目照片：</p>
-                {targetProject.companyImage ? (
-                  
-                  <img src={targetProject.companyImage} alt="公司環境照" className="img-fluid mt-2  " style={{ maxHeight: "150px", objectFit: "cover" }} />
-                ) : (
-                  <p className="text-gray-600">尚無照片</p>
-                )}
-              </div>
-            </>
-          )}
+    <>             
+      <div>
+      <p className="mb-2  text-dark fw-bold"><strong>公司 LOGO：</strong></p>
+      <img src={targetProject.companyLogo} alt="公司LOGO" className="img-fluid mb-2" style={{ maxHeight: "150px", objectFit: "contain" }} />
+        <p className="mb-2  text-dark fw-bold">項目照片：</p>
+        {targetProject.companyImage ? (
+          
+          <img src={targetProject.companyImage} alt="公司環境照" className="img-fluid mt-2  " style={{ maxHeight: "150px", objectFit: "cover" }} />
+        ) : (
+          <p className="text-gray-600">尚無照片</p>
+        )}
+      </div>
+    </>
+  )}
   </Modal.Body>
   <Modal.Footer>
   <Button variant="secondary" className="rounded" onClick={() => setShowStatusModal(false)}>關閉</Button>
@@ -263,7 +279,8 @@ const openDetailModal = async (project) => {
               <td>{e.name}</td>
               <td>{e.comment}</td>
               <td>
-                <Button size="sm" variant="danger" onClick={() => handleDeleteEvaluation(e.id)}>刪除</Button>
+                <Button size="sm" variant="danger" 
+                onClick={() => handleDeleteEvaluation(e.id)}>刪除評價</Button>
               </td>
             </tr>
           ))}
