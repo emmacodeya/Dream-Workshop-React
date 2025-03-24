@@ -5,6 +5,7 @@ import AdminAccount from "./AdminAccount";
 import AdminProjects from "./AdminProjects";
 import AdminInvestors from "./AdminInvestors";
 import AdminArticles from "./AdminArticles";
+import AdminActivities from "./AdminActivities";
 
 
 
@@ -37,7 +38,7 @@ const AdminHome = () => {
             <AdminInvestors />
             </div>
             <div className={`content-section text-white ${activeSection === "activities" ? "d-block" : "d-none"}`}>
-              <h2>活動管理</h2>
+            <AdminActivities />
             </div>
             <div className={`content-section text-white ${activeSection === "pricingPlan" ? "d-block" : "d-none"}`}>
               <h2>點數管理</h2>
