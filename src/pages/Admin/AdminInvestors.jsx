@@ -143,7 +143,7 @@ const AdminInvestors = () => {
                   variant="outline-primary-600"
                   size="sm"
                   className="me-2"
-                  onClick={() => openPhotoModal(i.avatar)}
+                  onClick={() => openPhotoModal(i)}
                 >
                   查看照片
                 </Button>

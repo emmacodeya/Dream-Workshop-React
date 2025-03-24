@@ -131,7 +131,7 @@ const AdminAccount = () => {
         <input
           type="text"
           className="form-control me-2"
-          placeholder="搜尋會員帳號 / 姓名 / 電子郵箱"
+          placeholder="搜尋會員帳號或姓名或電子郵箱"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
