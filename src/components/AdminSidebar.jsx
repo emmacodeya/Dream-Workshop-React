@@ -24,10 +24,10 @@ const AdminSidebar = ({ setActiveSection, activeSection }) => {
                 className={`nav-item py-3 px-3 d-flex align-items-center sidebar-item ${activeSection === item.key ? 'active' : ''}`}
                 onClick={() => {
                   if (item.key === "Home") {
-                    window.location.href = "/#/";
+                    window.location.href = "/Dream-Workshop-React/#/";
                   } else if (item.key === "admin-login") {
-                    localStorage.removeItem("currentUser");
-                    window.location.href = "/#/admin-login";
+                    localStorage.removeItem("currentAdmin");
+                    window.location.href = "/Dream-Workshop-React/#/admin-login";
                   } else {
                     setActiveSection(item.key);
                   }
