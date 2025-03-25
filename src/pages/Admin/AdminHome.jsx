@@ -8,10 +8,8 @@ import AdminArticles from "./AdminArticles";
 import AdminActivities from "./AdminActivities";
 import AdminManager from "./AdminManager";
 
-const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
-if (!currentAdmin) {
-  window.location.href = '/#/admin-login';
-}
+
+
 
 const AdminHome = () => {
   const [activeSection, setActiveSection] = useState("accounts");

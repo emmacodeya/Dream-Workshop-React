@@ -39,7 +39,7 @@ const AdminLogin = () => {
             <div className="row justify-content-center align-items-center h-100">
               <div className="col-10 text-center">
                 <img
-                  src="../../assets/images/創夢工坊-logo.png"
+                  src="https://dream-workshop-api.onrender.com/assets/images/創夢工坊-logo.png"
                   alt="logo"
                   className="admin-logo mb-6"
                 />
