@@ -130,13 +130,13 @@ const AdminAccount = () => {
       <div className="d-flex mb-3">
         <input
           type="text"
-          className="form-control me-2"
+          className="form-control me-2 w-50"
           placeholder="搜尋會員帳號或姓名或電子郵箱"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
          <select
-          className="form-select me-2"
+          className="form-select me-2 w-25"
           value={filterVerify}
           onChange={(e) => setFilterVerify(e.target.value)}
         >
@@ -148,7 +148,7 @@ const AdminAccount = () => {
         </select>
       </div>
 
-      <table className="table table-dark table-striped">
+      <table className="table table-dark ">
         <thead>
           <tr>
             <th>會員帳號</th>

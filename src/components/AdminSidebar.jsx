@@ -11,6 +11,7 @@ const AdminSidebar = ({ setActiveSection, activeSection }) => {
       { key: "pricingPlan", label: "點數方案", icon:"bi-currency-dollar" },
       { key: "transactions", label: "交易管理", icon:"bi-card-list" },
       { key: "articles", label: "文章管理", icon:"bi-newspaper" },
+      { key: "managers", label: "管理者管理", icon:"bi-person-gear" },
       { key: "Home", label: "回到前台頁面", icon:"bi-arrow-return-left" },
       { key: "admin-login", label: "登出", icon:"bi-box-arrow-right" }
     ];
