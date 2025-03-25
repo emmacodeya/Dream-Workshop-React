@@ -122,7 +122,7 @@ const AdminArticles = () => {
         />
       </div>
 
-      <table className="table table-dark table-striped">
+      <table className="table table-dark ">
         <thead>
           <tr>
             <th>文章編號</th>

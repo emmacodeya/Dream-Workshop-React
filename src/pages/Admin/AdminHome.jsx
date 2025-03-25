@@ -6,9 +6,12 @@ import AdminProjects from "./AdminProjects";
 import AdminInvestors from "./AdminInvestors";
 import AdminArticles from "./AdminArticles";
 import AdminActivities from "./AdminActivities";
+import AdminManager from "./AdminManager";
 
-
-
+const currentAdmin = JSON.parse(localStorage.getItem('currentAdmin'));
+if (!currentAdmin) {
+  window.location.href = '/#/admin-login';
+}
 
 const AdminHome = () => {
   const [activeSection, setActiveSection] = useState("accounts");
@@ -48,6 +51,9 @@ const AdminHome = () => {
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>
             <AdminArticles />
+            </div>
+            <div className={`content-section text-white ${activeSection === "managers" ? "d-block" : "d-none"}`}>
+            <AdminManager />
             </div>
           </div>
         </div>
