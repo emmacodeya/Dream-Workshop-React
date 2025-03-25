@@ -128,9 +128,7 @@ const AdminActivities = () => {
   return (
     <div className="container">
       <h1 className="fw-bold fs-2 mb-3">活動管理</h1>
-      <div className="d-flex justify-content-end">
-       
-      </div>
+
       <form onSubmit={handleSearch} className="d-flex  justify-content-between mb-3">
         <input
           type="text"

@@ -35,6 +35,8 @@ import IndustryList from "./pages/Home/IndustryList";
 
 // 後台
 import AdminHome from './pages/Admin/AdminHome';
+import AdminLogin from './pages/Admin/AdminLogin';
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -114,6 +116,7 @@ const Content = () => {
 
         {/* 後台路由 */}
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
       {!isAdmin && <Footer />}
     </>
