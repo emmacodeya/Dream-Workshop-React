@@ -1,4 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
+import React from 'react';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -16,7 +16,7 @@ const Footer = () => {
               <Link to="/">
                 <img className="mb-1" src="https://dream-workshop-api.onrender.com/assets/images/創夢工坊-logo.png" alt="創夢工坊" style={{ width: '60px' }} />
               </Link>
-              <h3 className="fw-bold mb-5">Dream Workshop</h3>
+              <h3 className="fw-bold mb-5"><Link to="/admin">Dream-Workshop</Link></h3>
               <ul className="d-flex justify-content-center justify-content-sm-start">
                 <li><a href="#"><i className="icons bi bi-facebook me-3"></i></a></li>
                 <li><a href="#"><i className="icons bi bi-instagram me-3"></i></a></li>

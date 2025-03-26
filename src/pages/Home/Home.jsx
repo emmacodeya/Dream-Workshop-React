@@ -70,7 +70,7 @@ const Home = () => {
     }
 
     const key = type === "project" ? "collectedProjects" : "collectedInvestors";
-    const storedFavorites = currentUser[key] || [];
+    const storedFavorites = Array.isArray(currentUser[key]) ? currentUser[key] : [];
 
     const isFavorite = storedFavorites.includes(id);
     const updatedFavorites = isFavorite
@@ -197,7 +197,7 @@ const truncateText = (text, maxLength = 20) => {
                   <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id, "project")}>
                     <img
                       className="favorite"
-                      src={currentUser ?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                      src={Array.isArray(currentUser?.collectedProjects) && currentUser.collectedProjects.includes(project.id)  ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                       alt="heart"
                     />
                   </button>
@@ -241,7 +241,7 @@ const truncateText = (text, maxLength = 20) => {
                 >
                   <img
                     className="favorite"
-                    src={currentUser ?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    src={Array.isArray(currentUser?.collectedInvestors) && currentUser.collectedInvestors.includes(investor.id)  ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>

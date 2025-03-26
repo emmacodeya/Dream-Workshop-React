@@ -1,6 +1,12 @@
 import { useState } from "react";
 import AdminSidebar from "../../components/AdminSidebar";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import AdminAccount from "./AdminAccount";
+import AdminProjects from "./AdminProjects";
+import AdminInvestors from "./AdminInvestors";
+import React from 'react';
+import AdminPonits from "./AdminPoints";
+import AdminOrders from "./AdminOrders";
 
 
 const AdminHome = () => {
@@ -22,22 +28,23 @@ const AdminHome = () => {
         <div className="col-10 py-5">
           <div className="container">
             <div className={`content-section text-white ${activeSection === "accounts" ? "d-block" : "d-none"}`}>
-              <h2>會員管理</h2>
+            <AdminAccount />
             </div>
             <div className={`content-section text-white ${activeSection === "startups" ? "d-block" : "d-none"}`}>
-              <h2>創業項目管理</h2>
+            <AdminProjects />
             </div>
             <div className={`content-section text-white ${activeSection === "investors" ? "d-block" : "d-none"}`}>
-              <h2>投資人管理</h2>
+            <AdminInvestors />
             </div>
             <div className={`content-section text-white ${activeSection === "activities" ? "d-block" : "d-none"}`}>
               <h2>活動管理</h2>
             </div>
             <div className={`content-section text-white ${activeSection === "pricingPlan" ? "d-block" : "d-none"}`}>
-              <h2>點數管理</h2>
+              <AdminPonits />
             </div>
             <div className={`content-section text-white ${activeSection === "transactions" ? "d-block" : "d-none"}`}>
               <h2>交易管理</h2>
+              <AdminOrders />
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>
               <h2>文章管理</h2>

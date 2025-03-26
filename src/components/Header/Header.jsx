@@ -1,6 +1,6 @@
-/* eslint-disable react/react-in-jsx-scope */
+import React from 'react';
 import './Header.scss'; 
-import { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
 
@@ -10,18 +10,6 @@ const Header = () => {
   const navigate = useNavigate();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  // 取得登入會員資訊
-  useEffect(() => {
-    const storedUser = localStorage.getItem("currentUser");
-    if (storedUser) {
-      try {
-        setCurrentUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error("解析使用者資料失敗:", error);
-        setCurrentUser(null);
-      }
-    }
-  }, [setCurrentUser]);
 
   // 登出功能
   const handleLogout = () => {
@@ -29,7 +17,7 @@ const Header = () => {
     setCurrentUser(null);
     closeMenu();
     alert("已登出！");
-    navigate("/login");
+    navigate("/");
   };
 
   // 切換會員選單
@@ -123,8 +111,10 @@ const Header = () => {
                       className="me-2"
                     />
                   ) : (
-                    <div className="avatar-placeholder me-2">H</div> 
-                  )}             
+                    <div className="avatar-placeholder me-2"></div> 
+                  )}
+
+                
                 </NavLink>
                 {/* 會員選單展開按鈕 */}
                 <i className={`bi ${isMenuOpen ? "bi-chevron-up" : "bi-chevron-down"}`} onClick={toggleMenu}></i>

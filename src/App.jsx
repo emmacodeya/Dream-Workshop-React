@@ -1,7 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { HashRouter as Router, Route, Routes, useLocation } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext  } from "react";
 import { UserContext } from "./context/UserContext";
+
 
 // 全局元件
 import Header from "./components/Header/Header";
@@ -39,6 +40,7 @@ import AdminHome from './pages/Admin/AdminHome';
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
 
+ 
   useEffect(() => {
     const storedUser = localStorage.getItem("currentUser");
     if (storedUser) {
@@ -46,10 +48,19 @@ function App() {
     }
   }, []);
 
+  
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem("currentUser", JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem("currentUser");
+    }
+  }, [currentUser]);
+
   return (
     <UserContext.Provider value={{ currentUser, setCurrentUser }}>
       <Router>
-        <Content />
+        <Content/>
       </Router>
     </UserContext.Provider>
   );
@@ -59,6 +70,17 @@ export default App;
 
 const Content = () => {
   const location = useLocation();
+  const { setCurrentUser } = useContext(UserContext);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      setCurrentUser(JSON.parse(storedUser));
+    } else {
+      setCurrentUser(null);
+    }
+  }, [location, setCurrentUser]);
+
   const isAdmin = location.pathname.startsWith("/admin");
 
   return (
@@ -98,3 +120,5 @@ const Content = () => {
     </>
   );
 };
+
+
