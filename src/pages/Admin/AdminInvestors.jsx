@@ -3,8 +3,10 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 import { translate, industryMap } from '../../utils/mappings';
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
+const ITEMS_PER_PAGE = 8;
 
 const AdminInvestors = () => {
   const [investors, setInvestors] = useState([]);
@@ -13,10 +15,11 @@ const AdminInvestors = () => {
   const [selectedInvestor, setSelectedInvestor] = useState(null);
 
   const [showPhotoModal, setShowPhotoModal] = useState(false);
-  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
   const [evaluations, setEvaluations] = useState([]);
   const [showEvalModal, setShowEvalModal] = useState(false);
   const [selectedInvestorEvals, setSelectedInvestorEvals] = useState([]);
+   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchInvestors();
@@ -61,6 +64,12 @@ const AdminInvestors = () => {
   const filteredInvestors = investors.filter(
     (i) => i.name.includes(searchTerm) || String(i.id).includes(searchTerm)
   );
+  const totalPages = Math.ceil(filteredInvestors.length / ITEMS_PER_PAGE);
+  const paginatedInvestors = filteredInvestors.slice(
+    (currentPage - 1) * ITEMS_PER_PAGE,
+    currentPage * ITEMS_PER_PAGE
+  );
+
 
   const openDetailModal = (investor) => {
     setSelectedInvestor(investor);
@@ -69,8 +78,8 @@ const AdminInvestors = () => {
 
 
 
-  const openPhotoModal = (photo) => {
-    setSelectedPhoto(photo);
+  const openPhotoModal = (investor) => {
+    setSelectedInvestor(investor);
     setShowPhotoModal(true);
   };
 
@@ -83,7 +92,7 @@ const AdminInvestors = () => {
       confirmButtonText: "刪除",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        await axios.delete(`${API_URL}/projectEvaluations/${id}`);
+        await axios.delete(`${API_URL}/investorEvaluations/${id}`);
         fetchEvaluations();
         Swal.fire("已刪除！", "", "success");
       }
@@ -100,7 +109,7 @@ const AdminInvestors = () => {
           placeholder="搜尋投資人姓名或編號"
           className="form-control w-50 me-3"
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1); }}
         />
       </div>
 
@@ -115,7 +124,7 @@ const AdminInvestors = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredInvestors.map((i) => (
+          {paginatedInvestors.map((i) => (
             <tr key={i.id}>
               <td>{i.id}</td>
               <td>{i.name}</td>
@@ -134,7 +143,7 @@ const AdminInvestors = () => {
                   variant="outline-primary-600"
                   size="sm"
                   className="me-2"
-                  onClick={() => openPhotoModal(i.avatar)}
+                  onClick={() => openPhotoModal(i)}
                 >
                   查看照片
                 </Button>
@@ -158,6 +167,7 @@ const AdminInvestors = () => {
           ))}
         </tbody>
       </table>
+       <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
 
       {/* 詳情 */}
       <Modal show={showDetailModal} onHide={() => setShowDetailModal(false)} size="lg" centered>
@@ -171,7 +181,7 @@ const AdminInvestors = () => {
               <p className="text-dark"><strong>聯絡電話：</strong>{selectedInvestor.mobile}</p>
               <p className="text-dark"><strong>電子郵件：</strong>{selectedInvestor.email}</p>
               <p className="text-dark"><strong>資本額：</strong>{selectedInvestor.capital}</p>
-              <p className="text-dark"><strong>偏好產業：</strong>{selectedInvestor.industry.map((ind) => translate(industryMap, ind)).join("，")}</p>
+              <p className="text-dark"><strong>偏好產業：</strong>{selectedInvestor?.industry?.length > 0 ? selectedInvestor.industry.map((ind) => translate(industryMap, ind)).join("，") : "無"}</p>
               <p className="text-dark"><strong>自傳：</strong>{selectedInvestor.introduction}</p>
               <p className="text-dark"><strong>投資經歷：</strong>{selectedInvestor.experience}</p>
               <p className="text-dark"><strong>相關資源：</strong>{selectedInvestor.resources}</p>
@@ -193,11 +203,11 @@ const AdminInvestors = () => {
             <Modal.Title className="fs-3 fw-bold">投資人照片</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-            {selectedPhoto ? (
+            {selectedInvestor ? (
             <div>
                 <p className="mb-2 text-dark fw-bold"><strong>頭像：</strong></p>
                 <img
-                src={selectedPhoto}
+                src={selectedInvestor.avatar}
                 alt="投資人頭像"
                 className="img-fluid mb-2"
                 style={{ maxHeight: "150px", objectFit: "contain" }}
@@ -222,7 +232,9 @@ const AdminInvestors = () => {
             )}
         </Modal.Body>
         <Modal.Footer>
-            <Button variant="secondary" onClick={() => setShowPhotoModal(false)}>
+            <Button variant="secondary" 
+            className="rounded"
+             onClick={() => setShowPhotoModal(false)}>
             關閉
             </Button>
         </Modal.Footer>
@@ -253,7 +265,8 @@ const AdminInvestors = () => {
                     <td>{e.name}</td>
                     <td>{e.comment}</td>
                     <td>
-                      <Button size="sm" variant="danger" onClick={() => handleDeleteEvaluation(e.id)}>刪除</Button>
+                      <Button size="sm" variant="danger" 
+                      onClick={() => handleDeleteEvaluation(e.id)}>刪除評價</Button>
                     </td>
                   </tr>
                 ))}

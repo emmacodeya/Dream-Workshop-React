@@ -7,6 +7,11 @@ import AdminInvestors from "./AdminInvestors";
 import React from 'react';
 import AdminPonits from "./AdminPoints";
 import AdminOrders from "./AdminOrders";
+import AdminArticles from "./AdminArticles";
+import AdminActivities from "./AdminActivities";
+import AdminManager from "./AdminManager";
+
+
 
 
 const AdminHome = () => {
@@ -37,7 +42,7 @@ const AdminHome = () => {
             <AdminInvestors />
             </div>
             <div className={`content-section text-white ${activeSection === "activities" ? "d-block" : "d-none"}`}>
-              <h2>活動管理</h2>
+            <AdminActivities />
             </div>
             <div className={`content-section text-white ${activeSection === "pricingPlan" ? "d-block" : "d-none"}`}>
               <AdminPonits />
@@ -47,7 +52,10 @@ const AdminHome = () => {
               <AdminOrders />
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>
-              <h2>文章管理</h2>
+            <AdminArticles />
+            </div>
+            <div className={`content-section text-white ${activeSection === "managers" ? "d-block" : "d-none"}`}>
+            <AdminManager />
             </div>
           </div>
         </div>

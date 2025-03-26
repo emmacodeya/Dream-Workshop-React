@@ -36,6 +36,8 @@ import IndustryList from "./pages/Home/IndustryList";
 import CheckoutSuccessPage from "./pages/Checkout/CheckoutSuccessPage";
 // 後台
 import AdminHome from './pages/Admin/AdminHome';
+import AdminLogin from './pages/Admin/AdminLogin';
+
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -115,6 +117,7 @@ const Content = () => {
         <Route path="/checkout-success" element={<CheckoutSuccessPage />} />
         {/* 後台路由 */}
         <Route path="/admin" element={<AdminHome />} />
+        <Route path="/admin-login" element={<AdminLogin />} />
       </Routes>
       {!isAdmin && <Footer />}
     </>
