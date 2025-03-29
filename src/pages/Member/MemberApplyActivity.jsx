@@ -1,18 +1,15 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Modal, Button } from "react-bootstrap";
-import Pagination from "../../components/Pagination"; 
+import Swal from "sweetalert2";
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = `${API_URL}/activities`;
 
-
 const MemberApplyActivity = () => {
   const [activities, setActivities] = useState([]);
-  const [selectedRegistration, setSelectedRegistration] = useState(null);
-  const [showModal, setShowModal] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const itemsPerPage = 5; 
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5;
   const useraccount = localStorage.getItem("useraccount");
 
   useEffect(() => {
@@ -20,12 +17,10 @@ const MemberApplyActivity = () => {
 
     const fetchRegisteredActivities = async () => {
       try {
-        // 會員報名紀錄
         const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
           params: { useraccount }
         });
 
-        // 活動詳細資訊
         const activityDetails = await Promise.all(
           registrations.map((reg) => axios.get(`${ACTIVITY_API_URL}/${reg.activityId}`))
         );
@@ -37,14 +32,11 @@ const MemberApplyActivity = () => {
           return {
             ...reg,
             ...activity,
-            isExpired: new Date(activity.date) < new Date(today), 
+            isExpired: new Date(activity.date) < new Date(today),
           };
         });
 
-        sortedActivities.sort((a, b) => {
-          return a.isExpired - b.isExpired;
-        });
-
+        sortedActivities.sort((a, b) => a.isExpired - b.isExpired);
         setActivities(sortedActivities);
       } catch (error) {
         console.error("無法獲取報名紀錄:", error);
@@ -54,57 +46,48 @@ const MemberApplyActivity = () => {
     fetchRegisteredActivities();
   }, [useraccount]);
 
-
-
   const totalPages = Math.ceil(activities.length / itemsPerPage);
   const paginatedActivities = activities.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // 取消報名的 Modal
-  const handleOpenModal = (registration) => {
-    setSelectedRegistration(registration);
-    setShowModal(true);
-  };
-
-  // 關閉 Modal
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setSelectedRegistration(null);
-  };
-
   // 取消報名
-  const handleCancelRegistration = async () => {
-    if (!selectedRegistration) return;
-  
+  const handleCancelRegistration = async (activity) => {
+    const result = await Swal.fire({
+      title: "確定要取消報名？",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "確定",
+      cancelButtonText: "取消",
+      confirmButtonColor: "#7267EF",
+    });
+
+    if (!result.isConfirmed) return;
+
     try {
       const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
         params: { useraccount }
       });
-      const registration = registrations.find((reg) => reg.activityId === selectedRegistration.activityId);
-  
+
+      const registration = registrations.find((reg) => reg.activityId === activity.activityId);
       if (!registration) {
-        alert("找不到該活動的報名記錄！");
+        await Swal.fire("找不到報名記錄", "請稍後再試！", "error");
         return;
       }
-  
-      console.log("找到的報名記錄:", registration);
-  
+
       await axios.delete(`${API_URL}/registrations/${registration.id}`);
-      await axios.patch(`${ACTIVITY_API_URL}/${selectedRegistration.activityId}`, {
-        remainingSlots: selectedRegistration.remainingSlots + 1,
+      await axios.patch(`${ACTIVITY_API_URL}/${activity.activityId}`, {
+        remainingSlots: activity.remainingSlots + 1,
       });
-  
-      setActivities((prev) => prev.filter((act) => act.activityId !== selectedRegistration.activityId));
-      alert("報名已取消！");
-  
+
+      setActivities((prev) => prev.filter((act) => act.activityId !== activity.activityId));
+
+      await Swal.fire("取消成功", "您已成功取消報名。", "success");
       window.dispatchEvent(new Event("updateActivityRecords"));
     } catch (error) {
       console.error("取消報名失敗:", error);
-      alert("取消報名時發生錯誤，請稍後再試！");
-    } finally {
-      handleCloseModal();
+      Swal.fire("錯誤", "取消報名時發生錯誤，請稍後再試！", "error");
     }
   };
 
@@ -136,7 +119,7 @@ const MemberApplyActivity = () => {
                       <button
                         type="button"
                         className="btn btn-outline-danger fw-bold"
-                        onClick={() => handleOpenModal(activity)}
+                        onClick={() => handleCancelRegistration(activity)}
                       >
                         取消申請
                       </button>
@@ -156,29 +139,10 @@ const MemberApplyActivity = () => {
           </div>
         ))
       )}
+
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
-
-      {/* 取消申請 Modal */}
-      <Modal show={showModal} onHide={handleCloseModal} centered>
-        <Modal.Header closeButton className="border-0 bg-gray-1000"></Modal.Header>
-        <Modal.Body className="bg-gray-1000 text-center text-primary-600 fs-3 fw-bold">
-          是否取消報名?
-        </Modal.Body>
-        <Modal.Footer className="d-flex justify-content-center border-0  bg-gray-1000">
-          <Button variant="secondary" className="btn-lg btn-gray-600 fw-bolder px-9" onClick={handleCloseModal}>
-            取消
-          </Button>
-          <Button
-            variant="primary"
-            className="btn-lg btn-primary-600 fw-bolder ms-9 px-9"
-            onClick={handleCancelRegistration}
-          >
-            確認
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 };

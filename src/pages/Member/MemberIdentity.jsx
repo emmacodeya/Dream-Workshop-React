@@ -1,5 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { UserContext } from "../../context/UserContext";
+
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -8,17 +12,14 @@ const MemberIdentity = () => {
   const [images, setImages] = useState({ frontId: null, backId: null, secondId: null });
   const [status, setStatus] = useState(""); 
   const [isUploading, setIsUploading] = useState(false);
-  const useraccount = localStorage.getItem("useraccount") || "";
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount;
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("currentUser"));
-    const useraccount = storedUser?.useraccount;
-
     if (!useraccount) {
       console.error("請登入帳號");
       return;
     }
-
     axios.get(`${API_URL}/members?useraccount=${useraccount}`)
       .then((res) => {
         if (res.data.length > 0) {
@@ -49,12 +50,20 @@ const MemberIdentity = () => {
     if (!file) return;
 
     if (!file.type.startsWith("image/")) {
-      alert("請選擇圖片文件");
+      Swal.fire({
+        icon: "warning",
+        title: "格式錯誤",
+        text: "請選擇圖片文件",
+      });
       return;
     }
-
+    
     if (file.size > 5 * 1024 * 1024) {
-      alert("圖片大小不可超過 5MB");
+      Swal.fire({
+        icon: "warning",
+        title: "檔案過大",
+        text: "圖片大小不可超過 5MB",
+      });
       return;
     }
 
@@ -67,37 +76,56 @@ const MemberIdentity = () => {
 
   const handleSaveChanges = async () => {
     if (!images.frontId || !images.backId || !images.secondId) {
-      alert("請上傳所有身份驗證圖片");
+      Swal.fire({
+        icon: "warning",
+        title: "資料不完整",
+        text: "請上傳所有身份驗證圖片",
+      });
       return;
     }
-
+  
     setIsUploading(true);
     try {
       const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
       if (res.data.length === 0) {
-        alert("無法找到該會員");
+        Swal.fire({
+          icon: "error",
+          title: "查無會員",
+          text: "無法找到該會員",
+        });
+        setIsUploading(false);
         return;
       }
-
-      const memberId = res.data[0].id; 
-
+  
+      const memberId = res.data[0].id;
+  
       await axios.patch(`${API_URL}/members/${memberId}`, {
         identityVerification: {
           frontId: images.frontId,
           backId: images.backId,
           secondId: images.secondId,
-          status: "pending" 
+          status: "pending"
         }
       });
-
-      alert("身分證圖片上傳成功！");
-      setStatus("pending"); 
+  
+      Swal.fire({
+        icon: "success",
+        title: "上傳成功",
+        text: "身分證圖片上傳成功！",
+      });
+      setStatus("pending");
     } catch (error) {
       console.error("圖片上傳失敗:", error);
-      alert("發生錯誤，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "上傳失敗",
+        text: "發生錯誤，請稍後再試！",
+      });
+    } finally {
+      setIsUploading(false);
     }
-    setIsUploading(false);
   };
+  
 
   return (
     <div className="container my-8">

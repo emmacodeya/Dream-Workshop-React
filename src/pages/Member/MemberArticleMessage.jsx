@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 import Pagination from "../../components/Pagination"; 
 
@@ -10,7 +11,6 @@ const MemberArticleMessage = () => {
   const [replyContent, setReplyContent] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
-  const [notification, setNotification] = useState({ show: false, message: "", success: false });
   const [contentError, setContentError] = useState(false);
   const useraccount = localStorage.getItem("useraccount") || "";
   const [currentPage, setCurrentPage] = useState(1); 
@@ -38,9 +38,7 @@ const MemberArticleMessage = () => {
     fetchComments();
   }, [useraccount]);
 
-
   const totalPages = Math.ceil(comments.length / itemsPerPage);
-
   const paginatedComments = comments.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -94,15 +92,30 @@ const MemberArticleMessage = () => {
       if (articleId) {
         await axios.patch(`${API_URL}/articles/${articleId}`, { comments: updatedComments });
         setComments(comments.map(comment => 
-          comment.id === replyTo ? { ...comment, replies: [...(comment.replies || []), { id: `reply-${Date.now()}`, author: useraccount, content: replyContent, createdAt: new Date().toISOString() }] } : comment
+          comment.id === replyTo
+            ? { ...comment, replies: [...(comment.replies || []), {
+                id: `reply-${Date.now()}`,
+                author: useraccount,
+                content: replyContent,
+                createdAt: new Date().toISOString()
+              }] }
+            : comment
         ));
         setReplyContent("");
         setShowModal(false);
-        setNotification({ show: true, message: "留言已成功發送", success: true });
+        Swal.fire({
+          icon: "success",
+          title: "留言成功",
+          text: "您的回覆已送出",
+        });
       }
     } catch (error) {
       console.error("回覆失敗:", error);
-      setNotification({ show: true, message: "留言發送失敗，請稍後再試", success: false });
+      Swal.fire({
+        icon: "error",
+        title: "留言失敗",
+        text: "留言發送失敗，請稍後再試！",
+      });
     }
   };
 
@@ -142,16 +155,17 @@ const MemberArticleMessage = () => {
         </table>
       )}
 
-        {totalPages > 1 && (
+      {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
       )}
+
       {/* 回覆 Modal */}
       <Modal show={showModal} onHide={handleCloseModal} centered>
         <Modal.Header closeButton className="border-0 bg-gray-1000">
           <Modal.Title className="text-primary-600">回覆留言</Modal.Title>
         </Modal.Header>
         <Modal.Body className="bg-gray-1000 text-white">
-        <textarea
+          <textarea
             rows="4"
             className={`w-100 bg-transparent text-white inputField ${contentError ? "border-danger" : ""}`}
             value={replyContent}
@@ -163,12 +177,6 @@ const MemberArticleMessage = () => {
           <Button variant="btn btn-lg btn-gray-600 fw-bolder" onClick={handleCloseModal}>取消</Button>
           <Button variant="btn btn-lg btn-primary-600 fw-bolder" onClick={handleReplySubmit}>送出</Button>
         </Modal.Footer>
-      </Modal>
-      {/* 提示視窗 */}
-      <Modal show={notification.show} onHide={() => setNotification({ show: false, message: "", success: false })} centered>
-        <Modal.Body className={`text-center ${notification.success ? "text-success" : "text-danger"}`}>
-          {notification.message}
-        </Modal.Body>
       </Modal>
     </div>
   );

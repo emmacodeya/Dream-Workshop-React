@@ -5,6 +5,8 @@ import { Navigation } from "swiper/modules";
 import { Modal, Button } from "react-bootstrap";
 import { UserContext } from "../context/UserContext"; 
 import axios from "axios";
+import Swal from "sweetalert2";
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "swiper/css";
 import "swiper/css/navigation";
@@ -65,11 +67,19 @@ const ArticleContent = () => {
 
   const handleSubmit = async () => {
     if (!currentUser) {
-      alert("請先登入再留言！");
+      await Swal.fire({
+              icon: "warning",
+              title: "請先登入再留言！",
+              confirmButtonColor: "#7267EF"
+            });
       return;
     }
     if (!agree) {
-      alert("請先同意討論區規則與條款");
+      await Swal.fire({
+              icon: "info",
+              title: "請先同意討論區規則與條款",
+              confirmButtonColor: "#7267EF"
+            });
       return;
     }
     if (!message.trim()) {
@@ -94,17 +104,29 @@ const ArticleContent = () => {
       await axios.patch(`${API_URL}/articles/${id}`, { comments: updatedComments });
       setComments(updatedComments);
       setMessage("");
-      alert("留言已送出！");
+      await Swal.fire({
+              icon: "success",
+              title: "留言已送出！",
+              confirmButtonColor: "#7267EF"
+            });
     } catch (error) {
       console.error("留言發送失敗:", error);
-      alert("留言發送失敗！");
+      Swal.fire({
+              icon: "error",
+              title: "留言發送失敗！",
+              confirmButtonColor: "#7267EF"
+            });
     }
   };
 
   // **🔹 發表回覆**
   const handleReplySubmit = async () => {
     if (!currentUser) {
-      alert("請先登入再回覆！");
+      await Swal.fire({
+              icon: "warning",
+              title: "請先登入再回覆！",
+              confirmButtonColor: "#7267EF"
+            });
       return;
     }
     if (!replyContent.trim()) {
@@ -112,7 +134,11 @@ const ArticleContent = () => {
       return;
     }
     setReplyError(false);
-    alert("回覆已送出！");
+   await Swal.fire({
+           icon: "success",
+           title: "回覆已送出！",
+           confirmButtonColor: "#7267EF"
+         });
     setReplyContent("");
     try {
       const res = await axios.get(`${API_URL}/articles/${id}`);
@@ -144,7 +170,11 @@ const ArticleContent = () => {
 
     } catch (error) {
       console.error("回覆失敗:", error);
-      alert("回覆失敗！");
+     Swal.fire({
+             icon: "error",
+             title: "回覆失敗！",
+             confirmButtonColor: "#7267EF"
+           });
     }
   };
 
