@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -29,7 +30,6 @@ const InvestorEvaluate = ({ investorId }) => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewEvaluation({ ...newEvaluation, [name]: value });
-
     setErrors({ ...errors, [name]: "" });
   };
 
@@ -50,7 +50,7 @@ const InvestorEvaluate = ({ investorId }) => {
       ...newEvaluation,
       date: new Date().toLocaleDateString(),
       investorId,
-      replies: [] 
+      replies: [],
     };
 
     try {
@@ -58,10 +58,20 @@ const InvestorEvaluate = ({ investorId }) => {
       setEvaluations([...evaluations, response.data]);
       setNewEvaluation({ name: "", rating: 5, comment: "" });
 
-      alert("評價提交成功！");
+      await Swal.fire({
+        icon: "success",
+        title: "評價提交成功！",
+        text: "感謝您的回饋。",
+        confirmButtonColor: "#7267EF",
+      });
     } catch (error) {
       console.error("提交評價失敗", error);
-      alert("提交評價失敗，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "提交失敗",
+        text: "請稍後再試一次。",
+        confirmButtonColor: "#d33",
+      });
     }
   };
 

@@ -1,11 +1,17 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext  } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { UserContext } from "../../context/UserContext";
+
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberNewProjects = () => {
   const [industryOptions, setIndustryOptions] = useState([]);
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount;
   const [images, setImages] = useState({
     companyLogo: "",
     companyImage: "",
@@ -53,8 +59,10 @@ const MemberNewProjects = () => {
   };
 
   const onSubmit = async (data) => {
+   
     try {
       const projectResponse = await axios.post(`${API_URL}/projects`, {
+        useraccount,
         name: data.projectName,
         contactPerson: data.contactPerson,
         contactPhone: data.contactPhone,
@@ -92,11 +100,19 @@ const MemberNewProjects = () => {
 
       await Promise.all(requests);
 
-      alert("專案新增成功！");
+      Swal.fire({
+        icon: "success",
+        title: "專案新增成功！",
+        text: "恭喜！專案已成功建立",
+      });
       handleClear();
     } catch (error) {
       console.error("發生錯誤:", error);
-      alert("發生錯誤，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "新增失敗",
+        text: "發生錯誤，請稍後再試！",
+      });
     }
   };
   

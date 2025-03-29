@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
+import axios from "axios";
+const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberNewInvestor = ({ useraccount }) => {
   const [industryOptions, setIndustryOptions] = useState([]);
@@ -26,9 +29,9 @@ const MemberNewInvestor = ({ useraccount }) => {
   useEffect(() => {
     if (!useraccount) return;
 
-    fetch(`http://localhost:3000/investors?useraccount=${useraccount}`)
-      .then(res => res.json())
-      .then(data => {
+    axios.get(`${API_URL}/investors?useraccount=${useraccount}`)
+      .then(res => {
+        const data = res.data;
         if (data.length > 0) {
           setInvestor(data[0]);
           Object.keys(data[0]).forEach(key => setValue(key, data[0][key]));
@@ -46,9 +49,8 @@ const MemberNewInvestor = ({ useraccount }) => {
   }, [useraccount, setValue]);
 
   useEffect(() => {
-    fetch("http://localhost:3000/industryOptions")
-      .then(res => res.json())
-      .then(data => setIndustryOptions(data))
+    axios.get(`${API_URL}/industryOptions`)
+      .then(res => setIndustryOptions(res.data))
       .catch(error => console.error("獲取產業選項錯誤:", error));
   }, []);
 
@@ -76,8 +78,8 @@ const MemberNewInvestor = ({ useraccount }) => {
   };
 
   const onSubmit = async (data) => {
-    const method = investor?.id ? "PUT" : "POST";
-    const url = investor?.id ? `http://localhost:3000/investors/${investor.id}` : "http://localhost:3000/investors";
+    // const method = investor?.id ? "PUT" : "POST";
+    // const url = investor?.id ? `http://localhost:3000/investors/${investor.id}` : "http://localhost:3000/investors";
 
     const selectedIndustries = getValues("industry") || [];
     const payload = {
@@ -96,21 +98,27 @@ const MemberNewInvestor = ({ useraccount }) => {
     };
 
     try {
-      const response = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+      let response;
+      if (investor?.id) {
+        response = await axios.put(`${API_URL}/investors/${investor.id}`, payload);
+      } else {
+        response = await axios.post(`${API_URL}/investors`, payload);
+      }
+
+      Swal.fire({
+        icon: "success",
+        title: investor ? "更新成功" : "新增成功",
+        text: investor ? "投資人資料更新成功！" : "投資人資料新增成功！"
       });
 
-      if (response.ok) {
-        alert(investor ? "投資人資料更新成功！" : "投資人資料新增成功！");
-        setInvestor(payload);
-      } else {
-        alert("操作失敗，請再試一次！");
-      }
+      setInvestor(response.data);
     } catch (error) {
       console.error("錯誤:", error);
-      alert("發生錯誤，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "發生錯誤",
+        text: "請稍後再試！"
+      });
     }
   };
   

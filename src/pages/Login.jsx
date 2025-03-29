@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useContext, useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import { UserContext } from "../context/UserContext"; 
 
@@ -41,14 +42,26 @@ const Login = () => {
   
         setCurrentUser(user);
   
-        alert("登入成功！");
-        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "登入成功！",
+        }).then(() => {
+          navigate("/");
+        });
       } else {
-        alert("帳號或密碼錯誤！");
+        Swal.fire({
+          icon: "error",
+          title: "登入失敗",
+          text: "帳號或密碼錯誤！",
+        });
       }
     } catch (error) {
       console.error("登入失敗:", error);
-      alert("登入失敗，請再試一次！");
+      Swal.fire({
+        icon: "error",
+        title: "登入失敗",
+        text: "請再試一次！",
+      });
     }
   };
 

@@ -1,18 +1,18 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const REGISTER_API_URL = `${API_URL}/registrations`;
 
 const ActivityDetail = () => {
-  const { id } = useParams(); 
+  const { id } = useParams();
   const [activity, setActivity] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [registering, setRegistering] = useState(false); 
-  const [hasRegistered, setHasRegistered] = useState(false); 
-  const navigate = useNavigate(); 
+  const [registering, setRegistering] = useState(false);
+  const [hasRegistered, setHasRegistered] = useState(false);
+  const navigate = useNavigate();
 
   const useraccount = localStorage.getItem("useraccount");
   const isLoggedIn = !!useraccount;
@@ -30,7 +30,7 @@ const ActivityDetail = () => {
     };
 
     const checkIfRegistered = async () => {
-      if (!useraccount) return; 
+      if (!useraccount) return;
 
       try {
         const response = await axios.get(`${REGISTER_API_URL}?useraccount=${useraccount}&activityId=${id}`);
@@ -51,21 +51,32 @@ const ActivityDetail = () => {
 
   const isExpired = new Date(activity.date) < new Date();
 
-  // 點擊報名按鈕
   const handleRegister = async () => {
     if (!isLoggedIn) {
-      alert("請先登入會員才能報名！");
-      navigate("/"); 
+      await Swal.fire({
+        icon: "warning",
+        title: "請先登入會員才能報名！",
+        confirmButtonColor: "#7267EF",
+      });
+      navigate("/");
       return;
     }
 
     if (hasRegistered) {
-      alert("您已報名過此活動！");
+      Swal.fire({
+        icon: "info",
+        title: "您已報名過此活動！",
+        confirmButtonColor: "#7267EF",
+      });
       return;
     }
 
     if (activity.remainingSlots <= 0) {
-      alert("此活動已額滿！");
+      Swal.fire({
+        icon: "error",
+        title: "此活動已額滿！",
+        confirmButtonColor: "#d33",
+      });
       return;
     }
 
@@ -78,32 +89,48 @@ const ActivityDetail = () => {
         activityTitle: activity.title,
         date: activity.date,
       };
-  
+
       const response = await axios.post(REGISTER_API_URL, registrationData);
       if (response.status === 201) {
-        alert("報名成功！");
+        await Swal.fire({
+          icon: "success",
+          title: "報名成功！",
+          text: "您已成功報名此活動。",
+          confirmButtonColor: "#7267EF",
+        });
         setHasRegistered(true);
-  
+
         const updatedSlots = activity.remainingSlots - 1;
-        await axios.patch(`${API_URL}/activities/${activity.id}`, { remainingSlots: updatedSlots });
-  
-        setActivity((prevActivity) => ({
-          ...prevActivity,
+        await axios.patch(`${API_URL}/activities/${activity.id}`, {
+          remainingSlots: updatedSlots,
+        });
+
+        setActivity((prev) => ({
+          ...prev,
           remainingSlots: updatedSlots,
         }));
-  
+
         window.dispatchEvent(new Event("updateActivityRecords"));
       } else {
-        alert("報名失敗，請稍後再試！");
+        Swal.fire({
+          icon: "error",
+          title: "報名失敗",
+          text: "請稍後再試！",
+          confirmButtonColor: "#7267EF",
+        });
       }
     } catch (error) {
       console.error("報名失敗:", error);
-      alert("發生錯誤，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "發生錯誤",
+        text: "請稍後再試！",
+        confirmButtonColor: "#7267EF",
+      });
     } finally {
       setRegistering(false);
     }
   };
-
 
   return (
     <main className="container py-15">
@@ -116,13 +143,10 @@ const ActivityDetail = () => {
           <p className="fs-5"><span className="text-gray-400">地點：</span> {activity.location}</p>
           <p className="fs-5"><span className="text-gray-400">最多可報名人數：</span> {activity.maxParticipants}</p>
           <p className="fs-5"><span className="text-gray-400">目前剩餘名額：</span> {activity.remainingSlots} </p>
-          
 
-          {/* 活動簡介 */}
           <h3 className="mt-4 text-primary-600">【活動簡介】</h3>
           <p className="fs-5">{activity.description}</p>
 
-          {/* 活動流程 */}
           <h3 className="mt-4 text-primary-600">【活動流程】</h3>
           <ul className="fs-5 list-unstyled">
             {activity.schedule.map((item, index) => (
@@ -132,7 +156,6 @@ const ActivityDetail = () => {
             ))}
           </ul>
 
-          {/* 聯繫我們 */}
           <h3 className="mt-4 text-primary-600">【聯繫我們】</h3>
           <p className="fs-5">
             如果您有任何問題，請隨時聯繫我們：
@@ -142,14 +165,12 @@ const ActivityDetail = () => {
             <strong>電子郵件：</strong> info@casperonlinelearning.com
           </p>
 
-          {/* 報名方式 */}
           <h3 className="mt-4 text-primary-600">【報名方式】</h3>
           <p className="fs-5">
             請點下方按鈕報名參加活動。名額有限，先到先得！
           </p>
 
           <div className="text-center mt-4">
-            {/* 報名按鈕 */}
             <button
               className={`btn px-4 py-2 fw-bold me-3 ${isExpired ? "btn-secondary" : "btn-outline-danger"}`}
               onClick={!isExpired ? handleRegister : undefined}
@@ -163,8 +184,9 @@ const ActivityDetail = () => {
                 ? "報名中..."
                 : "立即報名"}
             </button>
-            {/* 返回活動列表按鈕 */}
-            <Link to="/Activity" className="btn btn-primary-600 px-4 py-2 fw-bold">返回活動列表</Link>
+            <Link to="/Activity" className="btn btn-primary-600 px-4 py-2 fw-bold">
+              返回活動列表
+            </Link>
           </div>
         </div>
       </div>
