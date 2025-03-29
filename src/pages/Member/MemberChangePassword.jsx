@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import Swal from "sweetalert2";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -19,43 +21,80 @@ const MemberChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    if (data.newPassword !== data.confirmPassword) {
-      alert("新密碼與確認密碼不匹配");
+    
+  
+    if (!useraccount) {
+      Swal.fire({
+        icon: "error",
+        title: "未登入",
+        text: "請先登入會員後再操作",
+      });
       return;
     }
-
+  
+    if (data.newPassword !== data.confirmPassword) {
+      Swal.fire({
+        icon: "warning",
+        title: "密碼不一致",
+        text: "新密碼與確認密碼不匹配",
+      });
+      return;
+    }
+  
     try {
       const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
-      
       if (res.data.length === 0) {
-        alert("無法找到該會員");
+        Swal.fire({
+          icon: "error",
+          title: "查無會員",
+          text: "無法找到該會員",
+        });
         return;
       }
-
-      const userData = res.data[0]; 
-      const memberId = userData.id; 
-
+  
+      const userData = res.data[0];
+      const memberId = userData.id;
+  
       if (!userData.password) {
-        alert("無法獲取使用者資訊");
+        Swal.fire({
+          icon: "error",
+          title: "錯誤",
+          text: "無法獲取使用者資訊",
+        });
         return;
       }
-
+  
       if (data.currentPassword !== userData.password) {
-        alert("舊密碼錯誤");
+        Swal.fire({
+          icon: "error",
+          title: "密碼錯誤",
+          text: "舊密碼錯誤，請重新輸入",
+        });
         return;
       }
-
+  
       await axios.patch(`${API_URL}/members/${memberId}`, {
         password: data.newPassword,
       });
-
-      alert("密碼更新成功！");
-      window.location.reload();
+  
+      Swal.fire({
+        icon: "success",
+        title: "更新成功",
+        text: "密碼更新成功！",
+      }).then(() => {
+        window.location.reload();
+      });
+  
     } catch (error) {
-      alert("發生錯誤，請稍後再試");
+      Swal.fire({
+        icon: "error",
+        title: "更新失敗",
+        text: "發生錯誤，請稍後再試！",
+      });
       console.error(error);
     }
   };
+  
 
   const handleCancel = () => {
     reset();

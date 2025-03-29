@@ -2,6 +2,8 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+
 
 const API_URL = import.meta.env.VITE_API_URL; 
 
@@ -23,16 +25,19 @@ const CreateAccount = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-   
       const res = await axios.get(`${API_URL}/members`);
       const existing = res.data.find((m) => m.username === members.username);
       if (existing) {
-        alert("帳號已存在，請重新輸入");
+        Swal.fire({
+          icon: "warning",
+          title: "帳號已存在",
+          text: "請重新輸入帳號",
+        });
         return;
       }
   
       const newMember = {
-        ...members, 
+        ...members,
         useraccount: members.username,
         name: members.name || "",
         mobile: "",
@@ -50,15 +55,25 @@ const CreateAccount = () => {
   
       const response = await axios.post(`${API_URL}/members`, newMember);
       if (response.status === 201) {
-        alert("註冊成功！");
-        localStorage.setItem("currentUser", JSON.stringify(response.data)); 
-        navigate("/");
+        Swal.fire({
+          icon: "success",
+          title: "註冊成功！",
+          text: "歡迎加入會員",
+        }).then(() => {
+          localStorage.setItem("currentUser", JSON.stringify(response.data));
+          navigate("/");
+        });
       }
     } catch (error) {
       console.error("註冊失敗:", error);
-      alert("註冊失敗，請再試一次！");
-    }  
+      Swal.fire({
+        icon: "error",
+        title: "註冊失敗",
+        text: "請再試一次！",
+      });
+    }
   };
+  
   return (
     <>
       <div className="container">

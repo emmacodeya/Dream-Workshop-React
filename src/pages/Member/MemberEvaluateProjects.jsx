@@ -3,6 +3,8 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import { Modal, Button } from "react-bootstrap";
 import Pagination from "../../components/Pagination";
+import Swal from "sweetalert2";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -109,11 +111,19 @@ const MemberEvaluateProjects = ({ useraccount }) => {
       setReplyContent("");
 
       
-      alert("回覆提交成功！");
+      Swal.fire({
+        icon: "success",
+        title: "回覆成功",
+        text: "回覆提交成功！"
+      });
 
     } catch (error) {
       console.error("提交回覆失敗:", error);
-      alert("提交回覆失敗，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "提交失敗",
+        text: "提交回覆失敗，請稍後再試！"
+      });
     }
   };
 
