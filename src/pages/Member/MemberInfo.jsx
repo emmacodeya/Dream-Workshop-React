@@ -2,6 +2,7 @@ import { useState, useEffect, useContext  } from "react";
 import { UserContext } from "../../context/UserContext";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -48,7 +49,11 @@ const MemberInfo = () => {
     try {
       const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
       if (res.data.length === 0) {
-        alert("無法找到該會員");
+        Swal.fire({
+          icon: "error",
+          title: "查無會員",
+          text: "無法找到該會員，請重新確認帳號。",
+        });
         return;
       }
 
@@ -62,10 +67,18 @@ const MemberInfo = () => {
         avatar: preview
       });
 
-      alert("會員資料更新成功！");
+      Swal.fire({
+        icon: "success",
+        title: "更新成功",
+        text: "會員資料更新成功！",
+      });
     } catch (error) {
       console.error("更新失敗:", error);
-      alert("更新失敗，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "更新失敗",
+        text: "更新失敗，請稍後再試！",
+      });
     }
   };
   

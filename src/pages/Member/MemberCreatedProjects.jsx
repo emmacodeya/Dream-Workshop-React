@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, useLocation } from "react-router-dom"; 
 import Pagination from "../../components/Pagination"; 
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
+import Swal from "sweetalert2";
 
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -15,23 +16,24 @@ const MemberCreatedProjects = ({ useraccount }) => {
   const [industryOptions, setIndustryOptions] = useState([]);
   const { register, handleSubmit, setValue, watch, formState: { errors } } = useForm();
   const navigate = useNavigate(); 
+  const location = useLocation();
   const [companyLogo, setCompanyLogo] = useState("");
   const [companyImage, setCompanyImage] = useState("");
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
-   // 獲取會員帳號的創業項目
-   useEffect(() => {
+   const fetchProjects = useCallback(async () => {
+    try {
+      const response = await axios.get(`${API_URL}/projects?useraccount=${useraccount}`);
+      setProjects(response.data);
+    } catch (error) {
+      console.error("獲取專案資料失敗", error);
+    }
+  }, [useraccount]);
+
+  useEffect(() => {
     if (!useraccount) return;
-  
-    const fetchProjects = async () => {
-      try {
-        const response = await axios.get(`${API_URL}/projects?useraccount=${useraccount}`);
-        setProjects(response.data);
-      } catch (error) {
-        console.error("獲取專案資料失敗", error);
-      }
-    };
+    fetchProjects();
   
     const fetchIndustries = async () => {
       try {
@@ -44,9 +46,14 @@ const MemberCreatedProjects = ({ useraccount }) => {
         console.error("獲取產業分類失敗", error);
       }
     };
-    fetchProjects();
     fetchIndustries();
-  }, [useraccount]);
+  }, [useraccount, fetchProjects]);
+
+  useEffect(() => {
+    if (location.state?.reload) {
+      fetchProjects();
+    }
+  }, [location, fetchProjects]);
 
   
 const totalPages = Math.ceil(projects.length / itemsPerPage);
@@ -59,14 +66,23 @@ const paginatedProjects = projects.slice(
 
  // 刪除專案
  const handleDelete = async (id) => {
-  if (window.confirm("確定要刪除這個專案嗎？")) {
+  const result = await Swal.fire({
+    icon: "warning",
+    title: "確定要刪除這個專案嗎？",
+    text: "刪除後無法恢復！",
+    showCancelButton: true,
+    confirmButtonText: "刪除",
+    cancelButtonText: "取消"
+  });
+
+  if (result.isConfirmed) {
     try {
       await axios.delete(`${API_URL}/projects/${id}`);
       setProjects((prevProjects) => prevProjects.filter((project) => project.id !== id));
-      alert("專案已刪除");
+      Swal.fire("刪除成功", "專案已刪除！", "success");
     } catch (error) {
       console.error("刪除失敗", error);
-      alert("刪除失敗");
+      Swal.fire("刪除失敗", "請稍後再試！", "error");
     }
   }
 };
@@ -166,75 +182,70 @@ const paginatedProjects = projects.slice(
 
   const onSubmit = async (data) => {
     if (!selectedProject) {
-        alert("錯誤：無法找到要編輯的專案");
-        return;
+      Swal.fire("錯誤", "無法找到要編輯的專案", "error");
+      return;
     }
-    console.log("發送 PATCH 請求，專案 ID:", selectedProject.id);
-    console.log("更新的數據:", data);
-
+  
     try {
-        const projectId = selectedProject.id;
-        const projectRes = await axios.get(`${API_URL}/projects/${projectId}`);
-        const originalData = projectRes.data;  
-        const allowedProjectFields = [
-            "useraccount", "name", "contactPerson", "contactPhone", "website",
-            "address", "companyNumber", "status", "industry", "description",
-            "size", "capital", "funding", "companyLogo", "companyImage"
-        ];
-        const updatedProjectData = Object.keys(data)
-            .filter(key => allowedProjectFields.includes(key))
-            .reduce((obj, key) => ({ ...obj, [key]: data[key] || originalData[key] }), {});
-
-        await axios.patch(`${API_URL}/projects/${projectId}`, updatedProjectData);
-
-        
-        const endpoints = [
-            { key: "swot", fields: ["strengths", "weaknesses", "opportunities", "threats"] },
-            { key: "marketSize", fields: ["content"] },
-            { key: "teams", fields: ["teamDescription"] },
-            { key: "models", fields: ["business_model"] },
-            { key: "products", fields: ["productDescription"] },
-            { key: "projectCompete", fields: ["competeDescription"] },
-            { key: "founderInfo", fields: ["entrepreneurDescription"] }
-        ];
-
-        await Promise.all(endpoints.map(async ({ key, fields }) => {
-            try {
-                const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
-
-                if (res.data.length > 0) {
-                    const existingData = res.data[0];
-
-                    const updatedFields = fields.reduce((obj, field) => {
-                        if (data[field] !== undefined && data[field] !== existingData[field]) {
-                            obj[field] = data[field]; 
-                        }
-                        return obj;
-                    }, {});
-
-                    if (Object.keys(updatedFields).length > 0) {
-                        await axios.patch(`${API_URL}/${key}/${existingData.id}`, updatedFields);
-                    }
-                } else {
-                    const newData = fields.reduce((obj, field) => ({
-                        ...obj,
-                        [field]: data[field] || ""
-                    }), {});
-
-                    await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
-                }
-            } catch (error) {
-                console.error(`更新 ${key} 失敗`, error);
+      const projectId = selectedProject.id;
+      const projectRes = await axios.get(`${API_URL}/projects/${projectId}`);
+      const originalData = projectRes.data;
+      const allowedProjectFields = [
+        "useraccount", "name", "contactPerson", "contactPhone", "website",
+        "address", "companyNumber", "status", "industry", "description",
+        "size", "capital", "funding", "companyLogo", "companyImage"
+      ];
+  
+      const updatedProjectData = Object.keys(data)
+        .filter(key => allowedProjectFields.includes(key))
+        .reduce((obj, key) => ({ ...obj, [key]: data[key] || originalData[key] }), {});
+  
+      await axios.patch(`${API_URL}/projects/${projectId}`, updatedProjectData);
+  
+      // 更新 SWOT 等
+      const endpoints = [
+        { key: "swot", fields: ["strengths", "weaknesses", "opportunities", "threats"] },
+        { key: "marketSize", fields: ["content"] },
+        { key: "teams", fields: ["teamDescription"] },
+        { key: "models", fields: ["business_model"] },
+        { key: "products", fields: ["productDescription"] },
+        { key: "projectCompete", fields: ["competeDescription"] },
+        { key: "founderInfo", fields: ["entrepreneurDescription"] }
+      ];
+  
+      await Promise.all(endpoints.map(async ({ key, fields }) => {
+        const res = await axios.get(`${API_URL}/${key}?projectId=${projectId}`);
+        if (res.data.length > 0) {
+          const existingData = res.data[0];
+          const updatedFields = fields.reduce((obj, field) => {
+            if (data[field] !== undefined && data[field] !== existingData[field]) {
+              obj[field] = data[field];
             }
-        }));
-
-        alert("專案更新成功！");
+            return obj;
+          }, {});
+          if (Object.keys(updatedFields).length > 0) {
+            await axios.patch(`${API_URL}/${key}/${existingData.id}`, updatedFields);
+          }
+        } else {
+          const newData = fields.reduce((obj, field) => ({
+            ...obj,
+            [field]: data[field] || ""
+          }), {});
+          await axios.post(`${API_URL}/${key}`, { projectId, ...newData });
+        }
+      }));
+  
+      Swal.fire("更新成功", "專案資料已更新！", "success").then(async () => {
         document.querySelector("#editProjectModal .btn-close").click();
+        await fetchProjects(); 
+      });
+  
     } catch (error) {
-        console.error("更新失敗", error);
-        alert("更新失敗，請稍後再試！");
+      console.error("更新失敗", error);
+      Swal.fire("更新失敗", "請稍後再試！", "error");
     }
-};
+  };
+  
 
 
   const handleViewDetails = (projectId) => {

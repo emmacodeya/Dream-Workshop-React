@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import Swal from "sweetalert2";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +15,6 @@ const ProjectEvaluate = ({ projectId }) => {
 
   const [errors, setErrors] = useState({});
 
- 
   useEffect(() => {
     if (!projectId) return;
 
@@ -27,14 +27,12 @@ const ProjectEvaluate = ({ projectId }) => {
       });
   }, [projectId]);
 
- 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewEvaluation({ ...newEvaluation, [name]: value });
     setErrors({ ...errors, [name]: "" });
   };
 
- 
   const validateForm = () => {
     let newErrors = {};
     if (!newEvaluation.name.trim()) newErrors.name = "請填寫您的姓名";
@@ -43,7 +41,6 @@ const ProjectEvaluate = ({ projectId }) => {
     return Object.keys(newErrors).length === 0;
   };
 
- 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -53,17 +50,28 @@ const ProjectEvaluate = ({ projectId }) => {
       ...newEvaluation,
       date: new Date().toLocaleDateString(),
       projectId,
-      replies: [] 
+      replies: []
     };
 
     try {
       const response = await axios.post(`${API_URL}/projectEvaluations`, newReview);
       setEvaluations([...evaluations, response.data]);
       setNewEvaluation({ name: "", rating: 5, comment: "" });
-      alert("評價提交成功！");
+
+      await Swal.fire({
+        icon: "success",
+        title: "評價提交成功！",
+        text: "感謝您的寶貴意見。",
+        confirmButtonColor: "#7267EF"
+      });
     } catch (error) {
       console.error("提交評價失敗", error);
-      alert("提交評價失敗，請稍後再試！");
+      Swal.fire({
+        icon: "error",
+        title: "提交失敗",
+        text: "提交評價失敗，請稍後再試！",
+        confirmButtonColor: "#d33"
+      });
     }
   };
 
@@ -85,7 +93,6 @@ const ProjectEvaluate = ({ projectId }) => {
               </div>
               <p className="text-gray-200">{evaluation.comment}</p>
 
-           
               {evaluation.replies && evaluation.replies.length > 0 && (
                 <div className="mt-3 border-top border-gray-600 pt-2">
                   <h6 className="text-white">回覆：</h6>
