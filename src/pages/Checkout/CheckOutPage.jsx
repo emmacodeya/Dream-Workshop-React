@@ -108,6 +108,7 @@ const CheckOutPage = () => {
       // 確保 orderData 包含最新的購物車資料
       const order = {
       ...orderData,
+      date: new Date().toISOString().split("T")[0], // 設定當天日期 
       items: cart, // 這樣就確保 items 是最新的 cart
       user: userInfo.data.user,
       message: userInfo.data.message
