@@ -134,7 +134,7 @@ const CheckOutPage = () => {
         })
 
         setTimeout(() => {
-          navigate("/pay-plan", { state: { fromCheckout: true } });
+          navigate("/checkout-success", { state: { fromCheckout: true } });
         }, 500);
         
         console.log("目前訂單資料：", response.data);

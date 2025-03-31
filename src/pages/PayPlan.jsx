@@ -26,6 +26,21 @@ const PayPlan = () => {
       fetchUserData();
     }
 
+    const fetchUserData = async () => {
+      const useraccount = localStorage.getItem("useraccount");
+      if (useraccount) {
+        try {
+          const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+          if (res.data.length > 0) {
+            setCurrentUser(res.data[0]);
+          }
+        } catch (error) {
+          console.error("取得會員資訊失敗", error);
+        }
+      }
+    };
+  
+
     const fetchProducts = async () => {
       try {
         const res = await axios.get(`${API_URL}/stores`);
@@ -52,39 +67,6 @@ const PayPlan = () => {
     fetchCart();
     fetchUserData();
   }, [setCurrentUser]);
-
-  const fetchUserData = async () => {
-    const useraccount = localStorage.getItem("useraccount");
-    if (!useraccount) return;
-
-      try {
-      //   const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
-      //   if (res.data.length > 0) {
-      //     // setCurrentUser(res.data[0]);
-      //     const user = res.data[0];
-
-      //     // ** 將點數改為 0**
-      //     await axios.patch(`${API_URL}/members/${user.id}`, { points: 0 });
-
-      //   // ** 更新 currentUser，讓畫面同步變更**
-      //   setCurrentUser((prevUser) => {
-      //     const updatedUser = { ...prevUser, points: 0 };
-      //     localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-      //     return updatedUser; // 確保 React 重新渲染
-      //   });
-      // }
-      await axios.patch(`${API_URL}/members/${currentUser.id}`, { points: 0 });
-
-      setCurrentUser((prevUser) => {
-        const updatedUser = { ...prevUser, points: 0 };
-        localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-        return updatedUser;
-      });
-      console.log("點數已歸零");
-      } catch (error) {
-        console.error("取得會員資訊失敗", error);
-      }
-  };
 
   const openModal = (store) => {
     console.log('點擊了:', store);

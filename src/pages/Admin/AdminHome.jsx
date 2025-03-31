@@ -48,7 +48,6 @@ const AdminHome = () => {
               <AdminPonits />
             </div>
             <div className={`content-section text-white ${activeSection === "transactions" ? "d-block" : "d-none"}`}>
-              <h2>交易管理</h2>
               <AdminOrders />
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>

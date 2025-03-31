@@ -3,17 +3,14 @@ import axios from "axios";
 import Swal from "sweetalert2";
 
 import { Table, Button, Form, Modal } from 'react-bootstrap';
-// import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
-// const MySwal = withReactContent(Swal);
 
 const AdminPonits = () => {
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentProduct, setCurrentProduct] = useState({ coinImg: '', coinPoint: '', coinPrice: '' });
 
-  // const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchProducts();
@@ -85,9 +82,10 @@ const AdminPonits = () => {
     <div className="admin-account text-white">
       <div className="d-flex justify-content-between mb-3 mt-4">
         <h2>點數管理</h2>
-        <button onClick={() => handleShowModal()} type="button" className="btn btn-primary-600">
-          新增點數方案
-        </button>
+        <Button 
+          variant="primary-600"
+          className="rounded fw-bold"
+          onClick={() => handleShowModal({ status: "open" })}>+ 新增點數</Button>
       </div>
 
       <Table className="table table-dark table-striped">
@@ -109,27 +107,19 @@ const AdminPonits = () => {
                 <td>{product.coinPrice}</td>
                 <td>啟用</td>
                 <td>
-                  <button
-                    onClick={() => handleShowModal(product)}
-                    type="button"
-                    className="btn btn-outline-primary-600 btn-sm me-2"
-                  >
-                    編輯
-                  </button>
-                  <button
-                    onClick={() => handleDeletePonits(product.id)}
-                    type="button"
-                    className="btn btn-outline-danger btn-sm"
-                  >
-                    刪除
-                  </button>
+                  <Button
+                    variant="outline-primary-600" size="sm" 
+                    className="me-1"
+                    onClick={() => handleShowModal(product)}>編輯</Button>
+
+                  <Button
+                    variant="outline-danger" size="sm" 
+                    onClick={() => handleDeletePonits(product.id)}>刪除</Button>
                 </td>
               </tr>
             ))}
         </tbody>
       </Table>
-
-       {/* <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} /> */}
 
 
       {/* 新增 / 編輯 Modal */}

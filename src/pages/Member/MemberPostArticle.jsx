@@ -1,18 +1,11 @@
 import { useState, useContext } from "react";
 import axios from "axios";
-<<<<<<< HEAD
-import { Modal, Button } from "react-bootstrap";
-// import ReactQuill from "react-quill";
-// import "react-quill/dist/quill.snow.css";
-// import DOMPurify from "dompurify";
-=======
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import DOMPurify from "dompurify";
 import Swal from "sweetalert2";
 import { UserContext } from "../../context/UserContext";
 
->>>>>>> 0c4f85d89abb88201a514db82b51b0128d44f9f9
 
 const API_URL = import.meta.env.VITE_API_URL;
 
