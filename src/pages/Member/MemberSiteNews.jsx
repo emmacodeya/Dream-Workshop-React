@@ -13,7 +13,7 @@ const MemberSiteNews = () => {
   ]);
 
   return (
-    <div className="container pt-lg-8 pt-5">
+    <div className="mt-5">
       {news.map((item) => (
         <div key={item.id} className="card mb-3 border-0">
           <div className="card-header text-white bg-primary-600 d-flex justify-content-between align-items-center">

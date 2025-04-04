@@ -68,7 +68,7 @@ const MemberActivityRecord = () => {
       currentPage * itemsPerPage
     );
   return (
-    <div className="container pt-lg-8 pt-5">
+    <div className="mt-5">
       {loading ? (
         <p className="text-center text-white">未有申請紀錄</p>
       ) : (

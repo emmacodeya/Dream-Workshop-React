@@ -102,7 +102,7 @@ const MemberChangePassword = () => {
   };
 
   return (
-    <div className="container my-8">
+    <div className="mt-5">
       <form onSubmit={handleSubmit(onSubmit)} noValidate>
         {/* 舊密碼 */}
         <div className="mb-3 row">

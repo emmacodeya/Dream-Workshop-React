@@ -153,7 +153,7 @@ const toggleFavorite = async (investorId) => {
 
   return (
     <div className="bg-green">
-      <div className="container py-lg-15">
+      <div className="container py-15">
         <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">推薦投資人</h2>
 
         {/* 投資人輪播 */}
@@ -163,9 +163,11 @@ const toggleFavorite = async (investorId) => {
           slidesPerView={4} 
           spaceBetween={16}   
           breakpoints={{
-            1296: { slidesPerView: 4 },
-            768: { slidesPerView: 2 },
-            375: { slidesPerView: 1.5 }
+            0: { slidesPerView: 1.2 },       
+            576: { slidesPerView: 1.5 },     
+            768: { slidesPerView: 2 },       
+            992: { slidesPerView: 3 },       
+            1296: { slidesPerView: 4 }       
           }}
         >
 
@@ -185,13 +187,13 @@ const toggleFavorite = async (investorId) => {
                 </button>
                 <img className="company-logo mb-3 w-25" src={investor.avatar} alt={investor.name} />
                 <h4 className="card-title popular-card-title text-primary-600 ">{investor.name}</h4>
-                <div className="mb-3">
+                <div>
                 <h5 className="text-gray-200 ">偏好投資領域</h5>
                 <h6 className="fw-bold text-gray-100">
                     {Array.isArray(investor.industry) ? investor.industry.map((ind) => translate(industryMap, ind)).join("，") : translate(industryMap, investor.industry)}
                 </h6>
                 </div>
-                <p>{truncateText(investor.introduction)}</p>
+                <p >{truncateText(investor.introduction)}</p>
               </div>
               <div className="btn btn-gray-600 py-3">
                 <p className="fs-5">資本額</p>
@@ -260,7 +262,7 @@ const toggleFavorite = async (investorId) => {
           {/* 投資人列表 */}
           {paginatedInvestors.map((investor) => (
             <div key={investor.id} className="card bg-gray-800 mt-8">
-              <div className="d-flex justify-content-between project-title p-3">
+              <div className="d-flex justify-content-between project-title">
                 <h3 className="text-white fs-3 fw-bold">
                   <Link to={`/investor/${investor.id}`} className="text-white">{investor.name}</Link>
                 </h3>
@@ -272,9 +274,9 @@ const toggleFavorite = async (investorId) => {
                   />
                 </button>
               </div>
-              <div className="row g-0 created-body">
+              <div className="row g-0 created-body border-top border-gray-600">
                 <div className="col-md-4 d-flex align-items-center justify-content-center px-5">
-                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar "
+                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar w-25 mt-md-0 mt-2"
                   alt={investor.name} />
                 </div>
                 <div className="col-md-8">

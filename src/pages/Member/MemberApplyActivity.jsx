@@ -92,7 +92,7 @@ const MemberApplyActivity = () => {
   };
 
   return (
-    <div className="container my-4">
+    <div className="my-4">
       <h2 className="text-center text-primary-600 mb-4">已報名活動</h2>
 
       {paginatedActivities.length === 0 ? (

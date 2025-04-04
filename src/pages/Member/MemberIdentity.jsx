@@ -128,7 +128,7 @@ const MemberIdentity = () => {
   
 
   return (
-    <div className="container my-8">
+    <div className="mt-5">
       {/* 姓名 */}
       <form className="mb-3 row fs-4">
         <label htmlFor="name" className="col-md-2 col-4 col-form-label text-white">

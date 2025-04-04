@@ -78,9 +78,6 @@ const MemberNewInvestor = ({ useraccount }) => {
   };
 
   const onSubmit = async (data) => {
-    // const method = investor?.id ? "PUT" : "POST";
-    // const url = investor?.id ? `http://localhost:3000/investors/${investor.id}` : "http://localhost:3000/investors";
-
     const selectedIndustries = getValues("industry") || [];
     const payload = {
       useraccount: investor ? investor.useraccount : useraccount,  
@@ -123,10 +120,10 @@ const MemberNewInvestor = ({ useraccount }) => {
   };
   
   return (
-    <div className="container mt-5">
-      <h3 className="text-gray-400 py-8 fw-bolder">{investor ? "修改投資人資料" : "新增投資人"}</h3>
+    <div className="mt-5">
+      <h3 className="text-gray-400 py-2 fw-bolder">{investor ? "修改投資人資料" : "新增投資人"}</h3>
 
-      <form className="row g-3 ms-md-2" onSubmit={handleSubmit(onSubmit)}>
+      <form className="row g-3 mb-2" onSubmit={handleSubmit(onSubmit)}>
         {/* 頭像上傳 */}
         <div className="d-md-flex pb-8">
           <div>
@@ -205,12 +202,12 @@ const MemberNewInvestor = ({ useraccount }) => {
         ))}
 
         {/* 照片區 */}
-      <div className="py-8">
+      <div>
         <h5 className="text-white py-4">上傳照片參考</h5>
         <div className="d-flex flex-md-row flex-column align-items-center">
           {["referencePhoto1", "referencePhoto2"].map((key, index) => (
             <div key={index} 
-            className="custom-upload-image me-3" 
+            className="custom-upload-image me-md-3 me-0 mb-mb-0 mb-2" 
             style={{ 
               width: "250px", 
               height: "250px", 

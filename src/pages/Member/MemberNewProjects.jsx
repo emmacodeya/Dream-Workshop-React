@@ -118,13 +118,13 @@ const MemberNewProjects = () => {
   
 
   return (
-    <div className="container mt-5">
-      <h3 className="text-gray-400 py-8 fw-bolder">基本資料</h3>
+    <div className="mt-5">
+      <h3 className="text-gray-400 py-2 fw-bolder">基本資料</h3>
 
-      <div className="d-sm-flex m-5">
+      <div className="d-sm-flex mb-2">
         {/* 公司商標上傳 */}
         {["companyLogo", "companyImage"].map((key, index) => (
-          <div key={index} className="me-4">
+          <div key={index} className=" me-md-4 me-0">
             <h6 className="text-white mb-3">{key === "companyLogo" ? "公司商標" : "公司形象照"}:</h6>
             <div
               className="custom-upload-image"
@@ -166,8 +166,8 @@ const MemberNewProjects = () => {
       </div>
 
       {/* 表單區 */}
-      <form className="row g-3 ms-md-2 ms-0" onSubmit={handleSubmit(onSubmit)}>
-      <div className="col-xl-6 pt-md-0 pt-3">
+      <form className="row g-3 " onSubmit={handleSubmit(onSubmit)}>
+      <div className="col-xl-6">
         <label htmlFor="projectName" className="form-label text-white fs-5">
           項目名稱/公司行號
           <br />
