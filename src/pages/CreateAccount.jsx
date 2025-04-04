@@ -42,8 +42,11 @@ const CreateAccount = () => {
         name: members.name || "",
         mobile: "",
         gender: "",
-        collectedProjects: "",
-        collectedInvestors: "",
+        points: 0, 
+        unlockedProjects: [],
+        unlockedInvestors: [],
+        collectedProjects: [],
+        collectedInvestors: [],
         avatar: "",
         identityVerification: {
           frontId: "",

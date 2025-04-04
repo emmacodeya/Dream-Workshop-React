@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/UserContext"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,19 +13,17 @@ const PostArticle = () => {
   const [content, setContent] = useState("");
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
-
-  const useraccount = localStorage.getItem("useraccount") || "";
-  const authorAvatar = localStorage.getItem("avatar") || "";
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
-    if (!useraccount) {
+    if (!currentUser) {
       Swal.fire({
         icon: "warning",
         title: "請先登入才能發表文章！",
         confirmButtonColor: "#7267EF"
       }).then(() => navigate("/login"));
     }
-  }, [useraccount, navigate]);
+  }, [currentUser, navigate]);
 
   const handlePostArticle = async () => {
     if (!title.trim() || !content.trim()) {
@@ -51,8 +50,8 @@ const PostArticle = () => {
       const response = await axios.post(`${API_URL}/articles`, {
         title,
         content,
-        author: useraccount,
-        authorAvatar,
+        author: currentUser.useraccount,
+        authorAvatar: currentUser.avatar,
         comments: [],
         createdAt: currentTime,
         updatedAt: currentTime
@@ -94,9 +93,9 @@ const PostArticle = () => {
   return (
     <div className="bg-green">
       <div className="container py-15 mt-5">
-        <h2 className="text-center py-8 fw-bolder text-primary-600">發表文章</h2>
+        <h2 className="text-center py-lg-8  fw-bolder text-primary-600">發表文章</h2>
 
-        <div className="row my-8">
+        <div className="row my-2">
           <label htmlFor="articleTitle" className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">
             標題
           </label>
@@ -111,7 +110,7 @@ const PostArticle = () => {
           </div>
         </div>
 
-        <div className="row my-8">
+        <div className="row my-2">
           <label className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">內容</label>
           <div className="col-sm-10">
             <ReactQuill
@@ -124,7 +123,7 @@ const PostArticle = () => {
         </div>
 
         <div className="d-flex justify-content-center">
-          <div className="form-check pt-5">
+          <div className="form-check pt-8">
             <input
               className="form-check-input bg-gray-1000"
               type="checkbox"
@@ -138,7 +137,7 @@ const PostArticle = () => {
           </div>
         </div>
 
-        <div className="d-flex justify-content-center mt-8">
+        <div className="d-flex justify-content-center mt-5">
           <div className="me-5">
             <button className="btn btn-lg btn-outline-primary-600" onClick={handlePostArticle}>
               <i className="bi bi-save"></i> 發表文章

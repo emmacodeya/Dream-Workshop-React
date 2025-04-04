@@ -79,8 +79,8 @@ const MemberPostArticle = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="text-center py-8 fw-bolder text-primary-600">發表文章</h2>
+    <div className="mt-5">
+      <h2 className="text-center  fw-bolder text-primary-600">發表文章</h2>
       <div className="row my-8">
         <label htmlFor="articleTitle" className="col-sm-2 col-form-label col-form-label-lg text-lg-end text-gray-400">標題</label>
         <div className="col-sm-10">

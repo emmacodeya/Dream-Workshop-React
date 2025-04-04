@@ -67,7 +67,7 @@ const MemberSettings = () => {
   };
 
   return (
-    <div className="container pt-8">
+    <div className="mt-5">
       <div className="d-flex justify-content-between">
         <p className="fs-3 fw-bolder text-danger">申請刪除帳號</p>
         <button
