@@ -55,7 +55,7 @@ const MemberCollectProjects = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="mt-5">
       {paginatedProjects.map((project) => (
         <div key={project.id} className="card bg-gray-800 mt-lg-8 mt-5">
           <div className="d-flex justify-content-between created-title investor-created-title">

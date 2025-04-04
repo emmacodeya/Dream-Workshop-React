@@ -109,7 +109,7 @@ const MemberInfo = () => {
   };
   
   return (
-    <div className="container mt-3"> 
+    <div className="mt-5"> 
       <div className="d-flex flex-lg-row flex-column">
        {/* 行動版 頭像上傳 */}
         {preview && ( 
@@ -159,8 +159,8 @@ const MemberInfo = () => {
         <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
           
           {/* 使用者帳號（唯讀） */}
-        <div className="my-3 row">
-          <label className="col-md-2 col-4 col-form-label text-white">使用者帳號:</label>
+        <div className="my-3 row pt-md-0 pt-2">
+          <label className="col-md-2 col-4 col-form-label text-white ">使用者帳號:</label>
           <div className="col-md-10 col-8">
             <input type="text" readOnly className="form-control-plaintext text-white" value={useraccount} />
           </div>

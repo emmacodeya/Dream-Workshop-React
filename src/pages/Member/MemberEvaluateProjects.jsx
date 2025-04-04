@@ -139,8 +139,8 @@ const MemberEvaluateProjects = ({ useraccount }) => {
   };
 
   return (
-    <div className="container pt-8">
-      <table className="table table-dark table-hover border-gray-600">
+    <div className="mt-5">
+      <table className="table table-dark table-hover border-gray-600 d-none d-md-table">
         <thead className="text-center fs-4">
           <tr>
             <th className="text-primary-600">創業項目</th>
@@ -181,6 +181,33 @@ const MemberEvaluateProjects = ({ useraccount }) => {
           </tbody>
 
       </table>
+
+        {/* 手機版 */}
+        <div className="d-md-none">
+        {paginatedEvaluations.length === 0 ? (
+          <p className="text-gray-400 py-4 text-center">尚無評價</p>
+        ) : (
+          paginatedEvaluations.map((evaluationItem) => {
+            const project = projects.find((proj) =>
+              proj.evaluations.some((evaluation) => evaluation.id === evaluationItem.id)
+            );
+            return (
+              <div key={evaluationItem.id} className="card bg-dark text-white mb-3">
+                <div className="card-body">
+                  <h5 className="card-title">{project?.name || "未知專案"}</h5>
+                  <p className="mb-1"><strong>狀態：</strong>{project?.status === "established" ? "已成立" : "未成立"}</p>
+                  <p className="mb-1"><strong>產業：</strong>{industryMap[project?.industry] || "未知"}</p>
+                  <p className="mb-1"><strong>評價人：</strong>{evaluationItem.name}</p>
+                  <p className="mb-1"><strong>內容：</strong>{evaluationItem.comment}</p>
+                  <button className="btn  btn-outline-primary-600 mt-2" onClick={() => handleOpenModal(evaluationItem.id)}>
+                    回覆
+                  </button>
+                </div>
+              </div>
+            );
+          })
+        )}
+      </div>
 
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />

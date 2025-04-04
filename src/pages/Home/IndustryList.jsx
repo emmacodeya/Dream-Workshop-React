@@ -34,7 +34,6 @@ const IndustryList = () => {
           setUser(userRes.data[0]);
         }
 
-        // 依據 URL 參數進行篩選
         if (industry) {
           setFilteredProjects(projectsRes.data.filter(p => p.industry === industry));
           setFilteredInvestors(investorsRes.data.filter(i => i.industry.includes(industry)));
@@ -117,10 +116,10 @@ const IndustryList = () => {
             </button>
             </div>
 
-            <div className="row g-0 created-body">
+            <div className="row g-0 created-body border-top border-gray-600">
             {/* 左側圖片 */}
             <div className="col-md-4 d-flex align-items-center justify-content-center">
-                <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
+                <img src={project.companyLogo} className="img-fluid rounded-start w-25 mt-md-0 mt-2" alt={project.name} />
             </div>
             <div className="col-md-8">
                 {/* 電腦版 */}
@@ -210,9 +209,9 @@ const IndustryList = () => {
                   />
                 </button>
               </div>
-              <div className="row g-0 created-body">
+              <div className="row g-0 created-body border-top border-gray-600">
                 <div className="col-md-4 d-flex align-items-center justify-content-center">
-                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar"
+                  <img src={investor.avatar} className="img-fluid rounded-start investor-avatar w-25 mt-md-0 mt-2"
                   alt={investor.name} />
                 </div>
                 <div className="col-md-8">

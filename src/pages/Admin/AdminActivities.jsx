@@ -15,6 +15,8 @@ const AdminActivities = () => {
   const [currentActivity, setCurrentActivity] = useState(null);
   const [registrations, setRegistrations] = useState([]);
   const [showRegModal, setShowRegModal] = useState(false);
+  const [imagePreview, setImagePreview] = useState(null);
+    const [carouselPreview, setCarouselPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [schedule, setSchedule] = useState([]);
   const [carouselFile, setCarouselFile] = useState(null);
@@ -23,6 +25,8 @@ const AdminActivities = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const openEditModal = (activity) => {
     setCurrentActivity(activity);
+    setImagePreview(activity.image || null);
+    setCarouselPreview(activity.carouselImage || null);
     setSchedule(activity.schedule || []);
     setShowModal(true);
   };
@@ -58,6 +62,18 @@ const AdminActivities = () => {
     );
     setFiltered(result);
     setCurrentPage(1);
+  };
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (file) setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleCarouselChange = (e) => {
+    const file = e.target.files[0];
+    setCarouselFile(file);
+    if (file) setCarouselPreview(URL.createObjectURL(file));
   };
 
   const handleSave = async () => {
@@ -126,8 +142,8 @@ const AdminActivities = () => {
   const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
 
   return (
-    <div className="container">
-      <h1 className="fw-bold fs-2 mb-3">活動管理</h1>
+    <div >
+      <h2 className="mb-4">活動管理</h2>
 
       <form onSubmit={handleSearch} className="d-flex  justify-content-between mb-3">
         <input
@@ -221,28 +237,18 @@ const AdminActivities = () => {
               <Form.Control 
               type="file" 
               accept="image/*" 
-              onChange={(e) => setImageFile(e.target.files[0])} />
-              {currentActivity?.image && 
-              <img src={currentActivity.image} 
-              alt="活動圖片" 
-              className="img-fluid mt-2"
-              style={{ maxHeight: "150px" }} />}
+              onChange={handleImageChange} />
+               {imagePreview && <img src={imagePreview} alt="活動圖片預覽" className="img-fluid mt-2" style={{ maxHeight: "150px" }} />}
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>輪播圖片</Form.Label>
               <Form.Control
                 type="file"
                 accept="image/*"
-                onChange={(e) => setCarouselFile(e.target.files[0])}
+                onChange={handleCarouselChange}
               />
-              {currentActivity?.carouselImage && (
-                <img
-                  src={currentActivity.carouselImage}
-                  alt="輪播圖片預覽"
-                  className="img-fluid mt-2"
-                  style={{ maxHeight: "150px" }}
-                />
-  )}
+              {carouselPreview && <img src={carouselPreview} alt="輪播圖片預覽" className="img-fluid mt-2" style={{ maxHeight: "150px" }} />}
+
             </Form.Group>
             <Form.Group className="mb-3">
               <Form.Label>描述</Form.Label>

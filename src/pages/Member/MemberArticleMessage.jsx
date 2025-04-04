@@ -120,18 +120,18 @@ const MemberArticleMessage = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="mt-5">
       <h2 className="text-center text-primary-600">我的文章留言</h2>
       {paginatedComments.length === 0 ? (
         <p className="text-center text-white">目前沒有留言。</p>
       ) : (
-        <table className="table table-striped table-hover mt-8">
+        <table className="table  table-hover mt-8 d-none d-md-table">
           <thead className="table-gray-800 table-bordered">
             <tr className="text-center fs-4">
-              <th scope="col" className="text-primary-1000">文章標題</th>
-              <th scope="col" className="text-primary-1000">留言內容</th>
-              <th scope="col" className="text-primary-1000">留言時間</th>
-              <th scope="col" className="text-primary-1000">回覆</th>
+              <th  className="text-primary-1000">文章標題</th>
+              <th  className="text-primary-1000">留言內容</th>
+              <th  className="text-primary-1000">留言時間</th>
+              <th  className="text-primary-1000">回覆</th>
             </tr>
           </thead>
           <tbody className="text-center table table-sm table-gray-800">
@@ -145,15 +145,42 @@ const MemberArticleMessage = () => {
                 <td>{comment.content}</td>
                 <td>{new Date(comment.createdAt).toLocaleString()}</td>
                 <td>
-                  <Button variant="outline-primary-600" onClick={() => handleOpenModal(comment.id)}>
-                    回覆
-                  </Button>
+                  <button className="btn btn-outline-primary-600" onClick={() => handleOpenModal(comment.id)}>
+                      回覆
+                    </button>
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
+
+      {/* 手機版卡片 */}
+      <div className="d-md-none mt-2">
+        {paginatedComments.length === 0 ? (
+          <p className="text-center text-white">目前沒有留言。</p>
+        ) : (
+          paginatedComments.map((comment) => (
+            <div key={comment.id} className="card bg-dark text-white mb-3">
+              <div className="card-body">
+                <h5 className="card-title">
+                  <a href={`/article/${comment.articleId}`} className="text-primary-600">
+                    {comment.articleTitle}
+                  </a>
+                </h5>
+                <p className="mb-1"><strong>留言：</strong>{comment.content}</p>
+                <p className="mb-1"><strong>時間：</strong>{new Date(comment.createdAt).toLocaleString()}</p>
+                <button
+                    className="btn btn-outline-primary-600 mt-2"
+                    onClick={() => handleOpenModal(comment.id)}
+                  >
+                    回覆
+                  </button>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
       {totalPages > 1 && (
         <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />

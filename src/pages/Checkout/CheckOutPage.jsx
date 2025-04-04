@@ -1,127 +1,122 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from 'sweetalert2';
+import { UserContext } from "../../context/UserContext";
+
 const API_URL = import.meta.env.VITE_API_URL; 
 
 const CheckOutPage = () => {
   const [cart, setCart] = useState([]);
-   
-  const [showCheckout, setShowCheckout] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState("");
-  const [orderData, setOrderData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    address: "",
-    paymentMethod: (["credit","convenience_store","ATM"]),
-    items: cart,
-  });
-  const navigate = useNavigate();
-
   const [InstallmentMethod, setInstallmentMethod] = useState("");
   const [cardNumber, setCardNumber] = useState(["", "", "", ""]);
   const inputRefs = [useRef(), useRef(), useRef(), useRef()];
-
-
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-    void setShowCheckout;
-    if (savedCart) {
-      try {
-        const parsedCart = JSON.parse(savedCart);
-        if (Array.isArray(parsedCart)) {
-          setCart(parsedCart); 
-        } else {
-          console.error("Cart data is not an array:", parsedCart);
-        }
-      } catch (error) {
-        console.error("Failed to parse cart from localStorage:", error);
-      }
-    }
-  }, []);
-
-
-
-
-  const creditHandleChange = (index, value) => {
-    // 只允許輸入數字，最多 4 碼
-    const newValue = value.replace(/\D/g, "").slice(0, 4);
-    const newCardNumber = [...cardNumber];
-    newCardNumber[index] = newValue;
-    setCardNumber(newCardNumber);
-
-    // 如果填滿 4 碼，則自動跳到下一個輸入框
-    if (newValue.length === 4 && index < 3) {
-      inputRefs[index + 1].current.focus();
-    }
-  };
-
-  // 處理刪除時，按 Backspace 清空並回到前一格
-  const handleKeyDown = (index, e) => {
-    if (e.key === "Backspace" && cardNumber[index] === "" && index > 0) {
-      inputRefs[index - 1].current.focus();
-    }
-  };
+  const navigate = useNavigate();
+  const { currentUser } = useContext(UserContext);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset
-  } = useForm()
+  } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setOrderData({ ...orderData, [name]: value });
+  useEffect(() => {
+    const savedCart = localStorage.getItem(`cart_${currentUser?.useraccount}`);
+    if (savedCart) {
+      try {
+        const parsedCart = JSON.parse(savedCart);
+        if (Array.isArray(parsedCart)) {
+          setCart(parsedCart); 
+       
+        }
+      } catch (error) {
+        console.error("Failed to parse cart:", error);
+      }
+    }
+  }, [currentUser?.useraccount]);
+
+  
+
+  useEffect(() => {
+    if (paymentMethod !== "credit_card") {
+      setCardNumber(["", "", "", ""]);
+      setInstallmentMethod("");
+    }
+  }, [paymentMethod]);
+
+  const creditHandleChange = (index, value) => {
+    const newValue = value.replace(/\D/g, "").slice(0, 4);
+    const newCardNumber = [...cardNumber];
+    newCardNumber[index] = newValue;
+    setCardNumber(newCardNumber);
+    if (newValue.length === 4 && index < 3) {
+      inputRefs[index + 1].current.focus();
+    }
   };
 
-
-  const onSubmit = handleSubmit((data) => {
-    const { message, ...user } = data;
-
-    const userInfo = {
-      data:{
-        user,
-        message
-      }
+  const handleKeyDown = (index, e) => {
+    if (e.key === "Backspace" && cardNumber[index] === "" && index > 0) {
+      inputRefs[index - 1].current.focus();
     }
-    checkout(userInfo);
-  })
+  };
 
-  const checkout = async () => {
-    // e.preventDefault();
-
-    try {
-      // 送出訂單
-      const response = await axios.post(`${API_URL}orders`, orderData);
-      if (response.status === 201) {
-
-        // 清空表單
-        reset();
-
-        // 如果還有其他狀態需要重置（例如 radio 狀態）
-        setPaymentMethod('');
-        setInstallmentMethod('');
-        setCardNumber(['', '', '', '']); // 如果信用卡欄位是用陣列控制
-        setCart([]); // 清空購物車
-        navigate("/pay-plan");
-      }
-      Swal.fire({
-        title: 'success!',
-        text: "訂單提交成功！",
-        icon: 'success',
-        confirmButtonText: '確定'
-      })
-      console.log("目前訂單資料：", response.data);
-    } catch (error) {
-      console.error("提交訂單失敗:", error);
-      alert("訂單提交失敗，請再試一次！");
-    }
-  }
  
 
+  const onSubmit = handleSubmit(async (data) => {
+    try {
+      const fullCardNumber = cardNumber.join("-");
+      const totalPrice = cart.reduce((sum, item) => sum + item.coinPrice, 0);
+      const totalPoints = cart.reduce((sum, item) => sum + parseInt(item.coinPoint), 0);
+  
+      const finalOrder = {
+        memberId: currentUser?.id,
+        memberAccount: currentUser?.useraccount,
+        name: data.name,
+        email: data.email,
+        phone: data.tel,
+        address: data.address,
+        message: data.message,
+        items: cart,
+        paymentMethod,
+        cardNumber: paymentMethod === "credit_card" ? fullCardNumber : "",
+        createTime: new Date().toLocaleString("zh-TW", {
+          timeZone: "Asia/Taipei",
+          hour12: false,
+          year: "numeric",
+          month: "2-digit",
+          day: "2-digit",
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit"
+        }),
+        totalPrice,
+      };
+  
+      const response = await axios.post(`${API_URL}/orders`, finalOrder);
+  
+      if (response.status === 201) {
+        await axios.patch(`${API_URL}/members/${currentUser.id}`, {
+          points: (currentUser.points || 0) + totalPoints,
+        });
+  
+        reset();
+        setPaymentMethod("");
+        setInstallmentMethod("");
+        setCardNumber(["", "", "", ""]);
+        setCart([]);
+        localStorage.removeItem(`cart_${currentUser.useraccount}`);
+  
+        Swal.fire("訂單成功", "訂單提交成功！點數已儲值成功！", "success");
+        navigate("/pay-plan");
+      }
+    } catch (error) {
+      console.error("提交訂單失敗:", error);
+      Swal.fire("錯誤", "訂單提交失敗，請稍後再試", "error");
+    }
+  });
 
   return (
     <>
@@ -143,10 +138,8 @@ const CheckOutPage = () => {
                 className={`form-control checkout-input w-50 ${errors.name && 'is-invalid'}`}
                 name="name"
                 id="name"
-                // value={orderData.name}
                 aria-describedby="emailHelp"
                 placeholder="請填寫真實姓名"
-                onChange={handleChange}
                 required
               />
               {errors.name && <p className="text-danger my-2">{errors.name.message}</p>}
@@ -169,8 +162,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.email && 'is-invalid'}`}
                   id="email"
                   placeholder="請填寫常用Email，避免收到垃圾信件"
-                  // value={orderData.email}
-                  onChange={handleChange}
                   required
                 />
                 {errors.email && <p className="text-danger my-2">{errors.email.message}</p>}
@@ -192,8 +183,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.tel && 'is-invalid'}`}
                   id="tel"
                   placeholder="例:0912345678"
-                  // value={orderData.phone}
-                  onChange={handleChange}
                   required
                 />
               </div>
@@ -209,32 +198,35 @@ const CheckOutPage = () => {
                   className="form-select checkout-input"
                   id="address"
                   name="address"
-                  // value={orderData.address}
-                  onChange={handleChange}
                   required
                 >
                   <option value="">請選擇縣市</option>
                   <option value="Taipei">台北市</option>
+                  <option value="NewTaipei">新北市</option>
+                  <option value="Taoyuan">桃園市</option>
                   <option value="Taichung">台中市</option>
                   <option value="Tainan">台南市</option>
+                  <option value="Kaohsiung">高雄市</option>
+                  <option value="Keelung">基隆市</option>
+                  <option value="HsinchuCity">新竹市</option>
+                  <option value="HsinchuCounty">新竹縣</option>
+                  <option value="Miaoli">苗栗縣</option>
+                  <option value="Changhua">彰化縣</option>
+                  <option value="Nantou">南投縣</option>
+                  <option value="Yunlin">雲林縣</option>
+                  <option value="ChiayiCity">嘉義市</option>
+                  <option value="ChiayiCounty">嘉義縣</option>
+                  <option value="Pingtung">屏東縣</option>
+                  <option value="Yilan">宜蘭縣</option>
+                  <option value="Hualien">花蓮縣</option>
+                  <option value="Taitung">台東縣</option>
+                  <option value="Penghu">澎湖縣</option>
+                  <option value="Kinmen">金門縣</option>
+                  <option value="Lienchiang">連江縣</option>
+
                 </select>
               </div>
-              {/*<div className="col-md-2 mb-3">
-                <select
-                  className="form-select checkout-input"
-                  name="address"
-                  id="address"
-                  value={orderData.address}
-                  onChange={handleChange}
-                >
-                  <option value="">鄉鎮市區</option>
-                  <option value="1">One</option>
-                  <option value="2">Two</option>
-                  <option value="3">Three</option>
-                </select>
-              </div>*/}
               <div className="col-md-6 mb-3">
-                {/* <label htmlFor="address" className="form-label h4 fw-bold"></label> */}
                 <input
                    {...register('address',{
                     required:'地址欄位必填',
@@ -244,8 +236,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.address && 'is-invalid'}`}
                   id="address"
                   placeholder="請填寫詳細地址"
-                  // value={orderData.address}
-                  onChange={handleChange}
                   required
                 />
                 {errors.address && <p className="text-danger my-2">{errors.address.message}</p>}
@@ -270,27 +260,18 @@ const CheckOutPage = () => {
           <h2 className="text-primary-600 mb-1">付款資訊</h2>
           <hr className="border-gray-600 border" />
           <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5">
-            {/* <h4>
-              <img
-                src="/assets/images/Coin01.png"
-                style={{ width: "40px", marginRight: "2px" }}
-                alt=""
-              />
-              100點
-            </h4>
-            <h4>100 NTD</h4> */}
-         {Array.isArray(cart) && cart.length > 0 ? (
-            cart.map((item) => (
-              <div className=" d-flex justify-content-between align-items-center" key={item.id}>
+         {cart.length > 0 && (
+          <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5">
+            {cart.map((item) => (
+              <div className="d-flex justify-content-between align-items-center" key={item.id}>
                 <h4><img className="me-3" src={item.coinImg} alt={item.coinPoint} />{item.coinPoint}</h4>
                 <p>價格: NT$ {item.coinPrice}</p>
               </div>
-            ))
-          ) : (
-            <p>購物車是空的</p>
-          )}
-
-          {showCheckout && <CheckOutPage cart={cart} setCart={setCart} />}
+            ))}
+            <hr />
+            <h4 className="text-end mt-4">總計：NT$ {cart.reduce((sum, item) => sum + item.coinPrice, 0)}</h4>
+          </div>
+        )}
           </div>
           <div className="form-check mb-2">
             <input
