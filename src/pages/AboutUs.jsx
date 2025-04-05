@@ -7,7 +7,7 @@ const AboutUs = () => {
     <div className="container py-5 mt-14">
       <h1 className="mb-2 fs-2 text-white">關於創夢工坊</h1>
       <h5 className="mb-7 fs-5 text-white">創造可能 ，追尋夢想。</h5>
-      <img className="about-us__img-banner mb-4 w-100" src="../assets/images/about_us_banner.jpg" alt="about us" />
+      <img className="about-us__img-banner mb-4 w-100" src="https://dream-workshop-api.onrender.com/assets/images/about_us_banner.jpg" alt="about us" />
 
       {/* 平台理念 */}
       <h5 className="text-light mb-2">平台理念：</h5>
@@ -43,19 +43,19 @@ const AboutUs = () => {
       <div className="row mb-10">
         <div className="col">
           <div className="about-us__img-container mb-2">
-            <img className="about-us__img" src="../assets/images/search.jpg" alt="search" />
+            <img className="about-us__img" src="https://dream-workshop-api.onrender.com/assets/images/search.jpg" alt="search" />
           </div>
           <p className="text-center">方便的搜尋</p>
         </div>
         <div className="col">
           <div className="about-us__img-container mb-2">
-            <img className="about-us__img" src="../assets/images/discuss.jpg" alt="discuss" />
+            <img className="about-us__img" src="https://dream-workshop-api.onrender.com/assets/images/discuss.jpg" alt="discuss" />
           </div>
           <p className="text-center">獨創的討論區</p>
         </div>
         <div className="col">
           <div className="about-us__img-container mb-2">
-            <img className="about-us__img" src="../assets/images/seminar.jpg" alt="seminar" />
+            <img className="about-us__img" src="https://dream-workshop-api.onrender.com/assets/images/seminar.jpg" alt="seminar" />
           </div>
           <p className="text-center">對外的活動</p>
         </div>
