@@ -228,15 +228,19 @@ const AdminAccount = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {projects.filter(project => project.useraccount === selectedMember.useraccount).map(project => (
-                      <tr key={project.id}>
-                        <td>{project.name}</td>
-                        <td>
-                          <input type="checkbox" disabled /> 合作聯繫
-                          <input type="checkbox" className="ms-2" disabled /> 內容解鎖
-                        </td>
-                      </tr>
-                    ))}
+                  {projects.filter(project => project.useraccount === selectedMember.useraccount).map(project => (
+                    <tr key={project.id}>
+                      <td>{project.name}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          className="ms-2"
+                          disabled
+                          checked={selectedMember.unlockedProjects?.includes(project.id)}
+                        /> 內容解鎖
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </table>
 
@@ -249,15 +253,19 @@ const AdminAccount = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {investors.filter(investor => investor.useraccount === selectedMember.useraccount).map(investor => (
-                      <tr key={investor.id}>
-                        <td>{investor.name}</td>
-                        <td>
-                          <input type="checkbox" disabled /> 合作聯繫
-                          <input type="checkbox" className="ms-2" disabled /> 內容解鎖
-                        </td>
-                      </tr>
-                    ))}
+                  {investors.filter(investor => investor.useraccount === selectedMember.useraccount).map(investor => (
+                    <tr key={investor.id}>
+                      <td>{investor.name}</td>
+                      <td>
+                        <input
+                          type="checkbox"
+                          className="ms-2"
+                          disabled
+                          checked={selectedMember.unlockedInvestors?.includes(investor.id)}
+                        /> 內容解鎖
+                      </td>
+                    </tr>
+                  ))}
                   </tbody>
                 </table>
               </>

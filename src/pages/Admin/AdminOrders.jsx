@@ -105,7 +105,7 @@ const AdminOrders = () => {
               <td>
                 {Array.isArray(order.items) && order.items.length > 0 ? (
                   order.items.map((item, index) => (
-                    <div key={index}>{item.coinPoint} 點</div>
+                    <div key={index}>{item.coinPoint} </div>
                   ))
                 ) : (
                   '—'
