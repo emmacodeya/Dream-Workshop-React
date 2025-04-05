@@ -12,11 +12,6 @@ const PayPlan = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(UserContext);
-
-  useEffect(() => {
-    console.log("stores 原始資料", stores);
-    console.log("實際長度", stores.length);
-  }, [stores]);
   
 
   useEffect(() => {
