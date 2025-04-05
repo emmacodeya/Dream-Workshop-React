@@ -1,5 +1,4 @@
-/* eslint-disable react/react-in-jsx-scope */
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -14,12 +13,14 @@ const CheckOutPage = () => {
   const [orderData, setOrderData] = useState({
     name: "",
     email: "",
-    phone: "",
+    tel: "",
     address: "",
-    paymentMethod: (["credit","convenience_store","ATM"]),
+    paymentMethod: ([]),
     items: cart,
   });
   const navigate = useNavigate();
+
+  const { watch } = useForm();
 
   const [InstallmentMethod, setInstallmentMethod] = useState("");
   const [cardNumber, setCardNumber] = useState(["", "", "", ""]);
@@ -30,10 +31,10 @@ const CheckOutPage = () => {
   const years = Array.from({ length: 10 }, (_, i) => currentYear + i);
 
   const [invoiceType, setInvoiceType] = useState("personal");
-  // eslint-disable-next-line no-unused-vars
   const validateTaxId = (value) => /^[0-9]{8}$/.test(value) || "請輸入有效的 8 位數統一編號";
 
   useEffect(() => {
+    console.log("目前選擇的付款方式：", paymentMethod);
     const savedCart = localStorage.getItem("cart");
     void setShowCheckout;
     if (savedCart) {
@@ -54,7 +55,7 @@ const CheckOutPage = () => {
       } else {
         setCart([]); // 避免重新載入舊的 cart
       }
-  }, []);
+  }, [paymentMethod]);
 
 
   const creditHandleChange = (index, value) => {
@@ -89,10 +90,16 @@ const CheckOutPage = () => {
     setOrderData({ ...orderData, [name]: value });
   };
 
+  const handlePaymentChange = (e) => {
+    console.log("你選擇的付款方式：", e.target.value);
+    setPaymentMethod(e.target.value);
+  };
 
-  const onSubmit = handleSubmit((data) => {
+
+  const onSubmit = handleSubmit((data, e) => {
     const { message, ...user } = data;
-
+    e.preventDefault();
+  
     const userInfo = {
       data:{
         user,
@@ -100,51 +107,98 @@ const CheckOutPage = () => {
       }
     }
     checkout(userInfo);
+    console.log("送出的付款方式：", paymentMethod);
   })
 
-  const checkout = async (userInfo) => {
+  // const checkout = async (userInfo) => {
 
+  //   try {
+  //     // 確保 orderData 包含最新的購物車資料
+  //     const order = {
+  //     ...orderData,
+  //     date: new Date().toISOString().split("T")[0], // 設定當天日期 
+  //     items: cart, // 這樣就確保 items 是最新的 cart
+  //     paymentMethod: paymentMethod,
+  //     user: userInfo.data.user,
+  //     message: userInfo.data.message
+  //   };
+  //     // 送出訂單
+  //     const response = await axios.post(`${API_URL}/orders`, order);
+  //     if (response.status === 201) {
+
+  //       // 清空表單
+  //       reset();
+  //       // 如果還有其他狀態需要重置（例如 radio 狀態）
+  //       setPaymentMethod('');
+  //       setInstallmentMethod('');
+  //       setCardNumber(['', '', '', '']); // 如果信用卡欄位是用陣列控制
+  //       setCart([]); // 清空購物車
+  //       localStorage.removeItem("cart");
+
+  //       Swal.fire({
+  //         title: 'success!',
+  //         text: "訂單提交成功！",
+  //         icon: 'success',
+  //         confirmButtonText: '確定'
+  //       })
+
+  //       setTimeout(() => {
+  //         navigate("/checkout-success", { state: { fromCheckout: true } });
+  //       }, 500);
+        
+  //       console.log("目前訂單資料：", response.data);
+  //     }
+      
+  //   } catch (error) {
+  //     console.error("提交訂單失敗:", error);
+  //     alert("訂單提交失敗，請再試一次！");
+  //   }
+  // }
+
+  const checkout = async (userInfo) => {
     try {
-      // 確保 orderData 包含最新的購物車資料
       const order = {
-      ...orderData,
-      date: new Date().toISOString().split("T")[0], // 設定當天日期 
-      items: cart, // 這樣就確保 items 是最新的 cart
-      user: userInfo.data.user,
-      message: userInfo.data.message
-    };
+        ...orderData,
+        date: new Date().toISOString().split("T")[0], // 設定當天日期
+        items: cart, // 確保 items 是最新的 cart
+        paymentMethod, // 付款方式
+        user: userInfo.data.user,
+        message: userInfo.data.message,
+        invoiceType, // 發票類型
+        carrier: invoiceType === "個人雲端發票" ? watch("carrier") : "", // 如果是個人雲端發票才填寫
+        companyName: invoiceType === "公司發票" ? watch("公司發票") : "", // 如果是公司發票才填寫
+        taxId: invoiceType === "公司發票" ? watch("taxId") : "", // 如果是公司發票才填寫
+      };
+  
       // 送出訂單
       const response = await axios.post(`${API_URL}/orders`, order);
       if (response.status === 201) {
-
-        // 清空表單
-        reset();
-        // 如果還有其他狀態需要重置（例如 radio 狀態）
+        reset(); // 清空表單
         setPaymentMethod('');
-        setInstallmentMethod('');
-        setCardNumber(['', '', '', '']); // 如果信用卡欄位是用陣列控制
+        setInvoiceType(''); // 清空發票類型
         setCart([]); // 清空購物車
         localStorage.removeItem("cart");
-
+  
         Swal.fire({
-          title: 'success!',
+          title: "Success!",
           text: "訂單提交成功！",
-          icon: 'success',
-          confirmButtonText: '確定'
-        })
-
+          icon: "success",
+          confirmButtonText: "確定",
+        });
+  
         setTimeout(() => {
           navigate("/checkout-success", { state: { fromCheckout: true } });
         }, 500);
-        
+  
         console.log("目前訂單資料：", response.data);
       }
-      
     } catch (error) {
       console.error("提交訂單失敗:", error);
       alert("訂單提交失敗，請再試一次！");
     }
-  }
+  };
+  
+  
 
   
   const handleBackToStore = async () => {
@@ -178,11 +232,9 @@ const CheckOutPage = () => {
                 className={`form-control checkout-input w-50 ${errors.name && 'is-invalid'}`}
                 name="name"
                 id="name"
-                // value={orderData.name}
                 aria-describedby="emailHelp"
                 placeholder="請填寫真實姓名"
                 onChange={handleChange}
-                required
               />
               {errors.name && <p className="text-danger my-2">{errors.name.message}</p>}
             </div>
@@ -204,7 +256,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.email && 'is-invalid'}`}
                   id="email"
                   placeholder="請填寫常用Email，避免收到垃圾信件"
-                  // value={orderData.email}
                   onChange={handleChange}
                   required
                 />
@@ -227,7 +278,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.tel && 'is-invalid'}`}
                   id="tel"
                   placeholder="例:0912345678"
-                  // value={orderData.phone}
                   onChange={handleChange}
                   required
                 />
@@ -244,7 +294,6 @@ const CheckOutPage = () => {
                   className="form-select checkout-input"
                   id="address"
                   name="address"
-                  // value={orderData.address}
                   onChange={handleChange}
                   required
                 >
@@ -256,7 +305,6 @@ const CheckOutPage = () => {
               </div>
 
               <div className="col-md-6 mb-3">
-                {/* <label htmlFor="address" className="form-label h4 fw-bold"></label> */}
                 <input
                    {...register('address',{
                     required:'地址欄位必填',
@@ -266,7 +314,6 @@ const CheckOutPage = () => {
                   className={`form-control checkout-input ${errors.address && 'is-invalid'}`}
                   id="address"
                   placeholder="請填寫詳細地址"
-                  // value={orderData.address}
                   onChange={handleChange}
                   required
                 />
@@ -292,27 +339,18 @@ const CheckOutPage = () => {
           <h2 className="text-primary-600 mb-1">付款資訊</h2>
           <hr className="border-gray-600 border" />
           <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5">
-            {/* <h4>
-              <img
-                src="/assets/images/Coin01.png"
-                style={{ width: "40px", marginRight: "2px" }}
-                alt=""
-              />
-              100點
-            </h4>
-            <h4>100 NTD</h4> */}
-         {Array.isArray(cart) && cart.length > 0 ? (
-            cart.map((item) => (
-              <div className=" d-flex justify-content-between align-items-center" key={item.id}>
-                <h4><img className="me-3" src={item.coinImg} alt={item.coinPoint} />{item.coinPoint}</h4>
-                <p>價格: NT$ {item.coinPrice}</p>
-              </div>
-            ))
-          ) : (
-            <p>購物車是空的</p>
-          )}
+            {Array.isArray(cart) && cart.length > 0 ? (
+                cart.map((item) => (
+                  <div className=" d-flex justify-content-between align-items-center" key={item.id}>
+                    <h4><img className="me-3" src={item.coinImg} alt={item.coinPoint} />{item.coinPoint}</h4>
+                    <p>價格: NT$ {item.coinPrice}</p>
+                  </div>
+                ))
+              ) : (
+                <p>購物車是空的</p>
+              )}
 
-          {showCheckout && <CheckOutPage cart={cart} setCart={setCart} />}
+           {showCheckout && <CheckOutPage cart={cart} setCart={setCart} />}
           </div>
           <div className="form-check mb-2">
             <input
@@ -324,10 +362,9 @@ const CheckOutPage = () => {
                 transform: "scale(1.5)",
                 backgroundColor: "transparent",
               }}
-              required
-              value="convenience_store"
-              checked={paymentMethod === "convenience_store"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              value="便利商店"
+              checked={paymentMethod === "便利商店"}
+              onChange={handlePaymentChange}
             />
             <label
               className="form-check-label text-gray-100"
@@ -350,14 +387,13 @@ const CheckOutPage = () => {
               className="form-check-input"
               id="credit_card"
               name="paymentMethod"
-              value="credit_card"
+              value="信用卡"
               style={{
                 transform: "scale(1.5)",
                 backgroundColor: "transparent",
               }}
-              required
-              checked={paymentMethod === "credit_card"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
+              checked={paymentMethod === "信用卡"}
+              onChange={handlePaymentChange}
             />
             <label
               className="form-check-label text-gray-100"
@@ -382,7 +418,6 @@ const CheckOutPage = () => {
                       backgroundColor: "transparent",
                     }}
                     onChange={(e) => setInstallmentMethod(e.target.value)}
-                    required
                   />
                   <label
                     className="form-check-label text-gray-100"
@@ -401,10 +436,9 @@ const CheckOutPage = () => {
                       transform: "scale(1.5)",
                       backgroundColor: "transparent",
                     }}
-                    value="installment_payment"
-                    checked={InstallmentMethod === "installment_payment"}
+                    value="分期付款"
+                    checked={InstallmentMethod === "分期付款"}
                     onChange={(e) => setInstallmentMethod(e.target.value)}
-                    required
                   />
                   <label
                     className="form-check-label text-gray-100"
@@ -431,8 +465,7 @@ const CheckOutPage = () => {
                       value={num}
                       onChange={(e) => creditHandleChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      className="p-2 form-control checkout-input w-25"
-                      required/>
+                      className="p-2 form-control checkout-input w-25"/>
                     {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
                     </>  
                     ))}
@@ -448,12 +481,10 @@ const CheckOutPage = () => {
                         {...register("expMonth", { required: "請選擇到期月份" })}
                         name="expiry-month"
                         onChange={handleChange}
-                        required
                       >
                         <option value="">選擇月份</option>
                         {Array.from({ length: 12 }, (_, i) => (
-                          <option key={i + 1} value={i + 1}>{i + 1} 月</option>
-                        ))}
+                         <option key={`month-${i}`} value={i + 1}>{i + 1} 月</option>))}
                       </select>
                       {errors.expMonth && (
                         <div className="invalid-feedback">{errors.expMonth.message}</div>
@@ -467,7 +498,6 @@ const CheckOutPage = () => {
                         {...register("expYear", { required: "請選擇到期年份" })}
                         name="expiry-year"
                         onChange={handleChange}
-                        required
                       >
                         <option value="">選擇年份</option>
                         {years.map((year) => (
@@ -519,8 +549,7 @@ const CheckOutPage = () => {
                         value={num}
                         onChange={(e) => creditHandleChange(index, e.target.value)}
                         onKeyDown={(e) => handleKeyDown(index, e)}
-                        className="p-2 form-control checkout-input w-25"
-                        required/>
+                        className="p-2 form-control checkout-input w-25"/>
                       {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
                       </>  
                     ))}
@@ -537,8 +566,7 @@ const CheckOutPage = () => {
                       >
                         <option value="">選擇月份</option>
                         {Array.from({ length: 12 }, (_, i) => (
-                          <option key={i + 1} value={i + 1}>{i + 1} 月</option>
-                        ))}
+                        <option key={`month-${i}`} value={i + 1}>{i + 1} 月</option>))}
                       </select>
                       {errors.expMonth && (
                         <div className="invalid-feedback">{errors.expMonth.message}</div>
@@ -611,14 +639,13 @@ const CheckOutPage = () => {
               className="form-check-input"
               id="ATM"
               name="paymentMethod"
-              value="ATM"
+              value="ATM轉帳"
               style={{
                 transform: "scale(1.5)",
                 backgroundColor: "transparent",
               }}
-              checked={paymentMethod === "ATM"}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-              required
+              checked={paymentMethod === "ATM轉帳"}
+              onChange={handlePaymentChange}
             />
             <label
               className="form-check-label text-gray-100"
@@ -647,10 +674,9 @@ const CheckOutPage = () => {
                 }}
                 id="cloudBill"
                 name="invoiceType"
-                value="personal"
-                checked={invoiceType === "personal"}
-                onChange={() => setInvoiceType("personal")}
-                required
+                value="個人雲端發票"
+                checked={invoiceType === "個人雲端發票"}
+                onChange={() => setInvoiceType("個人雲端發票")}
               />
               <label
                 className="form-check-label text-gray-100"
@@ -659,7 +685,7 @@ const CheckOutPage = () => {
                 個人雲端發票
               </label>
               
-              {invoiceType === "personal" && (
+              {invoiceType === "個人雲端發票" && (
               <input
                 type="text"
                 className="form-control checkout-input mt-2"
@@ -672,7 +698,7 @@ const CheckOutPage = () => {
                   }
                 })}
               />
-            )}
+              )}
             </div>
             <div className="form-check mb-2">
               <input
@@ -680,14 +706,13 @@ const CheckOutPage = () => {
                 className="form-check-input"
                 id="companyBill"
                 name="invoiceType"
-                value="companyBill"
-                checked={invoiceType === "companyBill"}
-                onChange={() => setInvoiceType("companyBill")}
+                value="公司發票"
+                checked={invoiceType === "公司發票"}
+                onChange={() => setInvoiceType("公司發票")}
                 style={{
                   transform: "scale(1.5)",
                   backgroundColor: "transparent",
                 }}
-                required
               />
               <label
                 className="form-check-label text-gray-100"
@@ -696,7 +721,7 @@ const CheckOutPage = () => {
                 公司發票
               </label>
 
-              {invoiceType === "companyBill" && (
+              {invoiceType === "公司發票" && (
               <>
                 <input
                   type="text"
