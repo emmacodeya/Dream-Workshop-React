@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { UserContext } from "../../context/UserContext";
 
-const API_URL = import.meta.env.VITE_API_URL; 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const CheckOutPage = () => {
   const [cart, setCart] = useState([]);
@@ -16,6 +16,7 @@ const CheckOutPage = () => {
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
 
+
   const {
     register,
     handleSubmit,
@@ -23,14 +24,14 @@ const CheckOutPage = () => {
     reset
   } = useForm();
 
+  // 取得購物車
   useEffect(() => {
     const savedCart = localStorage.getItem(`cart_${currentUser?.useraccount}`);
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
         if (Array.isArray(parsedCart)) {
-          setCart(parsedCart); 
-       
+          setCart(parsedCart);
         }
       } catch (error) {
         console.error("Failed to parse cart:", error);
@@ -38,8 +39,16 @@ const CheckOutPage = () => {
     }
   }, [currentUser?.useraccount]);
 
-  
 
+
+  // 刪除購物車項目
+  const handleDeleteItem = (id) => {
+    const updatedCart = cart.filter((item) => item.id !== id);
+    setCart(updatedCart);
+    localStorage.setItem(`cart_${currentUser?.useraccount}`, JSON.stringify(updatedCart));
+  };
+
+  // 更改付款方式
   useEffect(() => {
     if (paymentMethod !== "credit_card") {
       setCardNumber(["", "", "", ""]);
@@ -47,6 +56,7 @@ const CheckOutPage = () => {
     }
   }, [paymentMethod]);
 
+  // 信用卡輸入處理
   const creditHandleChange = (index, value) => {
     const newValue = value.replace(/\D/g, "").slice(0, 4);
     const newCardNumber = [...cardNumber];
@@ -63,14 +73,13 @@ const CheckOutPage = () => {
     }
   };
 
- 
-
+  // 提交訂單
   const onSubmit = handleSubmit(async (data) => {
     try {
       const fullCardNumber = cardNumber.join("-");
       const totalPrice = cart.reduce((sum, item) => sum + item.coinPrice, 0);
       const totalPoints = cart.reduce((sum, item) => sum + parseInt(item.coinPoint), 0);
-  
+
       const finalOrder = {
         memberId: currentUser?.id,
         memberAccount: currentUser?.useraccount,
@@ -94,21 +103,21 @@ const CheckOutPage = () => {
         }),
         totalPrice,
       };
-  
+
       const response = await axios.post(`${API_URL}/orders`, finalOrder);
-  
+
       if (response.status === 201) {
         await axios.patch(`${API_URL}/members/${currentUser.id}`, {
           points: (currentUser.points || 0) + totalPoints,
         });
-  
+
         reset();
         setPaymentMethod("");
         setInstallmentMethod("");
         setCardNumber(["", "", "", ""]);
         setCart([]);
         localStorage.removeItem(`cart_${currentUser.useraccount}`);
-  
+
         Swal.fire("訂單成功", "訂單提交成功！點數已儲值成功！", "success");
         navigate("/pay-plan");
       }
@@ -121,7 +130,35 @@ const CheckOutPage = () => {
   return (
     <>
       <div className="container" style={{ marginTop: "150px" }}>
-        <p className="mb-7">首頁 ►︎ 付費方案 ►︎ 儲值點數</p>
+      <p className="mb-5">
+        <span
+          className=" text-white fw-bold"
+          role="button"
+          onClick={() => navigate("/")}
+        >
+          首頁
+        </span>{" "}
+        ►︎{" "}
+        <span
+          className="text-white fw-bold"
+          role="button"
+          onClick={() => navigate("/pay-plan")}
+        >
+          付費方案
+        </span>{" "}
+        ►︎ <span className="text-white">儲值點數</span>
+      </p>
+
+        {cart.length === 0 ? (
+        <div className="text-center py-5">
+          <i className="bi bi-cart-x fs-1 mb-3 d-block text-white"></i>
+          <h5 className=" text-white mb-2">購物車是空的</h5>
+          <p className=" text-white ">請先選擇您要購買的點數方案。</p>
+          <button className="btn btn-primary-600 mt-3" onClick={() => navigate("/pay-plan")}>
+            回上一頁
+          </button>
+        </div>
+      ) : (
         <form onSubmit={onSubmit}>
           <h2 className="text-primary-600 fw-bold mb-1">填寫個人資料</h2>
           <hr className="border-gray-600 border" />
@@ -260,18 +297,35 @@ const CheckOutPage = () => {
           <h2 className="text-primary-600 mb-1">付款資訊</h2>
           <hr className="border-gray-600 border" />
           <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5">
-         {cart.length > 0 && (
-          <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5">
+          {cart.length > 0 && (
+          <div className="bg-gray-800 px-6 py-3 text-gray-100 mb-5 rounded">
             {cart.map((item) => (
-              <div className="d-flex justify-content-between align-items-center" key={item.id}>
-                <h4><img className="me-3" src={item.coinImg} alt={item.coinPoint} />{item.coinPoint}</h4>
-                <p>價格: NT$ {item.coinPrice}</p>
+              <div
+                className="d-flex justify-content-between align-items-center mb-3  pb-2"
+                key={item.id}
+              >
+                <div className="d-flex align-items-center">
+                  <img className="me-3" src={item.coinImg} alt={item.coinPoint} style={{ width: "50px" }} />
+                  <h5 className="mb-0">{item.coinPoint}</h5>
+                </div>
+                <div className="d-flex align-items-center">
+                  <p className="mb-0 me-3">價格: NT$ {item.coinPrice}</p>
+                  <button
+                    type="button"
+                    className="btn btn-outline-danger btn-sm"
+                    onClick={() => handleDeleteItem(item.id)}
+                  >
+                    <i className="bi bi-x-lg"></i>
+                  </button>
+                </div>
               </div>
             ))}
+
             <hr />
             <h4 className="text-end mt-4">總計：NT$ {cart.reduce((sum, item) => sum + item.coinPrice, 0)}</h4>
           </div>
         )}
+
           </div>
           <div className="form-check mb-2">
             <input
@@ -493,8 +547,9 @@ const CheckOutPage = () => {
               </label>
             </div>
           </div>
-          <button type="submit" className="mt-4 p-2 text-gray-100 btn btn-primary-600 rounded-md">提交</button>
+          <button type="submit" className="mt-4 p-2  btn btn-primary-600 rounded-md mb-2">提交</button>
         </form>
+        )}
       </div>
     </>
   );
