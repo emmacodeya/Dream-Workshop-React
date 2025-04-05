@@ -14,6 +14,12 @@ const PayPlan = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext);
 
   useEffect(() => {
+    console.log("stores 原始資料", stores);
+    console.log("實際長度", stores.length);
+  }, [stores]);
+  
+
+  useEffect(() => {
     const fetchUserData = async () => {
       const useraccount = localStorage.getItem("useraccount");
       if (useraccount) {
@@ -111,25 +117,40 @@ const PayPlan = () => {
 
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-2 g-lg-3 g-2 pb-10">
           {stores.length > 0 ? (
-            stores.map((store) => (
-              <div className="col mb-5 d-flex flex-column align-items-center" key={store.id || store.coinPoint}>
-                <div 
-                  className="points-card w-100 text-center" 
-                  onClick={() => openModal(store)}
-                  style={{ cursor: 'pointer' }}
+            stores
+              .filter(
+                (store) =>
+                  store && store.coinImg && store.coinPoint && store.coinPrice
+              )
+              .map((store) => (
+                <div
+                  className="col mb-5 d-flex flex-column align-items-center"
+                  key={store.id || store.coinPoint}
                 >
-                  <div className="points-btn btn d-flex flex-column align-items-center w-100 h-100">
-                    <img src={store.coinImg} className="coin-img mb-2" alt="coin" />
-                    <h4 className="text-white">{store.coinPoint}</h4>
+                  <div
+                    className="points-card w-100 text-center"
+                    onClick={() => openModal(store)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <div className="points-btn btn d-flex flex-column align-items-center w-100 h-100">
+                      <img
+                        src={store.coinImg}
+                        className="coin-img mb-2"
+                        alt="coin"
+                      />
+                      <h4 className="text-white">{store.coinPoint}</h4>
+                    </div>
                   </div>
+                  <h4 className="text-gray-200 text-center mt-2">
+                    NT$ {store.coinPrice}
+                  </h4>
                 </div>
-                <h4 className="text-gray-200 text-center mt-2">NT$ {store.coinPrice}</h4>
-              </div>
-            ))
+              ))
           ) : (
             <p className="text-center text-white">目前沒有可用的儲值方案</p>
           )}
         </div>
+
       </div>
 
       {/* 確認 Modal */}
