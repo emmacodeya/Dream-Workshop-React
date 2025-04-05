@@ -1,8 +1,8 @@
 /* eslint-disable react/react-in-jsx-scope */
 import { useEffect, useState, useContext } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+import axios from "axios";
 import { UserContext } from "../context/UserContext";
 import { useLocation } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
@@ -11,8 +11,6 @@ const PayPlan = () => {
   const [stores, setStores] = useState([]);
   const [selectedStore, setSelectedStore] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [cart, setCart] = useState([]);
-
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -50,6 +48,7 @@ const PayPlan = () => {
       }
     };
 
+<<<<<<< HEAD
     const fetchCart = async () => {
       try {
         const localCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -66,10 +65,13 @@ const PayPlan = () => {
     fetchProducts();
     fetchCart();
     fetchUserData();
+=======
+    fetchUserData();
+    fetchProducts();
+>>>>>>> 203eb8546c82ce3aeab4ebdb39b342f610788bad
   }, [setCurrentUser]);
 
   const openModal = (store) => {
-    console.log('點擊了:', store);
     setSelectedStore(store);
     setShowModal(true);
   };
@@ -79,52 +81,75 @@ const PayPlan = () => {
     setSelectedStore(null); 
   };
 
-  const confirmPurchase = async () => {
+  const confirmPurchase = () => {
     if (!currentUser) {
       Swal.fire("請先登入！", "", "warning");
       navigate("/login");
       return;
     }
+    // try {
+    //   // 先清空購物車
+    //   await axios.get(`${API_URL}/cart`).then(res => {
+    //     return Promise.all(res.data.map(item => axios.delete(`${API_URL}/cart/${item.id}`)));
+    //   });
 
-    try {
-      // 先清空購物車
-      await axios.get(`${API_URL}/cart`).then(res => {
-        return Promise.all(res.data.map(item => axios.delete(`${API_URL}/cart/${item.id}`)));
-      });
-
-      // 計算新點數
-      const newPoints = (currentUser.points || 0) + parseInt(selectedStore.coinPoint);
+    //   // 計算新點數
+    //   const newPoints = (currentUser.points || 0) + parseInt(selectedStore.coinPoint);
       
-      // 更新用戶點數
-      await axios.patch(`${API_URL}/members/${currentUser.id}`, { points: newPoints });
+    //   // 更新用戶點數
+    //   await axios.patch(`${API_URL}/members/${currentUser.id}`, { points: newPoints });
 
-      // 更新 localStorage 的 currentUser
-      const updatedUser = { ...currentUser, points: newPoints };
-      setCurrentUser(updatedUser);
-      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
-      // 新增商品到購物車
-      const cartItem = {
-        ...selectedStore,
-        quantity: 1,
-      };
-      await axios.post(`${API_URL}/cart`, cartItem);
-      localStorage.setItem("cart", JSON.stringify([...cart, cartItem]));
-      // localStorage.setItem("currentUser", JSON.stringify([...cart, cartItem]));
+    //   // 更新 localStorage 的 currentUser
+    //   const updatedUser = { ...currentUser, points: newPoints };
+    //   setCurrentUser(updatedUser);
+    //   localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    //   // 新增商品到購物車
+    //   const cartItem = {
+    //     ...selectedStore,
+    //     quantity: 1,
+    //   };
+    //   await axios.post(`${API_URL}/cart`, cartItem);
+    //   localStorage.setItem("cart", JSON.stringify([...cart, cartItem]));
 
-      Swal.fire({
-        title: "成功加入購物車並加點！",
-        text: `${selectedStore.coinPoint} 已加入
-        ，當前點數：${newPoints.toLocaleString()} 點`,
-        icon: "success",
-        confirmButtonText: "前往結帳"
-      }).then(() => navigate("/checkout"));
+    //   Swal.fire({
+    //     title: "成功加入購物車並加點！",
+    //     text: `${selectedStore.coinPoint} 已加入
+    //     ，當前點數：${newPoints.toLocaleString()} 點`,
+    //     icon: "success",
+    //     confirmButtonText: "前往結帳"
+    //   }).then(() => navigate("/checkout"));
 
-    } catch (error) {
-      console.error("處理失敗", error);
-      Swal.fire("處理失敗，請稍後再試！", "", "error");
-    } finally {
-      closeModal();
+    // } catch (error) {
+    //   console.error("處理失敗", error);
+    //   Swal.fire("處理失敗，請稍後再試！", "", "error");
+    // } finally {
+    //   closeModal();
+
+    const cartKey = `cart_${currentUser.useraccount}`;
+    const cart = JSON.parse(localStorage.getItem(cartKey)) || [];
+
+    const alreadyInCart = cart.some(item => item.id === selectedStore.id);
+    if (alreadyInCart) {
+      Swal.fire("此儲值方案已在購物車中", "", "info");
+      return;
     }
+
+    const cartItem = {
+      ...selectedStore,
+      quantity: 1
+    };
+
+    const newCart = [...cart, cartItem];
+    localStorage.setItem(cartKey, JSON.stringify(newCart));
+
+    Swal.fire({
+      title: "成功加入購物車！",
+      text: `${selectedStore.coinPoint} 點數方案已加入購物車` ,
+      icon: "success",
+      confirmButtonText: "前往結帳"
+    }).then(() => navigate("/checkout"));
+
+    closeModal();
   };
 
   return (
@@ -152,23 +177,23 @@ const PayPlan = () => {
         </div>
 
         <div className="row row-cols-lg-3 row-cols-md-2 row-cols-2 g-lg-3 g-2 pb-10">
-        {stores.length > 0 ? (
-          stores.map((store) => (
-            <div className="col mb-5 d-flex flex-column align-items-center" key={store.id || store.coinPoint}>
-              <div 
-                className="points-card w-100 text-center" 
-                onClick={() => openModal(store)}  
-                style={{ cursor: 'pointer' }}
-              >
-                <div className="points-btn btn d-flex flex-column align-items-center w-100 h-100">
-                  <img src={store.coinImg} className="coin-img mb-2" alt="coin" />
-                  <h4 className="text-white">{store.coinPoint}</h4>
+          {stores.length > 0 ? (
+            stores.map((store) => (
+              <div className="col mb-5 d-flex flex-column align-items-center" key={store.id || store.coinPoint}>
+                <div 
+                  className="points-card w-100 text-center" 
+                  onClick={() => openModal(store)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  <div className="points-btn btn d-flex flex-column align-items-center w-100 h-100">
+                    <img src={store.coinImg} className="coin-img mb-2" alt="coin" />
+                    <h4 className="text-white">{store.coinPoint}</h4>
+                  </div>
                 </div>
+                <h4 className="text-gray-200 text-center mt-2">NT$ {store.coinPrice}</h4>
               </div>
-              <h4 className="text-gray-200 text-center mt-2">NT$ {store.coinPrice}</h4>
-            </div>
-          ))
-        ) : (
+            ))
+          ) : (
             <p className="text-center text-white">目前沒有可用的儲值方案</p>
           )}
         </div>
@@ -176,16 +201,16 @@ const PayPlan = () => {
 
       {/* 確認 Modal */}
       {showModal && selectedStore && (
-          <div className="modal show d-block" tabIndex="-1" role="dialog">
-            <div className="modal-dialog modal-dialog-centered">
-              <div className="modal-content  text-white rounded bg-gray-800">
-                <div className="modal-header border-0">
-                  <h5 className="modal-title w-100 text-center fw-bold ">
-                    確認購買 <span className=" text-primary-600 ">{selectedStore.coinPoint}</span>？
-                  </h5>
-                  <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={closeModal}></button>
-                </div>
-                <div className="modal-body text-center">
+        <div className="modal show d-block" tabIndex="-1" role="dialog">
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content text-white rounded bg-gray-800">
+              <div className="modal-header border-0">
+                <h5 className="modal-title w-100 text-center fw-bold">
+                  確認購買 <span className="text-primary-600">{selectedStore.coinPoint}</span>？
+                </h5>
+                <button type="button" className="btn-close btn-close-white" aria-label="Close" onClick={closeModal}></button>
+              </div>
+              <div className="modal-body text-center">
                 <p>
                   {currentUser?.points === undefined || currentUser?.points === 0 ? (
                     "您現在沒有點數"
@@ -193,15 +218,14 @@ const PayPlan = () => {
                     <>您現在有 <span className="text-primary-600">{currentUser.points} 點</span></>
                   )}
                 </p>
-
-                </div>
-                <div className="modal-footer border-0 d-flex justify-content-around">
-                  <button type="button" className="btn btn-secondary w-25 fw-bold" onClick={closeModal}>取消</button>
-                  <button type="button" className="btn btn-primary-600 w-50 fw-bold" onClick={confirmPurchase}>確認並結帳</button>
-                </div>
+              </div>
+              <div className="modal-footer border-0 d-flex justify-content-around">
+                <button type="button" className="btn btn-secondary w-25 fw-bold" onClick={closeModal}>取消</button>
+                <button type="button" className="btn btn-primary-600 w-50 fw-bold" onClick={confirmPurchase}>確認加入購物車</button>
               </div>
             </div>
           </div>
+        </div>
       )}
     </>
   );

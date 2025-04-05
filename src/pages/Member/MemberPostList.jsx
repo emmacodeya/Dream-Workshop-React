@@ -107,7 +107,7 @@ const MemberPostList = () => {
   };
 
   return (
-    <div className="container pt-8">
+    <div className="mt-5">
       <table className="table table-striped table-hover mt-8">
         <thead className="table-gray-800 table-bordered">
           <tr className="text-center fs-4">

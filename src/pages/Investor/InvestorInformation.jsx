@@ -1,7 +1,13 @@
+<<<<<<< HEAD
 /* eslint-disable react/react-in-jsx-scope */
 import { useState, useEffect } from "react";
+=======
+import { useContext, useState, useEffect } from "react";
+>>>>>>> 203eb8546c82ce3aeab4ebdb39b342f610788bad
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
+import Swal from "sweetalert2";
 import InvestorSidebar from "../../components/InvestorSidebar";
 import InvestorEvaluate from "./InvestorEvaluate"; 
 
@@ -13,6 +19,84 @@ const InvestorInformation = () => {
   const [investor, setInvestor] = useState(null);
   const [industryMap, setIndustryMap] = useState({});
   const [activeSection, setActiveSection] = useState("autobiography");
+  const { currentUser, setCurrentUser } = useContext(UserContext);
+  const [unlocked, setUnlocked] = useState(false);
+
+useEffect(() => {
+  if (currentUser && id) {
+    setUnlocked(currentUser.unlockedInvestors?.includes(id));
+  }
+}, [currentUser, id]);
+
+const handleUnlock = async () => {
+  if (!currentUser) {
+    Swal.fire("請先登入", "", "info");
+    return;
+  }
+
+  if (currentUser.points < 50) {
+    Swal.fire({
+      icon: "warning",
+      title: "點數不足",
+      text: "請至點數商城購買點數",
+      confirmButtonText: "前往購買"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.href = "/#/pay-plan";
+      }
+    });
+    return;
+  }
+
+  if (unlocked) {
+    Swal.fire("已解鎖", "你已經解鎖過此投資人", "info");
+    return;
+  }
+
+  try {
+    const updatedList = [...(currentUser.unlockedInvestors || []), id];
+
+    const updatedTimes = [
+      ...(currentUser.investorUnlockTimes || []),
+      new Date().toLocaleString("zh-TW", {
+        timeZone: "Asia/Taipei",
+        hour12: false,
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        second: "2-digit"
+      })
+    ];
+
+    const updatedPoints = currentUser.points - 50;
+
+    await axios.patch(`${API_URL}/members/${currentUser.id}`, {
+      unlockedInvestors: updatedList,
+      investorUnlockTimes: updatedTimes,
+      points: updatedPoints
+    });
+
+    const updatedUser = {
+      ...currentUser,
+      unlockedInvestors: updatedList,
+      investorUnlockTimes: updatedTimes,
+      points: updatedPoints
+    };
+
+    setCurrentUser(updatedUser);
+    localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+    setUnlocked(true);
+
+    Swal.fire("解鎖成功", "你已成功解鎖此投資人資訊", "success");
+  } catch (error) {
+    console.error("解鎖失敗", error);
+    Swal.fire("解鎖失敗", "請稍後再試", "error");
+  }
+};
+
+
 
   useEffect(() => {
     // 獲取投資人資訊
@@ -57,7 +141,7 @@ const InvestorInformation = () => {
               <div className="col-lg-8">
                 <div className="card-body ps-5">
                   <div className="d-flex align-items-center">
-                    <h1 className="fs-1 text-primary-600 fw-bold my-5">
+                    <h1 className="fs-1 text-primary-600 fw-bold my-lg-5 my-1">
                       {investor.name} <i className="bi bi-clipboard-check fs-3"></i>
                     </h1>
                   </div>
@@ -71,23 +155,25 @@ const InvestorInformation = () => {
                       </span>
                     ))}
                   </h5>
-                  <h2 className="fs-2 mx-1 my-5 text-light">
+                  <h2 className="fs-2 mx-lg-1 my-lg-5 m-1 text-light">
                     資金規模： {parseInt(investor.capital).toLocaleString()}
                   </h2>
-                  <p className="m-1 fs-6 text-gray-400">
-                    聯絡方式：{investor.email} | {investor.mobile}
-                  </p>
                 </div>
               </div>
             </div>
 
             {/* 按鈕 */}
             <div className="d-flex justify-content-center">
-              <button className="btn btn-primary-600 mb-5 mx-3 rounded-2">
+              {/* <button className="btn btn-primary-600 mb-5 mx-3 rounded-2">
                 合作聯繫 <i className="bi bi-unlock ps-1"></i>
-              </button>
-              <button className="btn btn-primary-600 mb-5 mx-3 rounded-2">
-                內容解鎖 <i className="bi bi-unlock ps-1"></i>
+              </button> */}
+              <button
+                className={`btn mb-5 mx-3 rounded-2 ${unlocked ? "btn-secondary" : "btn-primary-600"}`}
+                onClick={handleUnlock}
+                disabled={unlocked}
+              >
+                {unlocked ? "已解鎖" : "內容解鎖"}
+                <i className={`bi ${unlocked ? "bi-unlock" : "bi-lock"} ps-1`}></i>
               </button>
             </div>
           </div>
@@ -99,40 +185,58 @@ const InvestorInformation = () => {
         {/* 內容區塊 */}
         <div className="row">
           <div className="col">
-            {/* 自傳 */}
-            {activeSection === "autobiography" && (
-              <div className="py-10">
-                <p className="text-gray-200">{investor.introduction}</p>
+            {activeSection === "evaluate" ? (
+              <InvestorEvaluate investorId={id} />
+            ) : !unlocked ? (
+              <div className="bg-dark text-white p-5 rounded text-center">
+                <p className="fs-5 mb-4">此內容需解鎖後才能瀏覽</p>
+                <button className="btn btn-primary-600 px-4" onClick={handleUnlock}>
+                  使用 50 點解鎖
+                </button>
+                <p className="mt-3">目前剩餘點數：{currentUser?.points ?? 0} 點</p>
               </div>
-            )}
+            ) : (
+              <>
+                {activeSection === "autobiography" && (
+                  <div className="py-10">
+                    <p className="text-gray-200">{investor.introduction}</p>
+                  </div>
+                )}
 
-            {/* 投資經歷 */}
-            {activeSection === "experience" && (
-              <div className="py-10">
-                <p className="text-gray-200">{investor.experience}</p>
-              </div>
-            )}
+                {activeSection === "experience" && (
+                  <div className="py-10">
+                    <p className="text-gray-200">{investor.experience}</p>
+                  </div>
+                )}
 
-            {/* 具體相關資源 */}
-            {activeSection === "resource" && (
-              <div className="py-10">
-                <p className="text-gray-200">{investor.resources}</p>
-              </div>
-            )}
+                {activeSection === "resource" && (
+                  <div className="py-10">
+                    <p className="text-gray-200">{investor.resources}</p>
+                  </div>
+                )}
 
-            {/* 照片參考 */}
-            {activeSection === "photo" && (
-              <div className="py-10">
-                {investor.referencePhotos.map((photo, index) => (
-                  <img key={index} src={photo} alt={`投資人照片 ${index + 1}`} className="img-fluid rounded mb-2 w-50" />
-                ))}
-              </div>
-            )}
+                {activeSection === "photo" && (
+                  <div className="py-10">
+                    {investor.referencePhotos && investor.referencePhotos.length > 0 ? (
+                      investor.referencePhotos.map((photo, index) => (
+                        <img
+                          key={index}
+                          src={photo}
+                          alt={`投資人照片 ${index + 1}`}
+                          className="img-fluid rounded mb-2 w-50"
+                        />
+                      ))
+                    ) : (
+                      <p className="text-light">暫無項目照片</p>
+                    )}
+                  </div>
+                )}
 
-            {/* 投資人評價 */}
-            {activeSection === "evaluate" && <InvestorEvaluate investorId={id} />}
+              </>
+            )}
           </div>
         </div>
+
       </div>
     </div>
   );

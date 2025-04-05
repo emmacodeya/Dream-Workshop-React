@@ -75,7 +75,7 @@ const AdminManager = () => {
 
   return (
     <div className="text-white">
-      <h1 className="fw-bold fs-2 mb-3">管理者管理</h1>
+      <h2 className="mb-4">管理者管理</h2>
       <div className="d-flex justify-content-between align-items-center mb-3">
         <input
           type="text"

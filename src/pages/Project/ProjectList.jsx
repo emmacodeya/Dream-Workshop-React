@@ -182,7 +182,7 @@ const ProjectList = () => {
 
   return (
     <div className="bg-green">
-      <div className="container py-lg-15">
+      <div className="container py-15">
         <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">熱門創業項目</h2>
         <Swiper 
           modules={[Navigation]} 
@@ -280,9 +280,9 @@ const ProjectList = () => {
 
            {/* 篩選後列表 */}
         {paginatedProjects.map((project) => (
-        <div key={project.id} className="card bg-gray-800 mt-8">
+        <div key={project.id} className="card bg-gray-800 mt-md-8 mt-5">
             {/* 頁面標題 */}
-            <div className="d-flex justify-content-between project-title  ">
+            <div className="d-flex justify-content-between project-title ">
             <h3 className="text-white fs-3 fw-bold  ">
             <Link to={`/project/${project.id}`} className="text-white" onClick={() => window.scrollTo(0, 0)}>{project.name}
             </Link>
@@ -293,14 +293,13 @@ const ProjectList = () => {
               src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
-
             </button>
             </div>
 
-            <div className="row g-0 created-body ">
+            <div className="row g-0 created-body  border-top border-gray-600">
             {/* 左側圖片 */}
             <div className="col-md-4 d-flex align-items-center justify-content-center ">
-                <img src={project.companyLogo} className="img-fluid rounded-start w-25" alt={project.name} />
+                <img src={project.companyLogo} className="img-fluid rounded-start w-25 mt-md-0 mt-2" alt={project.name} />
             </div>
             <div className="col-md-8">
                 {/* 電腦版 */}
@@ -336,17 +335,17 @@ const ProjectList = () => {
                 <div className="d-flex pb-2">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">公司成立狀態</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.companyStatus}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(statusMap, project.status)}</li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">產業分類</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.industry}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(industryMap, project.industry)}</li>
                     </ul>
                 </div>
                 <div className="d-flex">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">規模</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.scale}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">{translate(sizeMap, project.size)}</li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>

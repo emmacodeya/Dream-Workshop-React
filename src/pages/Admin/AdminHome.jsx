@@ -10,6 +10,8 @@ import AdminOrders from "./AdminOrders";
 import AdminArticles from "./AdminArticles";
 import AdminActivities from "./AdminActivities";
 import AdminManager from "./AdminManager";
+import AdminOrders from "./AdminOrders";
+import AdminPoints from "./AdminPoints";
 
 
 
@@ -45,10 +47,17 @@ const AdminHome = () => {
             <AdminActivities />
             </div>
             <div className={`content-section text-white ${activeSection === "pricingPlan" ? "d-block" : "d-none"}`}>
+<<<<<<< HEAD
               <AdminPonits />
             </div>
             <div className={`content-section text-white ${activeSection === "transactions" ? "d-block" : "d-none"}`}>
               <AdminOrders />
+=======
+            <AdminPoints />
+            </div>
+            <div className={`content-section text-white ${activeSection === "transactions" ? "d-block" : "d-none"}`}>
+            <AdminOrders />
+>>>>>>> 203eb8546c82ce3aeab4ebdb39b342f610788bad
             </div>
             <div className={`content-section text-white ${activeSection === "articles" ? "d-block" : "d-none"}`}>
             <AdminArticles />

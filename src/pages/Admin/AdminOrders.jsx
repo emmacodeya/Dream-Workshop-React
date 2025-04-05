@@ -1,16 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Swal from "sweetalert2";
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Form } from 'react-bootstrap';
+import Pagination from "../../components/Pagination";
 
 const API_URL = import.meta.env.VITE_API_URL;
-
+const ITEMS_PER_PAGE = 8;
 
 const AdminOrders = () => {
     const [orders, setOrders] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const [currentOrder, setCurrentOrder] = useState(null);
-
+    const [searchTerm, setSearchTerm] = useState('');
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         fetchOrders();
@@ -21,8 +23,6 @@ const AdminOrders = () => {
           const response = await axios.get(`${API_URL}/orders`);
           const sortedData = response.data.sort((a, b) => new Date(b.date) - new Date(a.date));
           setOrders(sortedData);
-          console.log(orders.email)
-
         } catch (error) {
           console.error('Error fetching orders:', error);
         }
@@ -72,6 +72,13 @@ const AdminOrders = () => {
             return method;
         }
       };
+
+      const filteredOrders = orders.filter(order =>
+        order.name?.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    
+      const totalPages = Math.ceil(filteredOrders.length / ITEMS_PER_PAGE);
+      const paginatedOrders = filteredOrders.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
       
 
       
@@ -81,7 +88,18 @@ const AdminOrders = () => {
         <div className="admin-account text-white">
             <div className="mb-3 mt-4">
                 <h2>交易管理</h2>
-            </div>
+                <div className="mb-3 mt-4 ">
+                  <Form.Control
+                    type="text"
+                    placeholder="搜尋客戶名稱"
+                    className="w-50"
+                    value={searchTerm}
+                    onChange={(e) => {
+                      setSearchTerm(e.target.value);
+                      setCurrentPage(1);
+                    }} />
+                </div>
+              </div>
 
 
             <table className="table table-dark table-striped">
@@ -98,7 +116,7 @@ const AdminOrders = () => {
             </thead>
 
             <tbody>
-              {orders.map((order) => (
+              {/* {orders.map((order) => (
                   <tr key={order.id}>
                     <td>{order.id}</td>
                     <td>{order.user?.name || 'N/A'}</td>
@@ -116,9 +134,52 @@ const AdminOrders = () => {
                       onClick={() => handleDelete(order.id)}>刪除</Button>
                   </td>
                 </tr>
-                ))}
+                ))} */}
+              {paginatedOrders.map((order) => (
+            <tr key={order.id}>
+              <td>{order.id}</td>
+              <td>{order.name || 'N/A'}</td>
+              <td>
+                {Array.isArray(order.items) && order.items.length > 0 ? (
+                  order.items.map((item, index) => (
+                    <div key={index}>{item.coinPoint} 點</div>
+                  ))
+                ) : (
+                  '—'
+                )}
+              </td>
+              <td>
+                {Array.isArray(order.items) && order.items.length > 0 ? (
+                  order.items.map((item, index) => (
+                    <div key={index}>NT$ {item.coinPrice}</div>
+                  ))
+                ) : (
+                  '—'
+                )}
+              </td>
+              <td>{new Date(order.createTime).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}</td>
+              <td>
+                <Button
+                  variant="outline-primary-600"
+                  size="sm"
+                  onClick={() => handleShowModal(order)}
+                  className="me-1"
+                >查看</Button>
+                <Button
+                  variant="outline-danger" size="sm"
+                  onClick={() => handleDelete(order.id)}
+                >刪除</Button>
+              </td>
+            </tr>
+          ))}
             </tbody>
         </table>
+
+        <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}/>
+
 
         <Modal show={showModal} onHide={handleCloseModal} size="lg">
             <Modal.Header closeButton className="bg-primary-600">
@@ -132,35 +193,12 @@ const AdminOrders = () => {
                 <p className='text-gray-800'><strong>信箱:</strong> {currentOrder.email}</p>
                 <p className='text-gray-800'><strong>電話:</strong> {currentOrder.tel}</p>
                 <p className='text-gray-800'><strong>地址:</strong> {currentOrder.address}</p>
-                <p className='text-gray-800'><strong>留言:</strong> {currentOrder.message}</p>
                 <div>
                   <p className='text-gray-800'>
                     <strong>付款方式:</strong> {formatPaymentMethod(currentOrder.paymentMethod)}
                   </p>
 
                   {/* 顯示發票資訊 */}
-                  {/* {currentOrder.invoiceType && (
-                    <p className='text-gray-800'>
-                      <strong>發票類型:</strong> {currentOrder.invoiceType}
-                    </p>
-                  )}
-
-                  {currentOrder.invoiceType === "個人雲端發票" && currentOrder.carrier && (
-                    <p className='text-gray-800'>
-                      <strong>手機載具:</strong> {currentOrder.carrier}
-                    </p>
-                  )}
-
-                  {currentOrder.invoiceType === "公司發票" && currentOrder.companyName && (
-                    <>
-                      <p className='text-gray-800'>
-                        <strong>公司名稱:</strong> {currentOrder.companyName}
-                      </p>
-                      <p className='text-gray-800'>
-                        <strong>統一編號:</strong> {currentOrder.taxId}
-                      </p>
-                    </>
-                  )} */}
                   {currentOrder.invoiceType && (
                     <p className='text-gray-800'>
                       <strong>發票類型:</strong> {currentOrder.invoiceType} 
@@ -169,9 +207,17 @@ const AdminOrders = () => {
                     </p>
                   )}
                 </div>
-                <p className='text-gray-800'><strong>點數:</strong> {currentOrder.items[0].coinPoint}</p>
-                <p className='text-gray-800'><strong>價格:</strong> {currentOrder.items[0].coinPrice}</p>
-                <p className='text-gray-800'><strong>日期:</strong> {currentOrder.date}</p>
+                <p className='text-gray-800'><strong>訂單時間:</strong> {new Date(currentOrder.createTime).toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })}</p>
+              <hr />
+              <h5 className='text-gray-800 fw-bold'>購買內容：</h5>
+              {Array.isArray(currentOrder.items) && currentOrder.items.map((item, index) => (
+                <div key={index} className='mb-2'>
+                  <p className='text-gray-800 mb-0'>• {item.coinPoint} 點 - NT$ {item.coinPrice}</p>
+                </div>
+              ))}
+              <hr />
+              <p className='text-gray-800'><strong>總金額:</strong> NT$ {currentOrder.totalPrice}</p>
+              <p className='text-gray-800'><strong>備註留言:</strong> {currentOrder.message || '—'}</p>
                 </div>
             )}
         </Modal.Body>

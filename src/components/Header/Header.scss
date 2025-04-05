@@ -11,42 +11,48 @@
     }
     
   }
-  
-  .btn-toggler {
-    color: $gray-200;
-    border: none;
-  }
-  
-  .navbar-toggler-icon {
-    .bi-list {
-      font-size: 48px;
-    }
+
+
+  .list-icon {
+    font-size: 48px;
+    color: $gray-100;
   }
   
   .navbar-nav {
+    display: flex;
+    flex-direction: column;
     gap: 56px;
+  
     .nav-link {
       color: $gray-100;
       font-weight: 700;
       font-size: 20px;
       line-height: 30px;
-      letter-spacing: 10%;
+      letter-spacing: 1px; 
+      transition: color 0.2s ease;
+  
       &:hover {
         color: $primary-600;
       }
     }
-    @include pad {
-      gap: 16px;
+  
+    @media (max-width: 991px) {
+      gap: 24px;
     }
-    @include mobile {
-      gap: 8px;
+  
+    @media (max-width: 768px) {
+      gap: 12px;
     }
+
   }
   
+<<<<<<< HEAD
   .nav-link.active {
     color: let(--primary-600);
     font-weight: bold;
   }
+=======
+>>>>>>> 203eb8546c82ce3aeab4ebdb39b342f610788bad
   
   .login-btn {
     padding: 16px 24px;
@@ -57,6 +63,7 @@
     letter-spacing: 0.09em;
   }
 
+<<<<<<< HEAD
   .member-avatar {
     width: 30px;
     height: 30px;
@@ -64,3 +71,8 @@
     object-fit: cover;
   }
   
+=======
+
+  
+
+>>>>>>> 203eb8546c82ce3aeab4ebdb39b342f610788bad

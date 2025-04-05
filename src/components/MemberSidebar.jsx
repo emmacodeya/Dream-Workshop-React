@@ -225,7 +225,11 @@ const MemberSidebar = () => {
             <h5 className="text-primary-600 fw-bold fs-5">會員中心</h5>
             <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas"></button>
           </div>
-          <div className="offcanvas-body">
+          <div className="offcanvas-body overflow-y-auto"  style={{
+            maxHeight: 'calc(100vh - 60px)',
+            overflowY: 'auto',
+            paddingBottom: '100px' 
+          }}>
             <ul className="flex-column fw-bold list-unstyled">
               <li className="nav-link text-gray-400 fs-5">我的帳戶</li>
               <li>
@@ -285,8 +289,10 @@ const MemberSidebar = () => {
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">評價紀錄</li>
           <li>
-            <NavLink key={sidebarKey} to="/member/evaluate-projects" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
-            </NavLink >
+          <NavLink key={sidebarKey} to="/member/evaluate-projects" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
+            創業項目評價
+          </NavLink >
+
           </li>
           <li>
             <NavLink key={sidebarKey} to="/member/evaluate-investor" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
@@ -312,9 +318,10 @@ const MemberSidebar = () => {
         <ul className="flex-column fw-bold list-unstyled">
           <li className="nav-link text-gray-400 fs-5 pt-1">我的活動</li>
           <li>
-            <NavLink key={sidebarKey} to="/member/activity" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
-            已申請活動
-            </NavLink >
+          <NavLink key={sidebarKey} to="/member/apply-activity" className={({ isActive }) => `nav-link   ps-1 lh-lg ${isActive ? "text-primary-600" : "text-white"}`}>
+          已申請活動
+        </NavLink>
+
           </li>
           <li>
             <NavLink key={sidebarKey} to="/member/activity-record" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
@@ -345,7 +352,7 @@ const MemberSidebar = () => {
             </NavLink >
           </li>
           <li>
-            <NavLink  to="/member/article-message" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
+            <NavLink  key={sidebarKey} to="/member/article-message" className={({ isActive }) => `nav-link   ps-1 lh-lg pb-2 ${isActive ? "text-primary-600" : "text-white"}`}>
             查看留言
             </NavLink >
           </li>
