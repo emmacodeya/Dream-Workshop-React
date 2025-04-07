@@ -37,7 +37,6 @@ const Login = () => {
       if (response.data.length > 0) {
         const user = response.data[0];
   
-        localStorage.setItem("useraccount", user.useraccount);
         localStorage.setItem("currentUser", JSON.stringify(user));
   
         setCurrentUser(user);
