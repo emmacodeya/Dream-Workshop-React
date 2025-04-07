@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
+import Swal from "sweetalert2";
+
 
 const Header = () => {
   const { currentUser, setCurrentUser } = useContext(UserContext); 
@@ -34,12 +36,18 @@ const Header = () => {
     };
   }, []);
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     localStorage.removeItem("currentUser");
     setCurrentUser(null);
     setIsMenuOpen(false);
-    alert("已登出！");
-    navigate("/");
+  
+    await Swal.fire({
+      icon: "success",
+      title: "已成功登出！",
+      confirmButtonColor: "#7267EF"
+    });
+  
+    navigate("/", { replace: true });
   };
 
   const toggleMenu = () => {

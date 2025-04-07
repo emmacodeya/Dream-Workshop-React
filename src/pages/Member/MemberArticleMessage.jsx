@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Modal, Button } from "react-bootstrap";
 import Pagination from "../../components/Pagination"; 
+import { UserContext } from "../../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -12,7 +13,8 @@ const MemberArticleMessage = () => {
   const [showModal, setShowModal] = useState(false);
   const [replyTo, setReplyTo] = useState(null);
   const [contentError, setContentError] = useState(false);
-  const useraccount = localStorage.getItem("useraccount") || "";
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount || "";
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
