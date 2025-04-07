@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { Modal, Button } from "react-bootstrap";
 import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Pagination from "../../components/Pagination";
+import { UserContext } from "../../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,7 +15,8 @@ const MemberPostList = () => {
   const [editPost, setEditPost] = useState(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const useraccount = localStorage.getItem("useraccount") || "";
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount || "";
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 

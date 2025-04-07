@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { UserContext } from "../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const REGISTER_API_URL = `${API_URL}/registrations`;
@@ -14,8 +15,9 @@ const ActivityDetail = () => {
   const [hasRegistered, setHasRegistered] = useState(false);
   const navigate = useNavigate();
 
-  const useraccount = localStorage.getItem("useraccount");
-  const isLoggedIn = !!useraccount;
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount || "";
+  const isLoggedIn = !!currentUser;
 
   useEffect(() => {
     const fetchActivity = async () => {
