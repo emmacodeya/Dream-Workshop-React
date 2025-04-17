@@ -68,6 +68,11 @@ const Header = () => {
     }
     setIsMenuOpen(false);
   };
+
+  const navLinkClass = ({ isActive }) =>
+    isActive
+      ? 'nav-link text-primary-600'
+      : 'nav-link';
   
   
   return (
@@ -96,16 +101,16 @@ const Header = () => {
       <div className="collapse navbar-collapse justify-content-center " id="navbarNav">
         <ul className="navbar-nav">
           <li className="nav-item">
-            <NavLink className="nav-link" to="/projects"  onClick={handleNavLinkClick}>找創業項目</NavLink>
+            <NavLink className={navLinkClass} to="/projects"  onClick={handleNavLinkClick}>找創業項目</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/investor"  onClick={handleNavLinkClick}>找投資人</NavLink>
+            <NavLink className={navLinkClass} to="/investor"  onClick={handleNavLinkClick}>找投資人</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/pay-plan"  onClick={handleNavLinkClick}>付費方案</NavLink>
+            <NavLink className={navLinkClass} to="/pay-plan"  onClick={handleNavLinkClick}>付費方案</NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link" to="/discuss"  onClick={handleNavLinkClick}>討論區</NavLink>
+            <NavLink className={navLinkClass} to="/discuss"  onClick={handleNavLinkClick}>討論區</NavLink>
           </li>
 
           {/* 手機版會員資訊 */}

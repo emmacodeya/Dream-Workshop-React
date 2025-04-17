@@ -8,6 +8,7 @@ import "./Home.scss";
 import axios from "axios";
 import { industryMap, translate } from "../../utils/mappings";
 import { UserContext } from "../../context/UserContext"; 
+import FormattedNumber from '../../components/FormattedNumber';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -106,12 +107,10 @@ const Home = () => {
     navigate(industryValue ? `/industry-list?industry=${industryValue}` : "/industry-list");
   };
   
-const truncateText = (text, maxLength = 20) => {
-  return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
-};
+  const truncateText = (text, maxLength = 20) => {
+    return text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+  };
   
-  
-
   return (
     <>
       <div className="front-page-banner d-flex justify-content-center align-items-center">
@@ -207,7 +206,10 @@ const truncateText = (text, maxLength = 20) => {
                 </div>
                 <a href="#" className="btn btn-gray-600 py-3">
                   <p className="fs-5">資金規模</p>
-                  <p className="fs-5 fw-bold text-white">{project.funding}</p>
+                  {/* <p className="fs-5 fw-bold text-white">{formatNumber(project.funding)}</p> */}
+                  <p className="fs-5 fw-bold text-white">
+                    <FormattedNumber value={project.funding} />
+                  </p>
                 </a>
               </div>
             </SwiperSlide> 
@@ -256,7 +258,9 @@ const truncateText = (text, maxLength = 20) => {
               </div>
               <div className="btn btn-gray-600 py-3">
                 <p className="fs-5">資本額</p>
-                <p className="fs-5 fw-bold text-white">{investor.capital}</p>
+                <p key={investor.id} className="fs-5 fw-bold text-white">
+                  <FormattedNumber value={investor.capital} />
+                </p>
               </div>
             </div>
         </SwiperSlide>

@@ -1,31 +1,26 @@
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
-import axios from "axios";
+import { useState } from "react";
+import {  useNavigate } from "react-router-dom";
+
 
 import { NavLink } from "react-router-dom";
 
 const EmailVerify = () => {
   const [code, setCode] = useState("");
   const navigate = useNavigate();
-  const email = localStorage.getItem("email");
 
-  const handleVerifyCode = async () => {
-    try {
-      const res = await axios.post("http://localhost:4000/verify-code", { email, code });
-      if (res.data.message === "Verification successful") {
-        navigate("/profile");
-      }
-    } catch (error) {
-      console.error("Invalid verification code");
-    }
+  const handleVerifyEmail = () => {
+    alert("Email 驗證成功（模擬）");
+    localStorage.setItem("emailVerified", "true");
+    navigate('./fill-info');
   };
+
     return (
       <>
          <div className="container">
         <div className="login">
         <div
             className="position-relative mb-6"
-            style={{width: "90%", margin: "0"}} auto="true">
+            style={{width: "90%", margin: "0"}}>
             <div className="progress" style={{height: "1px"}}>
               <div
                 className="progress-bar bg-primary-600"
@@ -61,7 +56,7 @@ const EmailVerify = () => {
             <h2 className="mt-8 mb-8">信箱驗證</h2>
             <p className="mb-5">系統已寄送 E-mail 驗證信函至您的會員註冊電子信箱
                 請您收到信件後於下方欄位輸入驗證碼</p>
-            <form className="row needs-validation" noValidate>
+            <form className="row needs-validation" noValidate onSubmit={handleVerifyEmail}>
                 <div className="mx-auto mb-4">
                     <input 
                      value={code} 

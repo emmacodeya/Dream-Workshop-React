@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
-import React, { useState } from "react";
-import { BrowserRouter as Router, Routes, Route, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const FillInfo = () => {
@@ -27,7 +27,7 @@ const FillInfo = () => {
         <div className="login">
         <div
             className="position-relative mb-6"
-            style={{width: "90%", margin: "0"}} auto="true">
+            style={{width: "90%", margin: "0"}}>
             <div className="progress" style={{height: "1px"}}>
               <div
                 className="progress-bar bg-primary-600"
