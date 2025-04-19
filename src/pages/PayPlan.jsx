@@ -88,7 +88,7 @@ const PayPlan = () => {
 
   return (
     <>
-      <div className="pay-banner d-flex flex-column justify-content-center align-items-center text-center" style={{ backgroundImage: `url(https://dream-workshop-api.onrender.com/assets/images/pay-plan-banner.png)` }}>
+      <div className="pay-banner d-flex flex-column justify-content-center align-items-center text-center" style={{ backgroundImage: `url(https://dream-workshop-api.onrender.com/assets/images/pay-plan-banner.jpg)` }}>
         <h2 className="fw-bold text-primary-600 mb-2">付費方案</h2>
         <h4 className="text-gray-100">價格實惠，滿足實際需求</h4>
       </div>

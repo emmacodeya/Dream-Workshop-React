@@ -39,7 +39,7 @@ const MemberCreatedProjects = ({ useraccount }) => {
       try {
         const response = await axios.get(`${API_URL}/industryOptions`);
         setIndustryOptions([
-          { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.png" },
+          { value: "", label: "不限產業", imgSrc: "/assets/images/Map-item-20.jpg" },
           ...response.data,
         ]);
       } catch (error) {

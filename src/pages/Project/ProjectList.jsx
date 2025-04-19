@@ -177,7 +177,7 @@ const ProjectList = () => {
   
 
   const displayedIndustries = [
-    { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
+    { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.jpg" },
     ...industries.filter((industry) => industry.value !== ""), 
   ];
   
