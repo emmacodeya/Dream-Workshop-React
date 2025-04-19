@@ -1,0 +1,15 @@
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2); /* 半透明黑背景 */
+    backdrop-filter: blur(8px); /* 模糊效果 */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* loading 內容 */
+  .loading-content {
+    text-align: center;
+  }

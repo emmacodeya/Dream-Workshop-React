@@ -8,9 +8,9 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { UserContext } from "../../context/UserContext";
 import FormattedNumber from "../../components/FormattedNumber"; 
+import Loading from "../../components/Loading";
 import "swiper/css";
 import "swiper/css/navigation";
-import "./InvestorList.scss";
 
 
 // 排序選項
@@ -33,9 +33,12 @@ const InvestorList = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
+  const [loading, setLoading] = useState(true);
+
 
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const [investorsRes, industriesRes] = await Promise.all([
@@ -59,6 +62,8 @@ const InvestorList = () => {
         setIndustries(updatedIndustries);
       } catch (error) {
         console.error("Error fetching investors or industries:", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -158,7 +163,9 @@ const toggleFavorite = async (investorId) => {
     currentPage * itemsPerPage
   );
 
-  return (
+  return loading ? (
+      <Loading loading={loading} />
+    ) : (
     <div className="bg-green">
       <div className="container py-15">
         <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">推薦投資人</h2>

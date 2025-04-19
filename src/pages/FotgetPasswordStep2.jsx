@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 const FotgetPasswordStep2 = () => {
     return (
-        <>
-            <div className="container">
+     
+            <div className="container d-flex justify-content-center">
                 <div className="login">
                     <h1 className="mb-8">忘記密碼</h1>
                     <p className="mb-5">系統已寄送 E-mail 驗證信函至您的會員註冊電子信箱
@@ -20,7 +20,7 @@ const FotgetPasswordStep2 = () => {
                     </form>
                 </div>  
             </div>
-        </>
+     
     )
 }
 

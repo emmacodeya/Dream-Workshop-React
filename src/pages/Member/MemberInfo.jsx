@@ -109,157 +109,157 @@ const MemberInfo = () => {
   };
   
   return (
-    <div className="mt-5"> 
-      <div className="d-flex flex-lg-row flex-column">
-       {/* 行動版 頭像上傳 */}
-        {preview && ( 
-          <div className="d-block d-lg-none">
-            <div
-              className="custom-upload-image mt-5 mt-md-0"
-              style={{
-                width: "250px",
-                height: "250px",
-                border: "2px solid #ccc",
-                cursor: "pointer",
-                backgroundImage: `url(${preview})`, 
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                position: "relative",
-              }}
-            >
-              <label
-                htmlFor="avatarUpload"
-                className="form-label text-white"
-                style={{
-                  position: "absolute",
-                  top: "10px",
-                  right: "10px",
-                  backgroundColor: "rgba(0, 0, 0, 0.5)",
-                  padding: "5px",
-                  borderRadius: "5px",
-                }}
-              >
-                編輯頭像
+<div className="row mt-5">
+  {/* 行動版 頭像上傳 */}
+  {preview && (
+    <div className="col-12 d-block d-lg-none mb-4">
+      <div
+        className="custom-upload-image"
+        style={{
+          width: "250px",
+          height: "250px",
+          border: "2px solid #ccc",
+          cursor: "pointer",
+          backgroundImage: `url(${preview})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          position: "relative",
+        }}
+      >
+        <label
+          htmlFor="avatarUpload"
+          className="form-label text-white"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            backgroundColor: "rgba(0, 0, 0, 0.5)",
+            padding: "5px",
+            borderRadius: "5px",
+          }}
+        >
+          編輯頭像
+        </label>
+        <input
+          className="form-control"
+          type="file"
+          id="avatarUpload"
+          name="avatar"
+          accept="image/*"
+          style={{ display: "none" }}
+          onChange={handleFileChange}
+        />
+      </div>
+    </div>
+  )}
+
+  {/* 表單欄位區塊 */}
+  <div className="col-lg-8 col-12">
+    <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
+      {/* 使用者帳號 */}
+      <div className="my-3 row pt-md-0 pt-2">
+        <label className="col-lg-4 col-2 col-form-label text-white">使用者帳號</label>
+        <div className="col-lg-8 col-10">
+          <input type="text" readOnly className="form-control-plaintext text-white pe-3" value={useraccount} />
+        </div>
+      </div>
+
+      {/* 姓名、email、手機 */}
+      {["name", "email", "mobile"].map((field, index) => (
+        <div key={index} className="mb-3 row">
+          <label htmlFor={field} className="col-lg-4 col-2 col-form-label text-white">
+            {field === "name" ? "姓名" : field === "email" ? "電子郵箱" : "手機"}
+          </label>
+          <div className="col-lg-8 col-10">
+            <input
+              {...register(field, { required: "此欄位為必填" })}
+              className={`form-control inputField ${errors[field] ? "is-invalid" : ""}`}
+            />
+            {errors[field] && <p className="text-danger">{errors[field].message}</p>}
+          </div>
+        </div>
+      ))}
+
+      {/* 性別 */}
+      <div className="mb-3 row">
+        <label className="col-lg-4 col-2 col-form-label text-white">性別:</label>
+        <div className="col-lg-8 col-10 d-flex align-items-center">
+          {["male", "female"].map((value, index) => (
+            <div key={index} className="form-check me-3">
+              <input
+                className="form-check-input inputField"
+                type="radio"
+                name="gender"
+                id={value}
+                value={value}
+                checked={gender === value}
+                {...register("gender", { required: "請選擇性別" })}
+                onChange={handleGenderChange}
+              />
+              <label className="form-check-label text-white" htmlFor={value}>
+                {value === "male" ? "男" : "女"}
               </label>
-              <input
-                className="form-control"
-                type="file"
-                id="avatarUpload"
-                name="avatar"
-                accept="image/*"
-                style={{ display: "none" }}
-                onChange={handleFileChange}
-              />
             </div>
-          </div>
-        )}
-
-        {/* 會員資料表單 */}
-        <form className="row g-3" onSubmit={handleSubmit(onSubmit)}>
-          
-          {/* 使用者帳號（唯讀） */}
-        <div className="my-3 row pt-md-0 pt-2">
-          <label className="col-md-2 col-4 col-form-label text-white ">使用者帳號:</label>
-          <div className="col-md-10 col-8">
-            <input type="text" readOnly className="form-control-plaintext text-white" value={useraccount} />
-          </div>
+          ))}
         </div>
+        {errors.gender && <p className="text-danger">{errors.gender.message}</p>}
+      </div>
 
-        {["name", "email", "mobile"].map((field, index) => (
-          <div key={index} className="mb-3 row">
-            <label htmlFor={field} className="col-md-2 col-form-label text-white">{field === "name" ? "姓名" : field === "email" ? "電子郵箱" : "手機"}</label>
-            <div className="col-md-10">
-              <input
-                {...register(field, { required: "此欄位為必填" })}
-                className={`form-control inputField ${errors[field] ? "is-invalid" : ""}`}
-              />
-              {errors[field] && <p className="text-danger">{errors[field].message}</p>}
-            </div>
-          </div>
-        ))}
-
-           {/* 性別 */}
-        <div className="mb-3 row">
-          <label className="col-md-2 col-form-label text-white">性別:</label>
-          <div className="col-md-10 d-flex align-items-center">
-            {["male", "female"].map((value, index) => (
-              <div key={index} className="form-check me-3">
-                <input
-                  className="form-check-input inputField"
-                  type="radio"
-                  name="gender"
-                  id={value}
-                  value={value}
-                  checked={gender === value}
-                  {...register("gender", { required: "請選擇性別" })}
-                  onChange={handleGenderChange}
-                />
-                <label className="form-check-label text-white" htmlFor={value}>
-                  {value === "male" ? "男" : "女"}
-                </label>
-              </div>
-            ))}
-          </div>
-          {errors.gender && <p className="text-danger">{errors.gender.message}</p>}
-        </div>
-
-            {/* 按鈕 */}
-        <div className="d-flex justify-content-around mt-4">
+      {/* 按鈕 */}
+      <div className="d-flex justify-content-around mt-4">
         <button type="button" className="btn btn-lg btn-outline-danger fw-bold" onClick={handleClear}>
-            <i className="bi bi-x-circle"></i> 清除
-          </button>
-          <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold">
-            <i className="bi bi-save"></i> 儲存變更
-          </button>
-        </div>
-        </form>
-
-       {/* 桌面版 頭像上傳 */}
-      <div className="d-none d-lg-block">
-        {preview ? ( 
-          <div
-            className="custom-upload-image mt-5 mt-md-0"
-            style={{
-              width: "250px",
-              height: "250px",
-              border: "2px solid #ccc",
-              cursor: "pointer",
-              backgroundImage: `url(${preview})`, 
-              backgroundSize: "cover",
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              position: "relative",
-            }}
-          >
-            <label
-              htmlFor="avatarUpload"
-              className="form-label text-white bg-gray-800 rounded-3"
-              style={{
-                position: "absolute",
-                top: "10px",
-                right: "10px",
-                padding: "5px",
-              }}
-            >
-              編輯頭像
-            </label>
-            <input type="file" id="avatarUpload" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
-          </div>
-        ) : ( 
-          <div className="d-flex flex-column align-items-center">
-            <button
-              className="btn btn-outline-primary"
-              onClick={() => document.getElementById("avatarUpload").click()}
-            >
-              上傳圖片
-            </button>
-            <input type="file" id="avatarUpload" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
-          </div>
-        )}
+          <i className="bi bi-x-circle"></i> 清除
+        </button>
+        <button type="submit" className="btn btn-lg btn-outline-primary-600 fw-bold">
+          <i className="bi bi-save"></i> 儲存變更
+        </button>
       </div>
+    </form>
+  </div>
 
+  {/* 桌面版頭像上傳 */}
+  <div className="col-lg-4 d-none d-lg-block">
+    {preview ? (
+      <div
+        className="custom-upload-image"
+        style={{
+          width: "250px",
+          height: "250px",
+          border: "2px solid #ccc",
+          cursor: "pointer",
+          backgroundImage: `url(${preview})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          position: "relative",
+        }}
+      >
+        <label
+          htmlFor="avatarUpload"
+          className="form-label text-white bg-gray-800 rounded-3"
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            padding: "5px",
+          }}
+        >
+          編輯頭像
+        </label>
+        <input type="file" id="avatarUpload" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
       </div>
+    ) : (
+      <div className="d-flex flex-column align-items-center">
+        <button className="btn btn-outline-primary" onClick={() => document.getElementById("avatarUpload").click()}>
+          上傳圖片
+        </button>
+        <input type="file" id="avatarUpload" accept="image/*" style={{ display: "none" }} onChange={handleFileChange} />
+      </div>
+    )}
+  </div>
+
+
     </div>
   );
 };

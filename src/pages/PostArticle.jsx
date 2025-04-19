@@ -5,6 +5,8 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Swal from "sweetalert2";
 import { UserContext } from "../context/UserContext"; 
+import Loading from "../components/Loading";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -14,17 +16,27 @@ const PostArticle = () => {
   const [agree, setAgree] = useState(false);
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+
 
   useEffect(() => {
-    if (!currentUser) {
-      Swal.fire({
-        icon: "warning",
-        title: "請先登入才能發表文章！",
-        confirmButtonColor: "#7267EF"
-      }).then(() => navigate("/login"));
-    }
+    const checkLogin = async () => {
+      if (!currentUser) {
+        await Swal.fire({
+          icon: "warning",
+          title: "請先登入才能發表文章！",
+          confirmButtonColor: "#7267EF"
+        });
+        navigate("/login");
+      } else {
+        setLoading(true); 
+        setLoading(false);
+      }
+    };
+  
+    checkLogin();
   }, [currentUser, navigate]);
-
+  
   const handlePostArticle = async () => {
     if (!title.trim() || !content.trim()) {
       Swal.fire({
@@ -90,7 +102,9 @@ const PostArticle = () => {
     setAgree(false);
   };
 
-  return (
+  return loading ? (
+    <Loading loading={loading} />
+  ) : (
     <div className="bg-green">
       <div className="container py-15 mt-5">
         <h2 className="text-center py-lg-8  fw-bolder text-primary-600">發表文章</h2>

@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import { Modal, Button } from "react-bootstrap";
 import { UserContext } from "../context/UserContext"; 
+import Loading from "../components/Loading";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -31,7 +32,9 @@ const ArticleContent = () => {
   const [replyError, setReplyError] = useState(false);
   const [relatedArticles, setRelatedArticles] = useState([]);
 
+
   useEffect(() => {
+    setLoading(true);
     const fetchArticle = async () => {
       try {
         const res = await axios.get(`${API_URL}/articles/${id}`);
@@ -188,12 +191,13 @@ const ArticleContent = () => {
     setAgree(!agree);
   };
 
-  if (loading) return <p className="text-center text-white">載入中...</p>;
   if (error) return <h2 className="text-center text-white">{error}</h2>;
 
 
 
-   return (
+   return loading ? (
+    <Loading loading={loading} />
+  ) : (
     <main className="bg-green py-15">
       {/* 麵包屑導航 */}
       <section className="container py-8 d-lg-block d-none">
