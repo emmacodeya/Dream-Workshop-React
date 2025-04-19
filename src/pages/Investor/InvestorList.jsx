@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Link, useNavigate } from "react-router-dom";
 import { industryMap, translate } from "../../utils/mappings"; 
 import Pagination from "../../components/Pagination"; 
 import axios from "axios";
+import Swal from "sweetalert2";
+import { UserContext } from "../../context/UserContext";
+import FormattedNumber from "../../components/FormattedNumber"; 
 import "swiper/css";
 import "swiper/css/navigation";
 import "./InvestorList.scss";
@@ -26,50 +29,40 @@ const InvestorList = () => {
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false); 
-  const [user, setUser] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
-  useEffect(() => {
-    axios.get(`${API_URL}/investors`).then((res) => {
-      setInvestors(res.data);
-    });
-    
-  
-    const storedUser = localStorage.getItem("useraccount");
-    if (!storedUser) {
-      return;
-    }
-    
-    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
-      if (res.data.length > 0) {
-        setUser(res.data[0]);
-      }
-    });
-  }, [navigate]);
-
 
   useEffect(() => {
-    axios.get(`${API_URL}/investors`)
-      .then((response) => {
-        setInvestors(response.data);
-        setFilteredInvestors(response.data);
-      })
-      .catch((error) => console.error("Error fetching investors:", error));
+    const fetchData = async () => {
+      try {
+        const [investorsRes, industriesRes] = await Promise.all([
+          axios.get(`${API_URL}/investors`),
+          axios.get(`${API_URL}/industryOptions`)
+        ]);
 
+        const rawInvestors = investorsRes.data;
+        const updated = rawInvestors.map((inv) => ({
+          ...inv,
+          liked: currentUser?.collectedInvestors?.includes(inv.id) || false
+        }));
 
-    axios.get(`${API_URL}/industryOptions`)
-      .then((response) => {
+        setInvestors(updated);
+        setFilteredInvestors(updated);
+
         const updatedIndustries = [
           { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
-          ...response.data
+          ...industriesRes.data
         ];
         setIndustries(updatedIndustries);
-      })
-      .catch((error) => console.error("Error fetching industry options:", error));
-  }, []);
-
+      } catch (error) {
+        console.error("Error fetching investors or industries:", error);
+      }
+    };
+    fetchData();
+  }, [currentUser]);
 
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
@@ -116,25 +109,39 @@ const truncateText = (text, maxLength = 20) => {
 
 
 const toggleFavorite = async (investorId) => {
-  if (!user) {
-    alert("請先登入會員帳號");
-    navigate("/");
+  if (!currentUser) {
+    Swal.fire({
+      icon: "warning",
+      title: "請先登入會員帳號！",
+      confirmButtonColor: "#7267EF",
+    }).then(() => navigate("/"));
     return;
   }
 
-  const isFavorite = user.collectedInvestors.includes(investorId);
+  const isFavorite = currentUser.collectedInvestors.includes(investorId);
   const updatedFavorites = isFavorite
-    ? user.collectedInvestors.filter((id) => id !== investorId) 
-    : [...user.collectedInvestors, investorId]; 
+    ? currentUser.collectedInvestors.filter((id) => id !== investorId)
+    : [...currentUser.collectedInvestors, investorId];
 
   try {
-    await axios.patch(`${API_URL}/members/${user.id}`, {
+    await axios.patch(`${API_URL}/members/${currentUser.id}`, {
       collectedInvestors: updatedFavorites,
     });
-    setUser((prevUser) => ({ ...prevUser, collectedInvestors: updatedFavorites }));
-    setInvestors((prevInvestors) =>
-      prevInvestors.map((investor) =>
-        investor.id === investorId ? { ...investor, liked: !isFavorite } : investor
+
+    setCurrentUser((prevUser) => ({
+      ...prevUser,
+      collectedInvestors: updatedFavorites,
+    }));
+
+    setInvestors((prev) =>
+      prev.map((inv) =>
+        inv.id === investorId ? { ...inv, liked: !isFavorite } : inv
+      )
+    );
+
+    setFilteredInvestors((prev) =>
+      prev.map((inv) =>
+        inv.id === investorId ? { ...inv, liked: !isFavorite } : inv
       )
     );
   } catch (error) {
@@ -181,12 +188,16 @@ const toggleFavorite = async (investorId) => {
                 >
                   <img
                     className="favorite"
-                    src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                    src={investor.liked
+                      ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                      : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>
-                <img className="company-logo mb-3 w-25" src={investor.avatar} alt={investor.name} />
-                <h4 className="card-title popular-card-title text-primary-600 ">{investor.name}</h4>
+                <div className="logo-wrapper">
+                <img className="company-logo " src={investor.avatar} alt={investor.name} />
+                </div>
+                <h4 className="card-title popular-card-title text-primary-600 mt-2">{investor.name}</h4>
                 <div>
                 <h5 className="text-gray-200 ">偏好投資領域</h5>
                 <h6 className="fw-bold text-gray-100">
@@ -197,7 +208,7 @@ const toggleFavorite = async (investorId) => {
               </div>
               <div className="btn btn-gray-600 py-3">
                 <p className="fs-5">資本額</p>
-                <p className="fs-5 fw-bold text-white">{investor.capital}</p>
+                <p className="fs-5 fw-bold text-white"><FormattedNumber value={investor.capital} /></p>
               </div>
             </div>
         </SwiperSlide>
@@ -243,7 +254,7 @@ const toggleFavorite = async (investorId) => {
               >
                 {sortOptions.find(option => option.value === sortOrder)?.label || "排序方式"}
               </button>
-              <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
+              <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""} dropdown-menu-end text-nowrap w-auto`}>
                 {sortOptions.map(option => (
                   <li key={option.value}>
                     <button 
@@ -269,7 +280,10 @@ const toggleFavorite = async (investorId) => {
                 <button
                   className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id)}
                 >
-                  <img className="favorite " src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                  <img className="favorite "  
+                  src={investor.liked
+                      ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                      : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
                     alt="heart"
                   />
                 </button>
@@ -289,7 +303,7 @@ const toggleFavorite = async (investorId) => {
                 </ul>
                 <ul className="list-unstyled ps-12">
                 <li className="fs-5 text-gray-400 fw-bold">資金規模</li>
-                <li className="fs-2 text-primary-400 fw-bold">{investor.capital}</li>
+                <li className="fs-2 text-primary-400 fw-bold"><FormattedNumber value={investor.capital} /></li>
                 </ul>
             </div>
             <div className="d-flex">
@@ -316,7 +330,7 @@ const toggleFavorite = async (investorId) => {
                 <div>
                   <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資金規模</li>
-                    <li className="fs-2 text-primary-400 fw-bold">{investor.capital}</li>
+                    <li className="fs-2 text-primary-400 fw-bold"><FormattedNumber value={investor.capital} /></li>
                   </ul>
                 </div>
             </div>

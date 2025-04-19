@@ -1,14 +1,13 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import Swal from "sweetalert2";
-
+import { UserContext } from "../../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberChangePassword = () => {
-  const useraccount = localStorage.getItem("useraccount") || "";
-
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const {
     register,
     handleSubmit,
@@ -21,9 +20,7 @@ const MemberChangePassword = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const onSubmit = async (data) => {
-    
-  
-    if (!useraccount) {
+    if (!currentUser) {
       Swal.fire({
         icon: "error",
         title: "未登入",
@@ -31,7 +28,7 @@ const MemberChangePassword = () => {
       });
       return;
     }
-  
+
     if (data.newPassword !== data.confirmPassword) {
       Swal.fire({
         icon: "warning",
@@ -40,9 +37,9 @@ const MemberChangePassword = () => {
       });
       return;
     }
-  
+
     try {
-      const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
+      const res = await axios.get(`${API_URL}/members?useraccount=${currentUser.useraccount}`);
       if (res.data.length === 0) {
         Swal.fire({
           icon: "error",
@@ -51,10 +48,10 @@ const MemberChangePassword = () => {
         });
         return;
       }
-  
+
       const userData = res.data[0];
       const memberId = userData.id;
-  
+
       if (!userData.password) {
         Swal.fire({
           icon: "error",
@@ -63,7 +60,7 @@ const MemberChangePassword = () => {
         });
         return;
       }
-  
+
       if (data.currentPassword !== userData.password) {
         Swal.fire({
           icon: "error",
@@ -72,19 +69,23 @@ const MemberChangePassword = () => {
         });
         return;
       }
-  
+
       await axios.patch(`${API_URL}/members/${memberId}`, {
         password: data.newPassword,
       });
-  
+
+      const updatedUser = { ...currentUser, password: data.newPassword };
+      setCurrentUser(updatedUser);
+      localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+
       Swal.fire({
         icon: "success",
         title: "更新成功",
         text: "密碼更新成功！",
-      }).then(() => {
-        window.location.reload();
       });
-  
+
+      reset();
+      setShowPassword(false);
     } catch (error) {
       Swal.fire({
         icon: "error",
@@ -94,11 +95,10 @@ const MemberChangePassword = () => {
       console.error(error);
     }
   };
-  
 
   const handleCancel = () => {
     reset();
-    setShowPassword(false); 
+    setShowPassword(false);
   };
 
   return (

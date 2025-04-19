@@ -1,7 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 import Pagination from "../../components/Pagination";
+import { UserContext } from "../../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = `${API_URL}/activities`;
@@ -10,7 +11,8 @@ const MemberApplyActivity = () => {
   const [activities, setActivities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
-  const useraccount = localStorage.getItem("useraccount");
+  const { currentUser } = useContext(UserContext);
+  const useraccount = currentUser?.useraccount;
 
   useEffect(() => {
     if (!useraccount) return;

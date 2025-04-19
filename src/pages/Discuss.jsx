@@ -9,7 +9,6 @@ const Discuss = () => {
   const [articles, setArticles] = useState([]); 
   const [loading, setLoading] = useState(true); 
   const [error, setError] = useState(null); 
-  const [hoveredArticle, setHoveredArticle] = useState(null); 
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
@@ -67,7 +66,7 @@ const Discuss = () => {
           <table className="table table-striped table-hover">
             <thead className="table-gray-800 table-bordered">
               <tr className="text-center fs-5">
-                <th scope="col">標題</th>
+                <th scope="col" className=" text-primary-800">標題</th>
                 <th scope="col">發佈時間</th>
                 <th scope="col">最後回覆時間</th>
                 <th scope="col">回應數</th>
@@ -80,11 +79,7 @@ const Discuss = () => {
                     <th scope="row">
                       <Link
                         to={`/article/${article.id}`}
-                        className={`text-decoration-none ${
-                          hoveredArticle === article.id ? "text-primary-600" : "text-white"
-                        }`}
-                        onMouseEnter={() => setHoveredArticle(article.id)}
-                        onMouseLeave={() => setHoveredArticle(null)}
+                        className="text-decoration-none text-primary-800"
                       >
                         {article.title}
                       </Link>

@@ -1,20 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 import Pagination from "../../components/Pagination";
 import { industryMap, statusMap, sizeMap, translate } from "../../utils/mappings";
+import { UserContext } from "../../context/UserContext";
+import FormattedNumber from "../../components/FormattedNumber"; 
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const IndustryList = () => {
-  // const [projects, setProjects] = useState([]);
-  // const [investors, setInvestors] = useState([]);
   const [filteredProjects, setFilteredProjects] = useState([]);
   const [filteredInvestors, setFilteredInvestors] = useState([]);
-  const [user, setUser] = useState(null);
   const [searchParams] = useSearchParams();
   const [currentPageProjects, setCurrentPageProjects] = useState(1);
   const [currentPageInvestors, setCurrentPageInvestors] = useState(1);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const itemsPerPage = 5; 
 
   const industry = searchParams.get("industry");
@@ -22,49 +23,56 @@ const IndustryList = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [projectsRes, investorsRes, userRes] = await Promise.all([
+        const [projectsRes, investorsRes] = await Promise.all([
           axios.get(`${API_URL}/projects`),
-          axios.get(`${API_URL}/investors`),
-          axios.get(`${API_URL}/members?useraccount=${localStorage.getItem("useraccount")}`)
+          axios.get(`${API_URL}/investors`)
         ]);
-
-        setFilteredProjects(projectsRes.data);
-        setFilteredInvestors(investorsRes.data);
-        if (userRes.data.length > 0) {
-          setUser(userRes.data[0]);
-        }
-
+  
+        const rawProjects = projectsRes.data.map((p) => ({
+          ...p,
+          liked: currentUser?.collectedProjects?.includes(p.id) || false
+        }));
+  
+        const rawInvestors = investorsRes.data.map((i) => ({
+          ...i,
+          liked: currentUser?.collectedInvestors?.includes(i.id) || false
+        }));
+  
         if (industry) {
-          setFilteredProjects(projectsRes.data.filter(p => p.industry === industry));
-          setFilteredInvestors(investorsRes.data.filter(i => i.industry.includes(industry)));
+          setFilteredProjects(rawProjects.filter((p) => p.industry === industry));
+          setFilteredInvestors(rawInvestors.filter((i) => i.industry.includes(industry)));
         } else {
-          setFilteredProjects(projectsRes.data);
-          setFilteredInvestors(investorsRes.data);
+          setFilteredProjects(rawProjects);
+          setFilteredInvestors(rawInvestors);
         }
       } catch (error) {
         console.error("API 請求失敗:", error);
       }
     };
-
+  
     fetchData();
-  }, [industry]);
+  }, [industry, currentUser]);
 
   // 收藏功能
   const toggleFavorite = async (id, type) => {
-    if (!user) {
-      alert("請先登入會員帳號");
-      return;
+    if (!currentUser) {
+      Swal.fire({
+              icon: "warning",
+              title: "請先登入會員帳號！",
+              confirmButtonColor: "#7267EF",
+            });      
+            return;
     }
 
     const key = type === "project" ? "collectedProjects" : "collectedInvestors";
-    const isFavorite = user[key]?.includes(id);
+    const isFavorite = currentUser[key]?.includes(id);
     const updatedFavorites = isFavorite
-      ? user[key].filter((favId) => favId !== id)
-      : [...(user[key] || []), id];
+      ? currentUser[key].filter((favId) => favId !== id)
+      : [...(currentUser[key] || []), id];
 
     try {
-      await axios.patch(`${API_URL}/members/${user.id}`, { [key]: updatedFavorites });
-      setUser((prevUser) => ({ ...prevUser, [key]: updatedFavorites }));
+      await axios.patch(`${API_URL}/members/${currentUser.id}`, { [key]: updatedFavorites });
+      setCurrentUser((prev) => ({ ...prev, [key]: updatedFavorites }));
     } catch (error) {
       console.error("更新收藏失敗", error);
     }
@@ -109,7 +117,9 @@ const IndustryList = () => {
             <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id, "project")} >
             <img
               className="favorite"
-              src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              src={project.liked
+                ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
 
@@ -141,11 +151,15 @@ const IndustryList = () => {
                 <div className="d-flex">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.capital}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">
+                      <FormattedNumber value={project.capital} />
+                    </li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">募資金額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.funding}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">
+                    <FormattedNumber value={project.funding} />
+                    </li>
                     </ul>
                 </div>
                 </div>
@@ -169,13 +183,15 @@ const IndustryList = () => {
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.capital}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">
+                      <FormattedNumber value={project.capital} /></li>
                     </ul>
                 </div>
                 <div>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">募資金額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.funding}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">
+                      <FormattedNumber value={project.funding} /></li>
                     </ul>
                 </div>
                 </div>
@@ -204,8 +220,12 @@ const IndustryList = () => {
                 <button
                   className="border-0 bg-transparent" onClick={() => toggleFavorite(investor.id, "investor")} 
                 >
-                  <img className="favorite " src={user?.collectedInvestors.includes(investor.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                    alt="heart"
+                  <img 
+                  className="favorite " 
+                  src={investor.liked
+                    ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                    : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                  alt="heart"
                   />
                 </button>
               </div>
@@ -224,7 +244,9 @@ const IndustryList = () => {
                 </ul>
                 <ul className="list-unstyled ps-12">
                 <li className="fs-5 text-gray-400 fw-bold">資金規模</li>
-                <li className="fs-2 text-primary-400 fw-bold">{investor.capital}</li>
+                <li className="fs-2 text-primary-400 fw-bold">
+                  <FormattedNumber value={investor.capital} />
+                  </li>
                 </ul>
             </div>
             <div className="d-flex">
@@ -251,7 +273,7 @@ const IndustryList = () => {
                 <div>
                   <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資金規模</li>
-                    <li className="fs-2 text-primary-400 fw-bold">{investor.capital}</li>
+                    <li className="fs-2 text-primary-400 fw-bold"><FormattedNumber value={investor.capital} /></li>
                   </ul>
                 </div>
             </div>
