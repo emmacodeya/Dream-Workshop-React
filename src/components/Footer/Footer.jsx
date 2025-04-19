@@ -6,7 +6,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 const Footer = () => {
   return (
     <footer className="footer">
-      <img className="bg-field" src="https://dream-workshop-api.onrender.com/assets/images/bg-field.png" alt="background" />
+      <img className="bg-field" src="https://dream-workshop-api.onrender.com/assets/images/bg-field.jpg" alt="background" />
       <div className="mask"></div>
       <div className="container">
         <div className="row py-8">
