@@ -1,6 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Pagination from "../../components/Pagination"; 
+import { UserContext } from "../../context/UserContext";
+
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 const ACTIVITY_API_URL = `${API_URL}/activities`;
@@ -8,23 +11,21 @@ const ACTIVITY_API_URL = `${API_URL}/activities`;
 const MemberActivityRecord = () => {
   const [ongoingActivities, setOngoingActivities] = useState([]); 
   const [pastActivities, setPastActivities] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const useraccount = localStorage.getItem("useraccount");
+  const { currentUser } = useContext(UserContext);
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
 
   useEffect(() => {
-    if (!useraccount) return;
+    if (!currentUser) return;
 
     const fetchActivityRecords = async () => {
       try {
         // 會員報名紀錄
         const { data: registrations } = await axios.get(`${API_URL}/registrations`, {
-          params: { useraccount }
+          params: { currentUser }
         });
         if (registrations.length === 0) {
-          setLoading(false);
           return;
         }
 
@@ -52,13 +53,11 @@ const MemberActivityRecord = () => {
         setPastActivities(activities.filter((act) => act.status === "已結束"));
       } catch (error) {
         console.error("無法獲取活動紀錄:", error);
-      } finally {
-        setLoading(false);
-      }
+      } 
     };
 
     fetchActivityRecords();
-  }, [useraccount]);
+  }, [currentUser]);
 
     const totalPages = Math.ceil((ongoingActivities.length + pastActivities.length) / itemsPerPage);
 
@@ -69,14 +68,14 @@ const MemberActivityRecord = () => {
     );
   return (
     <div className="mt-5">
-      {loading ? (
-        <p className="text-center text-white">未有申請紀錄</p>
-      ) : (
+      {allActivities.length === 0 ? (
+    <p className="text-center text-white">未有申請紀錄</p>
+  ) : (
         <>
           {/* 現在參加的活動 */}
           {ongoingActivities.length > 0 && (
             <>
-              <h3 className="text-white">現在參加的活動</h3>
+              <h3 className="text-white mb-2">現在參加的活動</h3>
               <table className="table table-dark table-hover table-bordered border-gray-600">
                 <thead className="text-center fs-4">
                   <tr>
@@ -101,7 +100,7 @@ const MemberActivityRecord = () => {
           {/* 過往活動 */}
           {paginatedActivities.length > 0 && (
             <>
-              <h3 className="text-white mt-5">過往參加的活動</h3>
+              <h3 className="text-white mt-5 mb-2">過往參加的活動</h3>
               <table className="table table-dark table-hover table-bordered border-gray-600">
                 <thead className="text-center fs-4">
                   <tr>
