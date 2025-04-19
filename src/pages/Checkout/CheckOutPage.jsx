@@ -449,7 +449,7 @@ const CheckOutPage = () => {
                   {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
                   </>  
                 ))}
-                <img src="https://dream-workshop-api.onrender.com/assets/images/VISA.png" className="ms-2" alt="VISA" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/VISA.jpg" className="ms-2" alt="VISA" />
               </div>
                 </div>
               )}
@@ -475,7 +475,7 @@ const CheckOutPage = () => {
                   {index < 3 && <i className="bi bi-dash-lg text-gray-100 mx-1"></i>}
                   </>  
                 ))}
-                <img src="https://dream-workshop-api.onrender.com/assets/images/VISA.png" className="ms-2" alt="VISA" />
+                <img src="https://dream-workshop-api.onrender.com/assets/images/VISA.jpg" className="ms-2" alt="VISA" />
               </div>
                 </div>
               )}

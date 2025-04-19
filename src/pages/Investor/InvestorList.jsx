@@ -53,7 +53,7 @@ const InvestorList = () => {
         setFilteredInvestors(updated);
 
         const updatedIndustries = [
-          { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" },
+          { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.jpg" },
           ...industriesRes.data
         ];
         setIndustries(updatedIndustries);
