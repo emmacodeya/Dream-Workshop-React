@@ -2,8 +2,8 @@ import { NavLink } from "react-router-dom";
 
 const FotgetPasswordStep1 = () => {
     return (
-        <>
-            <div className="container">
+    
+            <div className="container d-flex justify-content-center">
                 <div className="login">
                     <h1 className="mb-8">忘記密碼</h1>
                     <form className="row needs-validation" noValidate>
@@ -17,7 +17,7 @@ const FotgetPasswordStep1 = () => {
                     </form>    
                 </div>  
             </div>
-        </>
+        
     )
 }
 

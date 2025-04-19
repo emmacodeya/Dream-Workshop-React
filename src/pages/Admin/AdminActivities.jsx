@@ -24,10 +24,11 @@ const AdminActivities = () => {
   const [registrations, setRegistrations] = useState([]);
   const [showRegModal, setShowRegModal] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
-    const [carouselPreview, setCarouselPreview] = useState(null);
+  const [carouselPreview, setCarouselPreview] = useState(null);
   const [imageFile, setImageFile] = useState(null);
   const [schedule, setSchedule] = useState([]);
   const [carouselFile, setCarouselFile] = useState(null);
+
 
 
   const [currentPage, setCurrentPage] = useState(1);

@@ -1564,31 +1564,31 @@
   "stores": [
     {
       "id": "1",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin01.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin01.png",
       "coinPoint": "100點",
       "coinPrice": 100
     },
     {
       "id": "2",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.png",
       "coinPoint": "200點",
       "coinPrice": 190
     },
     {
       "id": "3",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin02.png",
       "coinPoint": "500點",
       "coinPrice": 480
     },
     {
       "id": "4",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin03.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin03.png",
       "coinPoint": "600點",
       "coinPrice": 550
     },
     {
       "id": "5",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "800點",
       "coinPrice": 750
     },
@@ -1600,19 +1600,19 @@
     },
     {
       "id": "7",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "1000點",
       "coinPrice": 900
     },
     {
       "id": "8",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "2000點",
       "coinPrice": 1800
     },
     {
       "id": "9",
-      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.jpg",
+      "coinImg": "https://dream-workshop-api.onrender.com/assets/images/Coin04.png",
       "coinPoint": "3000點",
       "coinPrice": 2500
     }

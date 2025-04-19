@@ -5,16 +5,20 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { Carousel } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 import Pagination from "../components/Pagination"; 
+import Loading from "../components/Loading";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const Activity = () => {
   const [activities, setActivities] = useState([]);
   const [currentPage, setCurrentPage] = useState(1); 
+  const [loading, setLoading] = useState(true);
   const itemsPerPage = 5; 
 
 
   useEffect(() => {
+    setLoading(true);
     const fetchActivities = async () => {
       try {
         const response = await axios.get(`${API_URL}/activities`);
@@ -25,6 +29,8 @@ const Activity = () => {
         setActivities(sortedActivities);
       } catch (error) {
         console.error("獲取活動數據失敗:", error);
+      } finally {
+        setLoading(false);
       }
     };
   
@@ -39,7 +45,9 @@ const Activity = () => {
     currentPage * itemsPerPage
   );
 
-  return (
+  return loading ? (
+    <Loading loading={loading} />
+  ) : (
     <main className="bg-green py-15">
      {/* 滿版輪播牆 */}
      <section className="w-100">
@@ -70,7 +78,7 @@ const Activity = () => {
       <section className="container">
         {paginatedActivities.map((event) => ( 
           <div className="card mb-4 border-0" key={event.id} style={{ backgroundColor: "#1E1E1E" }}>
-            <div className="row g-0 d-flex align-items-center bg-gray-800 rounded">
+            <div className="row g-0  align-items-center bg-gray-800 rounded">
               <div className="col-md-4 p-lg-5 pt-5 px-4 pb-2">
                 <img
                   src={event.image}
@@ -80,7 +88,7 @@ const Activity = () => {
                 />
               </div>
               <div className="col-md-8">
-                <div className="card-body text-white pt-0 pe-5">
+                <div className="card-body text-white pt-lg-0 pt-3 pe-lg-5 pe-4">
                   <div className=" d-lg-flex align-items-center justify-content-between border-bottom border-gray-600">
                     <h2 className="card-title text-primary-600 fw-bold  fs-3 ">{event.title}</h2>
                     <p className="text-gray-400 fs-lg-5 fw-bold  pb-lg-0 pb-2">

@@ -5,6 +5,7 @@ import withReactContent from "sweetalert2-react-content";
 import { Modal, Button } from "react-bootstrap";
 import Pagination from "../../components/Pagination";
 
+
 const API_URL = import.meta.env.VITE_API_URL;
 const MySwal = withReactContent(Swal);
 const ITEMS_PER_PAGE = 8;
@@ -19,9 +20,8 @@ const AdminAccount = () => {
   const [showVerifyModal, setShowVerifyModal] = useState(false);
   const [projects, setProjects] = useState([]);
   const [investors, setInvestors] = useState([]);
-   const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
 
- 
 
       useEffect(() => {
         fetchMembers();
@@ -69,7 +69,7 @@ const AdminAccount = () => {
       setMembers(res.data);
     } catch (err) {
       console.error("讀取會員失敗", err);
-    }
+    } 
   };
 
   const handleDelete = (id) => {

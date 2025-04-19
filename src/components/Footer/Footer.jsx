@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import './Footer.scss';
+
 
 const Footer = () => {
   return (
     <footer className="footer">
-      <img className="bg-field" src="https://dream-workshop-api.onrender.com/assets/images/bg-field.jpg" alt="background" />
+      <img className="bg-field" src="https://dream-workshop-api.onrender.com/assets/images/bg-field.png" alt="background" />
       <div className="mask"></div>
       <div className="container">
         <div className="row py-8">
@@ -44,7 +44,10 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <small className="px-3 px-lg-0 text-gray-400">© Dream Workshop 2025 Copyright. All Rights Reserved.</small>
+        <div className="text-center">
+          <small className="px-3 px-lg-0 text-gray-400">© Dream Workshop 2025 Copyright. All Rights Reserved.</small>
+        </div>
+        
       </div>
     </footer>
   );

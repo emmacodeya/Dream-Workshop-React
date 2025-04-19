@@ -21,7 +21,7 @@ import MemberPostArticle from "./MemberPostArticle";
 import MemberPostList from "./MemberPostList";
 import MemberArticleMessage from "./MemberArticleMessage";
 import "bootstrap/dist/css/bootstrap.min.css";
-import "./MemberHome.scss";
+
 
 const MemberHome = () => {
   const location = useLocation();
