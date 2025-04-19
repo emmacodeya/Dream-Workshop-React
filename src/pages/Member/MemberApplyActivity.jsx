@@ -1,6 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { NavLink } from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import { UserContext } from "../../context/UserContext";
 
@@ -77,7 +78,6 @@ const MemberApplyActivity = () => {
         await Swal.fire("找不到報名記錄", "請稍後再試！", "error");
         return;
       }
-
       await axios.delete(`${API_URL}/registrations/${registration.id}`);
       await axios.patch(`${ACTIVITY_API_URL}/${activity.activityId}`, {
         remainingSlots: activity.remainingSlots + 1,
@@ -131,12 +131,12 @@ const MemberApplyActivity = () => {
               </div>
             </div>
             <div>
-              <a
-                href={`/activity/${activity.activityId}`}
-                className="btn btn-primary-600 w-100 py-2 bg-gray-600 border-0 text-primary-600 fs-5 fw-bold"
-              >
-                查看詳情<i className="bi bi-chevron-right ps-1"></i>
-              </a>
+            <NavLink
+              to={`/activity/${activity.activityId}`}
+              className="btn btn-primary-600 w-100 py-2 bg-gray-600 border-0 text-primary-600 fs-5 fw-bold"
+            >
+              查看詳情<i className="bi bi-chevron-right ps-1"></i>
+            </NavLink>
             </div>
           </div>
         ))
