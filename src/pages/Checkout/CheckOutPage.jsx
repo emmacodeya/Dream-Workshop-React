@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import Swal from 'sweetalert2';
 import { UserContext } from "../../context/UserContext";
+import Loading from "../../components/Loading";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -15,6 +16,8 @@ const CheckOutPage = () => {
   const inputRefs = [useRef(), useRef(), useRef(), useRef()];
   const navigate = useNavigate();
   const { currentUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
+
 
 
   const {
@@ -26,6 +29,7 @@ const CheckOutPage = () => {
 
   // 取得購物車
   useEffect(() => {
+    setLoading(true);
     const savedCart = localStorage.getItem(`cart_${currentUser?.useraccount}`);
     if (savedCart) {
       try {
@@ -34,7 +38,9 @@ const CheckOutPage = () => {
           setCart(parsedCart);
         }
       } catch (error) {
-        console.error("Failed to parse cart:", error);
+        Swal.fire("錯誤", "購物車取得失敗", error);
+      } finally {
+        setLoading(false);
       }
     }
   }, [currentUser?.useraccount]);
@@ -122,13 +128,14 @@ const CheckOutPage = () => {
         navigate("/pay-plan");
       }
     } catch (error) {
-      console.error("提交訂單失敗:", error);
-      Swal.fire("錯誤", "訂單提交失敗，請稍後再試", "error");
+      Swal.fire("錯誤", "訂單提交失敗，請稍後再試", error);
     }
   });
 
-  return (
-    <>
+  return loading ? (
+    <Loading loading={loading} />
+  ) : (
+ 
       <div className="container" style={{ marginTop: "150px" }}>
       <p className="mb-5">
         <span
@@ -551,7 +558,7 @@ const CheckOutPage = () => {
         </form>
         )}
       </div>
-    </>
+
   );
 };
 

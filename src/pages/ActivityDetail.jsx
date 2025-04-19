@@ -3,52 +3,54 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { UserContext } from "../context/UserContext";
+import Loading from "../components/Loading";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 const REGISTER_API_URL = `${API_URL}/registrations`;
 
+
+
 const ActivityDetail = () => {
   const { id } = useParams();
   const [activity, setActivity] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [registering, setRegistering] = useState(false);
   const [hasRegistered, setHasRegistered] = useState(false);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+
 
   const { currentUser } = useContext(UserContext);
   const useraccount = currentUser?.useraccount || "";
   const isLoggedIn = !!currentUser;
 
   useEffect(() => {
-    const fetchActivity = async () => {
+    setLoading(true);
+  
+    const fetchAll = async () => {
       try {
-        const response = await axios.get(`${API_URL}/activities/${id}`);
-        setActivity(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.error("無法獲取活動詳情:", error);
-        setLoading(false);
-      }
-    };
-
-    const checkIfRegistered = async () => {
-      if (!useraccount) return;
-
-      try {
-        const response = await axios.get(`${REGISTER_API_URL}?useraccount=${useraccount}&activityId=${id}`);
-        if (response.data.length > 0) {
+        const [activityRes, registerRes] = await Promise.all([
+          axios.get(`${API_URL}/activities/${id}`),
+          useraccount
+            ? axios.get(`${REGISTER_API_URL}?useraccount=${useraccount}&activityId=${id}`)
+            : Promise.resolve({ data: [] }),
+        ]);
+  
+        setActivity(activityRes.data);
+        if (registerRes.data.length > 0) {
           setHasRegistered(true);
         }
       } catch (error) {
-        console.error("檢查報名狀態失敗:", error);
+        console.error("載入活動或報名狀態失敗:", error);
+      } finally {
+        setLoading(false);
       }
     };
-
-    fetchActivity();
-    checkIfRegistered();
+  
+    fetchAll();
   }, [id, useraccount]);
+  
 
-  if (loading) return <p className="text-center text-white">載入中...</p>;
   if (!activity) return <p className="text-center text-danger">找不到活動</p>;
 
   const isExpired = new Date(activity.date) < new Date();
@@ -134,7 +136,12 @@ const ActivityDetail = () => {
     }
   };
 
+  
+
   return (
+    <>
+      <Loading loading={loading} />
+      {!loading && activity ? (
     <main className="container py-15">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6 text-white p-4">
@@ -193,7 +200,9 @@ const ActivityDetail = () => {
         </div>
       </div>
     </main>
-  );
+  ): null}
+   </>
+   );
 };
 
 export default ActivityDetail;

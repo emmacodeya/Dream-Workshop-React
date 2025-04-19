@@ -1,4 +1,3 @@
-@import "../../styles/all";
 
 .front-page-banner {
     background-image: url("https://dream-workshop-api.onrender.com/assets/images/banner.jpg");
@@ -110,7 +109,7 @@
   .bg-halo {
     // background-image: url('/assets/images/bg-halo.png');
     background-color: $gray-1000;
-    background-image: url("https://dream-workshop-api.onrender.com/assets/images/bg-halo.jpg");
+    background-image: url("https://dream-workshop-api.onrender.com/assets/images/bg-halo.png");
     background-size: cover, contain;
     /* 第一個背景圖片覆蓋整個元素，第二個根據內容顯示 */
     background-position: center; /* 第一個在中央，第二個在右下角 */
@@ -146,6 +145,15 @@
     line-height: 30px;
     color: $gray-200;
   }
+
+  .company-logo {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; 
+    object-position: center;
+    display: block;
+  }
+  
   
   .swiper-slide {
     height: 100%;
@@ -207,11 +215,11 @@
   
   .industry-card {
     height: 120px;
-    // padding: 12px;
     font-weight: bolder;
     display: flex;
     justify-content: end;
     align-items: end;
+    text-align: end;
     h5 {
       color: $gray-100;
       line-height: 30px;

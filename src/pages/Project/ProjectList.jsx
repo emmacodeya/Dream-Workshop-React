@@ -8,9 +8,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Pagination from "../../components/Pagination"; 
 import { UserContext } from "../../context/UserContext";
 import FormattedNumber from "../../components/FormattedNumber";
+import Loading from "../../components/Loading";
 import "swiper/css";
 import "swiper/css/navigation";
-import "./ProjectList.scss";
 
 // 排序選項
 const sortOptions = [
@@ -39,9 +39,11 @@ const ProjectList = () => {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
+  const [loading, setLoading] = useState(true);
 
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const [projectsRes, industriesRes] = await Promise.all([
@@ -50,6 +52,7 @@ const ProjectList = () => {
         ]);
   
         const rawProjects = projectsRes.data;
+  
         const updatedProjects = rawProjects.map((project) => ({
           ...project,
           liked: currentUser?.collectedProjects?.includes(project.id) || false
@@ -59,16 +62,23 @@ const ProjectList = () => {
   
         if (!selectedIndustry) {
           setFilteredProjects(updatedProjects);
+        } else {
+          const filtered = updatedProjects.filter((p) => p.industry === selectedIndustry);
+          setFilteredProjects(filtered);
         }
   
         setIndustries(industriesRes.data);
       } catch (error) {
         console.error('Error fetching projects or industries:', error);
+        Swal.fire("資料載入失敗", "請稍後再試", "error");
+      } finally {
+        setLoading(false);
       }
     };
   
     fetchData();
   }, [selectedIndustry, currentUser]);
+  
   
 
 
@@ -187,7 +197,9 @@ const ProjectList = () => {
       currentPage * itemsPerPage
     );
 
-  return (
+  return  loading ? (
+    <Loading loading={loading} />
+  ) : (
     <div className="bg-green">
       <div className="container py-15">
         <h2 className="fw-bold text-center text-primary-600 mb-5 mt-5">熱門創業項目</h2>
@@ -388,7 +400,8 @@ const ProjectList = () => {
         </div>
       </div>
     </div>
-  );
+    
+ );
 };
 
 export default ProjectList;

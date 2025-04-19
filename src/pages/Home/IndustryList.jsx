@@ -6,6 +6,8 @@ import Pagination from "../../components/Pagination";
 import { industryMap, statusMap, sizeMap, translate } from "../../utils/mappings";
 import { UserContext } from "../../context/UserContext";
 import FormattedNumber from "../../components/FormattedNumber"; 
+import Loading from "../../components/Loading";
+
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -17,10 +19,13 @@ const IndustryList = () => {
   const [currentPageInvestors, setCurrentPageInvestors] = useState(1);
   const { currentUser, setCurrentUser } = useContext(UserContext);
   const itemsPerPage = 5; 
+  const [loading, setLoading] = useState(true);
+
 
   const industry = searchParams.get("industry");
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const [projectsRes, investorsRes] = await Promise.all([
@@ -47,6 +52,8 @@ const IndustryList = () => {
         }
       } catch (error) {
         console.error("API 請求失敗:", error);
+      } finally {
+        setLoading(false);
       }
     };
   
@@ -97,7 +104,9 @@ const IndustryList = () => {
   };
 
 
-  return (
+  return  loading ? (
+      <Loading loading={loading} />
+    ) : (
     <div className="bg-green">
     <div className="container py-15">
       <h2 className="fw-bold text-primary-600 my-5 text-center">篩選結果 - {industry ? translate(industryMap, industry) : "所有產業"}</h2>

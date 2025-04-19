@@ -24,8 +24,6 @@ import ActivityDetail from "./pages/ActivityDetail";
 import ArticleContent from "./pages/ArticleContent";
 import Login from "./pages/Login";
 import CreateAccount from "./pages/CreateAccount";
-import EmailVerify from "./pages/EmailVerify";
-import FillInfo from "./pages/FillInfo";
 import FotgetPasswordStep1 from "./pages/FotgetPasswordStep1";
 import FotgetPasswordStep2 from "./pages/FotgetPasswordStep2";
 import FotgetPasswordStep3 from "./pages/FotgetPasswordStep3";
@@ -107,8 +105,6 @@ const Content = () => {
         <Route path="/article-content" element={<ArticleContent />} />
         <Route path="/login" element={<Login />} />
         <Route path="/create-account" element={<CreateAccount />} />
-        <Route path="/email-verify" element={<EmailVerify />} />
-        <Route path="/fill-info" element={<FillInfo />} />
         <Route path="/fotget-password-step1" element={<FotgetPasswordStep1 />} />
         <Route path="/fotget-password-step2" element={<FotgetPasswordStep2 />} />
         <Route path="/fotget-password-step3" element={<FotgetPasswordStep3 />} />
