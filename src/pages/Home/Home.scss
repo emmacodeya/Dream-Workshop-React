@@ -146,6 +146,17 @@
     line-height: 30px;
     color: $gray-200;
   }
+
+  .company-logo {
+    height: 70px;
+    overflow: hidden;
+  }
+  
+  .company-logo img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+  }
   
   .swiper-slide {
     height: 100%;
@@ -207,11 +218,11 @@
   
   .industry-card {
     height: 120px;
-    // padding: 12px;
     font-weight: bolder;
     display: flex;
     justify-content: end;
     align-items: end;
+    text-align: end;
     h5 {
       color: $gray-100;
       line-height: 30px;

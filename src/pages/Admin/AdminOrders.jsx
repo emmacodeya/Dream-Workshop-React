@@ -25,7 +25,7 @@ const AdminOrders = () => {
       const sortedData = response.data.sort((a, b) => new Date(b.createTime) - new Date(a.createTime));
       setOrders(sortedData);
     } catch (error) {
-      console.error('Error fetching orders:', error);
+      Swal.fire('獲取資料失敗', '', error);
     }
   };
 
@@ -45,8 +45,7 @@ const AdminOrders = () => {
         fetchOrders();
         Swal.fire('刪除成功', '', 'success');
       } catch (error) {
-        console.error('Error deleting order:', error);
-        Swal.fire('刪除失敗', '', 'error');
+        Swal.fire('刪除失敗', '', error);
       }
     }
   };

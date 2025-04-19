@@ -34,7 +34,7 @@ const CheckOutPage = () => {
           setCart(parsedCart);
         }
       } catch (error) {
-        console.error("Failed to parse cart:", error);
+        Swal.fire("錯誤", "購物車取得失敗", error);
       }
     }
   }, [currentUser?.useraccount]);
@@ -122,8 +122,7 @@ const CheckOutPage = () => {
         navigate("/pay-plan");
       }
     } catch (error) {
-      console.error("提交訂單失敗:", error);
-      Swal.fire("錯誤", "訂單提交失敗，請稍後再試", "error");
+      Swal.fire("錯誤", "訂單提交失敗，請稍後再試", error);
     }
   });
 

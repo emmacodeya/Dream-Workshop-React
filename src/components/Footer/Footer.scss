@@ -15,7 +15,7 @@
   
   .community {
     color: $gray-200;
-    @include mobile {
+    @include pad {
       flex-direction: column;
     }
     @include mobile {

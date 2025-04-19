@@ -16,7 +16,7 @@ const EmailVerify = () => {
 
     return (
       <>
-         <div className="container">
+         <div className="container d-flex justify-content-center">
         <div className="login">
         <div
             className="position-relative mb-6"

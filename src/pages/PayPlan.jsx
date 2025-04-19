@@ -2,6 +2,7 @@ import { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
+import Loading from "../components/Loading";
 import { UserContext } from "../context/UserContext";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -12,19 +13,21 @@ const PayPlan = () => {
   const [showModal, setShowModal] = useState(false);
   const navigate = useNavigate();
   const { currentUser, setCurrentUser } = useContext(UserContext);
-  
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true);
       const useraccount = localStorage.getItem("useraccount");
       if (useraccount) {
         try {
           const res = await axios.get(`${API_URL}/members?useraccount=${useraccount}`);
           if (res.data.length > 0) {
             setCurrentUser(res.data[0]);
+            setLoading(false);
           }
         } catch (error) {
-          console.error("取得會員資訊失敗", error);
+          Swal.fire('取得會員資訊失敗', '', error);
         }
       }
     };
@@ -34,7 +37,9 @@ const PayPlan = () => {
         const res = await axios.get(`${API_URL}/stores`);
         setStores(res.data);
       } catch (error) {
-        console.error("取得儲值方案失敗", error);
+        Swal.fire('取得儲值方案失敗', '', error);
+      } finally {
+          setLoading(false); 
       }
     };
 
@@ -109,8 +114,10 @@ const PayPlan = () => {
             </p>
           </div>
         </div>
-
-        <div className="row row-cols-lg-3 row-cols-md-2 row-cols-2 g-lg-3 g-2 pb-10">
+        
+        <Loading loading={loading} />
+        {! loading && (
+          <div className="row row-cols-lg-3 row-cols-md-2 row-cols-2 g-lg-3 g-2 pb-10">
           {stores.length > 0 ? (
             stores
               .filter(
@@ -127,7 +134,7 @@ const PayPlan = () => {
                     onClick={() => openModal(store)}
                     style={{ cursor: "pointer" }}
                   >
-                    <div className="points-btn btn d-flex flex-column align-items-center w-100 h-100">
+                    <div className="points-btn btn d-flex flex-column align-items-center">
                       <img
                         src={store.coinImg}
                         className="coin-img mb-2"
@@ -145,7 +152,8 @@ const PayPlan = () => {
             <p className="text-center text-white">目前沒有可用的儲值方案</p>
           )}
         </div>
-
+        )}
+  
       </div>
 
       {/* 確認 Modal */}

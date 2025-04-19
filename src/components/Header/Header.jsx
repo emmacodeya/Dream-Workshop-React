@@ -3,6 +3,8 @@ import { useContext, useState, useEffect } from "react";
 import { UserContext } from "../../context/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle';
+import { Collapse } from 'bootstrap';
+
 import Swal from "sweetalert2";
 
 
@@ -35,6 +37,7 @@ const Header = () => {
       navbarToggler.removeEventListener("click", onTogglerClick);
     };
   }, []);
+  
 
   const handleLogout = async () => {
     localStorage.removeItem("currentUser");
@@ -65,6 +68,12 @@ const Header = () => {
     const collapse = bootstrap.Collapse.getInstance(navbarCollapse);
     if (collapse && navbarCollapse.classList.contains("show")) {
       collapse.hide();
+    }
+
+    const navbar = document.getElementById('navbarNav');
+    if (navbarCollapse && navbarCollapse.classList.contains('show')) {
+      const bsCollapse = Collapse.getInstance(navbar) || new Collapse(navbar);
+      bsCollapse.hide();
     }
     setIsMenuOpen(false);
   };

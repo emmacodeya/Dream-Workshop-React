@@ -35,12 +35,11 @@
         color: $primary-600;
       }
     }
-  
-    @media (max-width: 991px) {
+
+    @include pad {
       gap: 24px;
     }
-  
-    @media (max-width: 768px) {
+    @include mobile {
       gap: 12px;
     }
 
@@ -49,7 +48,6 @@
   
   .login-btn {
     padding: 16px 24px;
-    //styleName: Bold/text & button M;
     font-size: 16px;
     font-weight: 700;
     line-height: 24px;

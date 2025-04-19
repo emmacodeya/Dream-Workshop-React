@@ -55,9 +55,8 @@ const Login = () => {
         });
       }
     } catch (error) {
-      console.error("登入失敗:", error);
       Swal.fire({
-        icon: "error",
+        icon: error,
         title: "登入失敗",
         text: "請再試一次！",
       });
@@ -66,7 +65,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="container">
+      <div className="container d-flex justify-content-center">
         <div className="login">
           <h1 className="mb-8 text-primary-600">會員登入</h1>
           <form className="row needs-validation" noValidate onSubmit={handleLoginSubmit}>

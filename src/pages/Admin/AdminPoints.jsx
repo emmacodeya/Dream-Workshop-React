@@ -27,7 +27,7 @@ const AdminPoints = () => {
       const sortedProducts = res.data.sort((a, b) => parseInt(a.coinPoint, 10) - parseInt(b.coinPoint, 10));
       setProducts(sortedProducts);
     } catch (error) {
-      console.error("取得儲值方案失敗", error);
+      Swal.fire('取得儲值方案失敗', '', error);
     }
   };
 
@@ -50,8 +50,7 @@ const AdminPoints = () => {
         fetchProducts();
         Swal.fire('刪除成功', '', 'success');
       } catch (error) {
-        console.error('Error deleting product:', error);
-        Swal.fire('刪除失敗', '', 'error');
+        Swal.fire('刪除失敗', '', error);
       }
     }
   };
@@ -79,8 +78,7 @@ const AdminPoints = () => {
       handleCloseModal();
       Swal.fire('儲存成功', '', 'success');
     } catch (error) {
-      console.error('Error saving product:', error);
-      Swal.fire('儲存失敗', '', 'error');
+      Swal.fire('儲存失敗', '', error);
     }
   };
 

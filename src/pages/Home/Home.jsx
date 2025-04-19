@@ -5,7 +5,12 @@ import { Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./Home.scss";
+import Loading from "../../components/Loading";
+
 import axios from "axios";
+import Swal from "sweetalert2";
+
+
 import { industryMap, translate } from "../../utils/mappings";
 import { UserContext } from "../../context/UserContext"; 
 import FormattedNumber from '../../components/FormattedNumber';
@@ -17,8 +22,11 @@ const Home = () => {
   const [investors, setInvestors] = useState([]);
   const [industries, setIndustries] = useState([]);
   const { currentUser, setCurrentUser } = useContext(UserContext);
+
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [selectedIndustry, setSelectedIndustry] = useState("");
+
   const fetchUserData = useCallback(async () => {
     const useraccount = localStorage.getItem("useraccount");
     if (!currentUser && useraccount) {
@@ -28,13 +36,14 @@ const Home = () => {
           setCurrentUser(res.data[0]);
         }
       } catch (error) {
-        console.error("取得會員資訊失敗", error);
+        Swal.fire('取得會員資訊失敗', '', error);      
       }
     }
   }, [currentUser, setCurrentUser]);
 
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       try {
         const [projectsRes, investorsRes, industriesRes] = await Promise.all([
@@ -52,8 +61,11 @@ const Home = () => {
         ];
         setIndustries(updatedIndustries);
         fetchUserData();
+        setLoading(false);
       } catch (error) {
-        console.error("API 請求失敗:", error);
+        Swal.fire('API 請求失敗', '', error);
+      } finally {
+          setLoading(false); 
       }
     };
 
@@ -98,7 +110,7 @@ const Home = () => {
         );
       }
     } catch (error) {
-      console.error("更新收藏失敗", error);
+      Swal.fire("錯誤", "更新收藏失敗", error);
     }
   };
   
@@ -113,27 +125,12 @@ const Home = () => {
   
   return (
     <>
+      <Loading loading={loading} />
       <div className="front-page-banner d-flex justify-content-center align-items-center">
         <div className="banner-content">
           <h1 className="banner-title fw-bold text-center mb-5">
-            投資未來<br />創造<span>無限</span>可能!
+              投資未來<br />創造<span>無限</span>可能!
           </h1>
-          <div className="banner-search d-flex align-items-center">
-            <div className="d-flex mb-3 mb-lg-0">
-              <input type="text" className="banner-input form-control me-lg-3 me-1 flex-grow-1" placeholder="搜尋..." />
-              <div className="search-dropdown navbar-expand-lg me-lg-3">
-                <select className="form-select checkout-input" id="address" defaultValue="">
-                <option value="">請選擇項目</option>
-                <option className="dropdown-item text-gray-100" value="1">找創業項目</option>
-                <option value="2">找投資</option>
-              </select>
-              </div>
-
-            </div>
-            <div className="d-flex align-items-center">
-              <button type="submit" className="search-btn btn btn-primary-600 fw-bold">搜尋</button>
-            </div>
-          </div>
         </div>
       </div>
 
@@ -173,49 +170,53 @@ const Home = () => {
         </div>
       </div>
       
+      
       {/* <!-- 熱門創業項目 --> */}
-      <div className="container py-8 py-lg-15">
-        <h2 className="fw-bold text-center text-primary-600 mb-5 mb-lg-8">熱門創業項目</h2>
-        <Swiper 
-                  modules={[Navigation]} 
-                  navigation 
-                  slidesPerView={4} 
-                  spaceBetween={16} 
-                  breakpoints={{
-                    1296: { slidesPerView: 4 },
-                    768: { slidesPerView: 2 },
-                    375: { slidesPerView: 1.5 }
-                  }}
-                  >
-          {projects.map((project) => (
-            <SwiperSlide 
-            key={project.id}>
-              <div className="card bg-gray-800 text-center d-flex flex-column h-100">
-                <div className="popular-card-body position-relative flex-grow-1">
-                  <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id, "project")}>
-                    <img
-                      className="favorite"
-                      src={Array.isArray(currentUser?.collectedProjects) && currentUser.collectedProjects.includes(project.id)  ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
-                      alt="heart"
-                    />
-                  </button>
-                  <img className="company-logo mb-3 w-25" src={project.companyLogo} alt={project.name} />
-                  <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
-                  <h5 className="fs-5 me-2 text-gray-200">{translate(industryMap, project.industry)}</h5>
-                  <p>{truncateText(project.description)}</p>
-                </div>
-                <a href="#" className="btn btn-gray-600 py-3">
-                  <p className="fs-5">資金規模</p>
-                  {/* <p className="fs-5 fw-bold text-white">{formatNumber(project.funding)}</p> */}
-                  <p className="fs-5 fw-bold text-white">
-                    <FormattedNumber value={project.funding} />
-                  </p>
-                </a>
-              </div>
-            </SwiperSlide> 
-          ))}
-        </Swiper>
-      </div>
+      <Loading loading={loading} />
+          {! loading && (
+            <div className="container py-8 py-lg-15">
+            <h2 className="fw-bold text-center text-primary-600 mb-5 mb-lg-8">熱門創業項目</h2>
+            <Swiper 
+                      modules={[Navigation]} 
+                      navigation 
+                      slidesPerView={4} 
+                      spaceBetween={16} 
+                      breakpoints={{
+                        1296: { slidesPerView: 4 },
+                        768: { slidesPerView: 2 },
+                        375: { slidesPerView: 1.5 }
+                      }}
+                      >
+              {projects.map((project) => (
+                <SwiperSlide 
+                key={project.id}>
+                  <div className="card bg-gray-800 text-center d-flex flex-column h-100">
+                    <div className="popular-card-body position-relative flex-grow-1">
+                      <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id, "project")}>
+                        <img
+                          className="favorite"
+                          src={Array.isArray(currentUser?.collectedProjects) && currentUser.collectedProjects.includes(project.id)  ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+                          alt="heart"
+                        />
+                      </button>
+                      <img className="company-logo mb-3 w-25" src={project.companyLogo} alt={project.name} />
+                      <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
+                      <h5 className="fs-5 me-2 text-gray-200">{translate(industryMap, project.industry)}</h5>
+                      <p>{truncateText(project.description)}</p>
+                    </div>
+                    <a href="#" className="btn btn-gray-600 py-3">
+                      <p className="fs-5">資金規模</p>
+                      <p className="fs-5 fw-bold text-white">
+                        <FormattedNumber value={project.funding} />
+                      </p>
+                    </a>
+                  </div>
+                </SwiperSlide> 
+              ))}
+            </Swiper>
+          </div>
+          )}
+      
 
 
       <div className="container py-8 py-lg-15">

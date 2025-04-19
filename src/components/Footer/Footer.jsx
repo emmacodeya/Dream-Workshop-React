@@ -44,7 +44,10 @@ const Footer = () => {
             </ul>
           </div>
         </div>
-        <small className="px-3 px-lg-0 text-gray-400">© Dream Workshop 2025 Copyright. All Rights Reserved.</small>
+        <div className="text-center">
+          <small className="px-3 px-lg-0 text-gray-400">© Dream Workshop 2025 Copyright. All Rights Reserved.</small>
+        </div>
+        
       </div>
     </footer>
   );

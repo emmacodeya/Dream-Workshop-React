@@ -2,6 +2,7 @@ import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const FillInfo = () => {
     const [name, setName] = useState("");
@@ -17,13 +18,13 @@ const FillInfo = () => {
         alert("Registration complete!");
         navigate("/");
       } catch (error) {
-        console.error("Registration failed", error);
+        Swal.fire('註冊失敗', '', error);   
       }
     };
 
     return (
       <>
-         <div className="container">
+         <div className="container d-flex justify-content-center">
         <div className="login">
         <div
             className="position-relative mb-6"
