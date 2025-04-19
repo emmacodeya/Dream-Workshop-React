@@ -81,7 +81,6 @@ const MemberNewProjects = () => {
       });
 
       const projectId = projectResponse.data.id;
-      console.log("專案新增成功，ID:", projectId);
       const requests = [
         axios.post(`${API_URL}/swot`, {
           projectId,

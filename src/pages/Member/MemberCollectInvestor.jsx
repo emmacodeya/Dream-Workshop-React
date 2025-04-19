@@ -1,33 +1,29 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { industryMap, translate } from "../../utils/mappings";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import { UserContext } from "../../context/UserContext";
+import FormattedNumber from "../../components/FormattedNumber"; 
 import axios from "axios";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 const MemberCollectInvestor = () => {
   const [investors, setInvestors] = useState([]);
-  const [user, setUser] = useState(null);
   const [currentPage, setCurrentPage] = useState(1); 
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const itemsPerPage = 5; 
 
   useEffect(() => {
-    const storedUser = localStorage.getItem("useraccount");
-    if (!storedUser) return;
+    if (!currentUser) return;
 
-    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
-      if (res.data.length > 0) {
-        const userData = res.data[0];
-        setUser(userData);
-        axios.get(`${API_URL}/investors`).then((investorRes) => {
-          const collectedInvestors = investorRes.data.filter((i) => userData.collectedInvestors.includes(i.id));
-          setInvestors(collectedInvestors);
-        });
-      }
+    axios.get(`${API_URL}/investors`).then((res) => {
+      const collectedInvestors = res.data.filter((i) =>
+        currentUser.collectedInvestors.includes(i.id)
+      );
+      setInvestors(collectedInvestors);
     });
-  }, []);
-
+  }, [currentUser]);
 
  const totalPages = Math.ceil(investors.length / itemsPerPage);
 
@@ -36,23 +32,31 @@ const MemberCollectInvestor = () => {
   currentPage * itemsPerPage
 );
 
-  const toggleFavorite = async (investorId) => {
-    if (!user) return;
+const toggleFavorite = async (investorId) => {
+  if (!currentUser || !currentUser.collectedInvestors) return;
 
-    const updatedFavorites = user.collectedInvestors.includes(investorId)
-      ? user.collectedInvestors.filter((id) => id !== investorId)
-      : [...user.collectedInvestors, investorId];
+  const isFavorite = currentUser.collectedInvestors.includes(investorId);
+  const updatedFavorites = isFavorite
+    ? currentUser.collectedInvestors.filter((id) => id !== investorId)
+    : [...currentUser.collectedInvestors, investorId];
 
-    try {
-      await axios.patch(`${API_URL}/members/${user.id}`, {
-        collectedInvestors: updatedFavorites,
-      });
-      setUser((prevUser) => ({ ...prevUser, collectedInvestors: updatedFavorites }));
-      setInvestors((prevInvestors) => prevInvestors.filter((i) => updatedFavorites.includes(i.id)));
-    } catch (error) {
-      console.error("更新收藏失敗", error);
-    }
-  };
+  try {
+    await axios.patch(`${API_URL}/members/${currentUser.id}`, {
+      collectedInvestors: updatedFavorites,
+    });
+
+    setCurrentUser((prev) => ({
+      ...prev,
+      collectedInvestors: updatedFavorites,
+    }));
+
+    setInvestors((prevInvestors) =>
+      prevInvestors.filter((i) => updatedFavorites.includes(i.id))
+    );
+  } catch (error) {
+    console.error("更新收藏失敗", error);
+  }
+};
 
   return (
     <div className="mt-5">
@@ -83,8 +87,8 @@ const MemberCollectInvestor = () => {
                   </li>
                 </ul>
                 <ul className="list-unstyled pb-md-0 pb-1">
-                  <li className="fs-5 text-gray-400 fw-bold">資本規模</li>
-                  <li className="fs-3 text-primary-400 fw-bold">{investor.capital}</li>
+                  <li className="fs-5 text-gray-400 fw-bold">資本額</li>
+                  <li className="fs-3 text-primary-400 fw-bold"><FormattedNumber value={investor.capital} /></li>
                 </ul>
               </div>
             </div>

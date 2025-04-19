@@ -175,7 +175,7 @@ const ProjectInformation = () => {
                   <h5 className="fs-5 text-light m-1">產業分類：{industryMap[project.industry] || "未知"}</h5>
                   <h5 className="fs-5 text-light m-1">資本額： {parseInt(project.capital).toLocaleString()}</h5>
                   <h1 className="fs-2 mx-lg-1 my-lg-5 m-1 text-light">募資金額：{parseInt(project.funding).toLocaleString()}</h1>
-                  <p className="m-1 fs-6 text-gray-600">地址：{project.address}</p>
+                  <p className="m-1 fs-6 text-gray-400">地址：{project.address}</p>
                 </div>
               </div>
             </div>

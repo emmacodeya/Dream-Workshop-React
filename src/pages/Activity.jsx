@@ -18,14 +18,16 @@ const Activity = () => {
     const fetchActivities = async () => {
       try {
         const response = await axios.get(`${API_URL}/activities`);
-        const sortedActivities = response.data.sort((b, a) => new Date(a.date) - new Date(b.date));
-        
+        const sortedActivities = response.data.sort(
+          (b, a) => new Date(a.date) - new Date(b.date)
+        );
+  
         setActivities(sortedActivities);
       } catch (error) {
         console.error("獲取活動數據失敗:", error);
       }
     };
-
+  
     fetchActivities();
   }, []);
   
@@ -78,7 +80,7 @@ const Activity = () => {
                 />
               </div>
               <div className="col-md-8">
-                <div className="card-body text-white pt-0">
+                <div className="card-body text-white pt-0 pe-5">
                   <div className=" d-lg-flex align-items-center justify-content-between border-bottom border-gray-600">
                     <h2 className="card-title text-primary-600 fw-bold  fs-3 ">{event.title}</h2>
                     <p className="text-gray-400 fs-lg-5 fw-bold  pb-lg-0 pb-2">
@@ -118,8 +120,12 @@ const Activity = () => {
       </section>
 
       {totalPages > 1 && (
-        <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-      )}
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        onPageChange={setCurrentPage}
+      />
+    )}
     </main>
   );
 };
