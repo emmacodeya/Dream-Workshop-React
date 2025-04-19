@@ -1,10 +1,13 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 import { Link, useNavigate } from "react-router-dom";
 import { Navigation } from "swiper/modules";
 import { statusMap, industryMap, sizeMap, translate } from "../../utils/mappings";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Pagination from "../../components/Pagination"; 
+import { UserContext } from "../../context/UserContext";
+import FormattedNumber from "../../components/FormattedNumber";
 import "swiper/css";
 import "swiper/css/navigation";
 import "./ProjectList.scss";
@@ -32,99 +35,104 @@ const ProjectList = () => {
   const [selectedIndustry, setSelectedIndustry] = useState("");
   const [sortOrder, setSortOrder] = useState("default");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const { currentUser, setCurrentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1); 
   const itemsPerPage = 5; 
 
-  useEffect(() => {
-    axios.get(`${API_URL}/projects`).then((res) => {
-      setProjects(res.data);
-    });
-    
-    const storedUser = localStorage.getItem("useraccount");
-    if (!storedUser) {
-      return;
-    }
-    
-    axios.get(`${API_URL}/members?useraccount=${storedUser}`).then((res) => {
-      if (res.data.length > 0) {
-        setUser(res.data[0]);
-      }
-    });
-  }, [navigate]);
 
   useEffect(() => {
-    axios.get(`${API_URL}/projects`)
-      .then((response) => {
-        setProjects(response.data);
+    const fetchData = async () => {
+      try {
+        const [projectsRes, industriesRes] = await Promise.all([
+          axios.get(`${API_URL}/projects`),
+          axios.get(`${API_URL}/industryOptions`)
+        ]);
+  
+        const rawProjects = projectsRes.data;
+        const updatedProjects = rawProjects.map((project) => ({
+          ...project,
+          liked: currentUser?.collectedProjects?.includes(project.id) || false
+        }));
+  
+        setProjects(updatedProjects);
+  
         if (!selectedIndustry) {
-          setFilteredProjects(response.data);
+          setFilteredProjects(updatedProjects);
         }
-      })
-      .catch((error) => console.error("Error fetching projects:", error));
   
-    axios.get(`${API_URL}/industryOptions`)
-      .then((response) => {
-        setIndustries(response.data);
-      })
-      .catch((error) => console.error("Error fetching industry options:", error));
-  }, [selectedIndustry]);
+        setIndustries(industriesRes.data);
+      } catch (error) {
+        console.error('Error fetching projects or industries:', error);
+      }
+    };
   
+    fetchData();
+  }, [selectedIndustry, currentUser]);
+  
+
 
   const handleIndustryChange = (industryValue) => {
     setSelectedIndustry(industryValue);
     setCurrentPage(1);
   
-    let filtered = industryValue
-      ? projects.filter((p) => p.industry?.trim().toLowerCase() === industryValue.trim().toLowerCase()) 
-      : projects;  
-  
+    const filtered = industryValue
+      ? projects.filter((p) => p.industry?.trim().toLowerCase() === industryValue.trim().toLowerCase())
+      : projects;
+
     setFilteredProjects(filtered);
   
     
   };
  
-  useEffect(() => {
-    axios.get(`${API_URL}/industryOptions`)
-      .then((response) => {
-        const updatedIndustries = [
-          { value: "", label: "不限產業", imgSrc: "https://dream-workshop-api.onrender.com/assets/images/Map-item-20.png" }, 
-          ...response.data
-        ];
-        setIndustries(updatedIndustries);
-        
-      })
-      .catch((error) => console.error("Error fetching industry options:", error));
-  }, []);
-  
-
-   const toggleFavorite = async (projectId) => {
-    if (!user) {
-      alert("請先登入會員帳號");
-      navigate("/");
+  const toggleFavorite = async (projectId) => {
+   if (!currentUser) {
+      Swal.fire({
+        icon: "warning",
+        title: "請先登入會員帳號！",
+        confirmButtonColor: "#7267EF",
+      }).then(() => navigate("/"));
       return;
     }
-
-    const isFavorite = user.collectedProjects.includes(projectId);
+  
+    if (!currentUser.collectedProjects) return;
+  
+    const isFavorite = currentUser.collectedProjects.includes(projectId);
     const updatedFavorites = isFavorite
-      ? user.collectedProjects.filter((id) => id !== projectId) 
-      : [...user.collectedProjects, projectId]; 
-
+      ? currentUser.collectedProjects.filter((id) => id !== projectId)
+      : [...currentUser.collectedProjects, projectId];
+  
     try {
-      await axios.patch(`${API_URL}/members/${user.id}`, {
+      await axios.patch(`${API_URL}/members/${currentUser.id}`, {
         collectedProjects: updatedFavorites,
       });
-      setUser((prevUser) => ({ ...prevUser, collectedProjects: updatedFavorites }));
+  
+      setCurrentUser((prevUser) => ({
+        ...prevUser,
+        collectedProjects: updatedFavorites,
+      }));
+  
       setProjects((prevProjects) =>
         prevProjects.map((project) =>
-          project.id === projectId ? { ...project, liked: !isFavorite } : project
+          project.id === projectId
+            ? { ...project, liked: !isFavorite }
+            : project
+        )
+      );
+  
+      setFilteredProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.id === projectId
+            ? { ...project, liked: !isFavorite }
+            : project
         )
       );
     } catch (error) {
       console.error("更新收藏失敗", error);
     }
   };
+  
+  
 
 
   const sizeRanking = {
@@ -134,7 +142,7 @@ const ProjectList = () => {
   
   const handleSortChange = (order) => {
     setSortOrder(order);
-    let sortedProjects = [...filteredProjects.length > 0 ? filteredProjects : projects];
+    let sortedProjects = [...(filteredProjects.length > 0 ? filteredProjects : projects)];
   
     switch (order) {
       case "funding-desc":
@@ -154,7 +162,7 @@ const ProjectList = () => {
         sortedProjects.sort((a, b) => (sizeRanking[a.size] || 0) - (sizeRanking[b.size] || 0));
         break;
       default:
-        sortedProjects = [...filteredProjects.length > 0 ? filteredProjects : projects];
+        
         break;
     }
   
@@ -202,18 +210,22 @@ const ProjectList = () => {
           <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
             <img
               className="favorite"
-              src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              src={project.liked
+                ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
           </button>
-          <img className="company-logo mb-3 w-25" src={project.companyLogo} alt={project.name} />
-          <h4 className="mb-3 popular-card-title text-primary-600">{project.name}</h4>
+          <div className="logo-wrapper">
+            <img src={project.companyLogo} alt={project.name} className="company-logo" />
+          </div>
+          <h4 className="mb-3 popular-card-title text-primary-600 mt-2">{project.name}</h4>
           <h5 className="fs-5 me-2 text-gray-200">{industryMap[project.industry] || project.industry}</h5>
           <p>{truncateText(project.description)}</p>
         </div>
         <a href="#" className="btn btn-gray-600 py-3">
-          <p className="fs-5">資金規模</p>
-          <p className="fs-5 fw-bold text-white">{project.funding}</p>
+          <p className="fs-5">募資金額</p>
+          <p className="fs-5 fw-bold text-white">  <FormattedNumber value={project.funding} /></p>
         </a>
       </div>
     </SwiperSlide> 
@@ -255,7 +267,9 @@ const ProjectList = () => {
             >
               {sortOptions.find(option => option.value === sortOrder)?.label || "排序方式"}
             </button>
-            <ul className={`dropdown-menu ${isDropdownOpen ? "show" : ""}`}>
+            <ul
+              className={`dropdown-menu ${isDropdownOpen ? "show" : ""} dropdown-menu-end text-nowrap w-auto`}
+            >
               {sortOptions.map(option => (
                 <li key={option.value}>
                   <button 
@@ -283,13 +297,19 @@ const ProjectList = () => {
             {/* 頁面標題 */}
             <div className="d-flex justify-content-between project-title ">
             <h3 className="text-white fs-3 fw-bold  ">
-            <Link to={`/project/${project.id}`} className="text-white" onClick={() => window.scrollTo(0, 0)}>{project.name}
+            <Link 
+            to={`/project/${project.id}`} 
+            className="text-white" 
+            onClick={() => window.scrollTo(0, 0)}>
+            {project.name}
             </Link>
             </h3>
             <button className="border-0 bg-transparent" onClick={() => toggleFavorite(project.id)}>
             <img
               className="favorite"
-              src={user?.collectedProjects.includes(project.id) ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png" : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
+              src={project.liked
+                ? "https://dream-workshop-api.onrender.com/assets/images/icons/heart.png"
+                : "https://dream-workshop-api.onrender.com/assets/images/icons/heart-outline.png"}
               alt="heart"
             />
             </button>
@@ -320,11 +340,11 @@ const ProjectList = () => {
                 <div className="d-flex">
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.capital}</li>
+                    <li className="fs-3 text-primary-400 fw-bold"><FormattedNumber value={project.capital} /></li>
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">募資金額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.funding}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">  <FormattedNumber value={project.funding} /></li>
                     </ul>
                 </div>
                 </div>
@@ -348,13 +368,13 @@ const ProjectList = () => {
                     </ul>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">資本額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.capital}</li>
+                    <li className="fs-3 text-primary-400 fw-bold"><FormattedNumber value={project.capital}/></li>
                     </ul>
                 </div>
                 <div>
                     <ul className="list-unstyled">
                     <li className="fs-5 text-gray-400 fw-bold">募資金額</li>
-                    <li className="fs-3 text-primary-400 fw-bold">{project.funding}</li>
+                    <li className="fs-3 text-primary-400 fw-bold">  <FormattedNumber value={project.funding} /></li>
                     </ul>
                 </div>
                 </div>

@@ -4,6 +4,14 @@ import { Modal, Button, Form } from "react-bootstrap";
 import Swal from "sweetalert2";
 import Pagination from "../../components/Pagination";
 
+const toBase64 = (file) =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+
 const API_URL = import.meta.env.VITE_API_URL;
 const ITEMS_PER_PAGE = 8;
 
@@ -80,20 +88,14 @@ const AdminActivities = () => {
     if (!currentActivity) return;
     try {
 
-      let uploadedImage = currentActivity.image;
+      let uploadedImage = currentActivity.image || "";
       if (imageFile) {
-        const formData = new FormData();
-        formData.append("file", imageFile);
-        const uploadRes = await axios.post(`${API_URL}/upload`, formData);
-        uploadedImage = uploadRes.data.url;
+        uploadedImage = await toBase64(imageFile);
       }
 
-      let uploadedCarousel = currentActivity.carouselImage;
+      let uploadedCarousel = currentActivity.carouselImage || "";
       if (carouselFile) {
-        const formData = new FormData();
-        formData.append("file", carouselFile);
-        const uploadRes = await axios.post(`${API_URL}/upload`, formData);
-        uploadedCarousel = uploadRes.data.url;
+        uploadedCarousel = await toBase64(carouselFile);
       }
 
       const updatedActivity = {
